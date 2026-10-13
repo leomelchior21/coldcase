@@ -33,6 +33,7 @@ const steps: StepDefinition[] = [
     narrative: 'The hallway footage still exists. But the security camera ID is corrupted.',
     question: 'Which camera recorded Brian?', objective: 'Recover the camera code.',
     caseNote: ['The security camera log is 257880.', 'The backup log is 921.', '', 'Create the variable camera_log.', 'Create the variable backup_log.', '', 'Divide camera_log by backup_log.', 'Store the answer in the variable result.', 'Use print(result).'],
+    starterCode: ['camera_log = 257880', 'backup_log = 921', 'result =', 'print(result)'],
     requiredEvidence: [], requiredVariables: { camera_log: 257880, backup_log: 921 },
     expectedResult: 280, requiredResultDependencies: ['camera_log','backup_log'], requiredOperations: ['/'], formula: 'camera_log / backup_log',
     unlockEvidence: ['C280'], hints: ['Use the camera log and its backup to recover the ID.', 'Python uses / to divide.', 'result = camera_log / backup_log'],
@@ -42,6 +43,7 @@ const steps: StepDefinition[] = [
     id: 2, shortLabel: 'Missing key', title: 'The missing key',
     narrative: 'One Maker Lab key was never returned.', question: 'Which key is missing?', objective: 'Recover the key record.',
     caseNote: ['The full key inventory checksum is 864.', 'The returned keys checksum is 837.', '', 'Create the variable inventory_checksum.', 'Create the variable returned_checksum.', '', 'Subtract returned_checksum from inventory_checksum.', 'Store the difference in the variable result.', 'Use print(result).'],
+    starterCode: ['inventory_checksum =', 'returned_checksum =', 'result ='],
     requiredEvidence: [], requiredVariables: { inventory_checksum: 864, returned_checksum: 837 },
     expectedResult: 27, requiredResultDependencies: ['inventory_checksum','returned_checksum'], requiredOperations: ['-'], formula: 'inventory_checksum - returned_checksum',
     unlockEvidence: ['K27'], hints: ['The checksum is a total used to check the key records.', 'Subtract the returned checksum from the full checksum.', 'result = inventory_checksum - returned_checksum'],
@@ -104,7 +106,7 @@ const steps: StepDefinition[] = [
   },
 ];
 export const case001: CaseDefinition = { id: '001', title: 'Who took Brian?', tagline: 'The records don’t agree. Find out what happened.', steps, documents, finalDeduction: { person: 'emily', account: 'prep' } };
-export const initialCode = (step: StepDefinition) => (step.id === 8 ? '# FINAL CASE NOTE\n' : '# CASE NOTE\n') + step.caseNote.map(line => '# ' + line).join('\n') + '\n\n';
+export const initialCode = (step: StepDefinition) => (step.id === 8 ? '# FINAL CASE NOTE\n' : '# CASE NOTE\n') + step.caseNote.map(line => '# ' + line).join('\n') + '\n\n' + (step.starterCode ? step.starterCode.join('\n') + '\n' : '');
 export function stepWithSuspect(step: StepDefinition, selected: string): StepDefinition {
   const person = suspects.find(s => s.id === selected);
   return step.id === 7 && person ? { ...step, caseNote: ['Check ' + person.name + '’s file.', ...step.caseNote.slice(2)] } : step;

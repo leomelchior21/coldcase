@@ -1,6 +1,12 @@
 import { useId, useState } from 'react';
+import { UserRound } from 'lucide-react';
+import { anonymousShade } from './anonymous';
 
 const customPortraits = import.meta.glob('/public/cases/case001/*.webp', { eager: true, query: '?url', import: 'default' });
+
+export function RedactedPortrait({ name = '', className = '' }: { name?: string; className?: string }) {
+  return <div className={`portrait redacted ${className}`} role="img" aria-label="Unidentified student portrait" style={{ '--shade': anonymousShade(name) } as React.CSSProperties}><UserRound strokeWidth={1.1}/></div>;
+}
 
 export function Portrait({ name = 'Brian', className = '' }: { name?: string; className?: string }) {
   const custom = customPortraits[`/public/cases/case001/${name.toLowerCase()}.webp`] as string | undefined;

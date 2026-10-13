@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { case001, suspects } from '../src/cases/case001';
+import { case001, initialCode, suspects } from '../src/cases/case001';
+import { redactName } from '../src/components/anonymous';
 import { evidenceArtwork } from '../src/cases/case001-artwork';
 import { freshState } from '../src/engine/storage';
 import { archiveReady, canSelectStep, acceptCameraCode, acceptArchiveTime, solveStep, stepBlockReason } from '../src/engine/caseEngine';
@@ -55,5 +56,32 @@ describe('Recovered evidence chain', () => {
   });
   it('accepts equivalent grouping, commutative multiplication and intermediary variables', () => {
     expect(validate('key_code=27\nsector_value=8\ncorrection=12\nsector = sector_value * key_code\nresult = (sector) - (correction)\nprint(result)',case001.steps[4]).ok).toBe(true);
+  });
+});
+
+describe('Starter programs and redacted identities', () => {
+  const starter = (id: number) => initialCode(case001.steps[id - 1]).split('\n').filter(line => line.trim() !== '' && !line.startsWith('#'));
+  it('starts Step 1 with the recovered values, a blank result line, and the print', () => {
+    expect(starter(1)).toEqual(['camera_log = 257880', 'backup_log = 921', 'result =', 'print(result)']);
+  });
+  it('starts Step 2 with blank variables and result but no print line', () => {
+    expect(starter(2)).toEqual(['inventory_checksum =', 'returned_checksum =', 'result =']);
+  });
+  it('keeps every later step comment-only', () => {
+    for (const id of [3,4,5,6,7,8]) expect(starter(id)).toEqual([]);
+  });
+  it('accepts the Step 1 and Step 2 starter lines once the student completes them', () => {
+    const first = initialCode(case001.steps[0]).replace('result =', 'result = camera_log / backup_log');
+    expect(validate(first, case001.steps[0]).ok).toBe(true);
+    const second = initialCode(case001.steps[1]).replace('inventory_checksum =', 'inventory_checksum = 864').replace('returned_checksum =', 'returned_checksum = 837').replace('result =', 'result = inventory_checksum - returned_checksum') + 'print(result)';
+    expect(validate(second, case001.steps[1]).ok).toBe(true);
+  });
+  it('renders suspect names as indecipherable glyphs without leaking letters', () => {
+    for (const suspect of suspects) {
+      const hidden = redactName(suspect.name);
+      expect(hidden).toHaveLength(suspect.name.length);
+      expect(hidden).not.toContain(suspect.name);
+      expect(hidden).not.toMatch(/[a-z]/i);
+    }
   });
 });

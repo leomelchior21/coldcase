@@ -49,6 +49,19 @@ test('explicit variable instructions and seven generated portraits are used thro
   await expect(editor).toContainText('The security camera log is 257880.');
   await expect(editor).toContainText('Use print(result).');
   await page.getByRole('button', { name: 'Open Suspect board', exact: true }).click();
+  const locked = page.getByRole('dialog');
+  await expect(locked).toContainText('FILES LOCKED');
+  await expect(locked).not.toContainText('Emily');
+  await expect(locked.locator('.portrait.redacted')).toHaveCount(6);
+  for (const name of ['Emily','Tyler','Luke','Anna','Noah','Sophie']) await expect(locked.getByRole('img', { name: `Illustrated school portrait of ${name}` })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Close dialog' }).click();
+  await page.evaluate(() => {
+    const key = 'cold-case:001:v1', state = JSON.parse(localStorage.getItem(key)!);
+    Object.assign(state, { solved: [1,2,3], cameraCodeAccepted: true, timeAccepted: true, archive1220Unlocked: true });
+    localStorage.setItem(key, JSON.stringify(state));
+  });
+  await page.reload();
+  await page.getByRole('button', { name: 'Open Suspect board', exact: true }).click();
   const dialog = page.getByRole('dialog');
   for (const name of ['Emily','Tyler','Luke','Anna','Noah','Sophie']) {
     const portrait = dialog.getByRole('img', { name: `Illustrated school portrait of ${name}` });

@@ -18,6 +18,8 @@ and device; no account or cloud service is used.
 
 - A case archive, tactile investigation desk, and eight steps. Steps 4–8 unlock only after completing Steps 1–3 and answering both CCTV terminal prompts correctly.
 - CodeMirror Python editor with per-step code, optional Case Notes, and progressive clues.
+  Step 1 arrives with the recovered values and the print already written; Step 2 keeps the
+  blank variables and result for students to complete, including the print.
 - A tokenizer, expression parser, evaluator, and semantic validation of the classroom Python subset.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
@@ -47,7 +49,9 @@ All 15 evidence documents are available digitally. The optional 16-page A4 pack
 contains student worksheets with blank answer lines, an empty suspect comparison
 table, and a detective-notes page. Recovered values, identifying color footage,
 and the final reveal are not printed. Students consult the game to fill them in.
-The original suspect board exposes only names and portraits.
+The suspect board stays fully redacted, with indecipherable name glyphs and anonymous
+gray portraits, until the last seen record in Step 3 is recovered. Afterwards it exposes
+only names and portraits.
 
 ## Saved work
 

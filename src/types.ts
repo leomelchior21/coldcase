@@ -1,7 +1,7 @@
 export type Value = number | string;
 export type StepDefinition = {
   id: number; shortLabel: string; title: string; narrative: string; question: string; objective: string;
-  caseNote: string[]; requiredEvidence: string[]; requiredVariables: Record<string, Value>;
+  caseNote: string[]; starterCode?: string[]; requiredEvidence: string[]; requiredVariables: Record<string, Value>;
   expectedResult: Value; requiredResultDependencies: string[]; requiredOperations: string[];
   unlockEvidence: string[]; hints: string[]; stamp: string;
   resultLabel: string; resultDisplay: string; formula?: string;
