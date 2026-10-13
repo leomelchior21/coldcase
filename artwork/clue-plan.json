@@ -1,0 +1,76 @@
+{
+  "tool": "Built-in image_gen",
+  "status": "Complete: all ten clue illustrations generated with the built-in image_gen tool and integrated into evidence and print views.",
+  "assets": [
+    {
+      "name": "maker-lab",
+      "evidence": "BRIEF",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/maker-lab.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Empty ordinary school Maker Lab after classes: wooden worktables, stools, pegboard hand tools, closed equipment cabinets, blank wall schedule, afternoon window light. No people, backpacks, or final-room spoilers."
+    },
+    {
+      "name": "camera-archive",
+      "evidence": "C280, A1220",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/camera-archive.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Close-up of a slightly worn box-shaped CCTV camera on a bracket above an ordinary school hallway. Lens and metal housing clear; cream plaster, blurred doors. No people, backpacks or visible footage."
+    },
+    {
+      "name": "key-registry",
+      "evidence": "K27",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/key-registry.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Open institutional key cabinet in a school facilities office, metal keys on separate hooks with blank tags and one empty hook. Brass key on a desk beside an unlabeled ledger. No highlighted answer or room number."
+    },
+    {
+      "name": "room-directory",
+      "evidence": "R204",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/room-directory.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Ordinary school second-floor hallway with four storage-room doors and a cream wall directory with blank nameplates. Angled architectural view, soft daylight, neat institutional interior. No people or readable numbers."
+    },
+    {
+      "name": "timeline-record",
+      "evidence": "T1540",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/timeline-record.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Overhead still life of an old school security office desk: clock, desk calendar with blank boxes, five blank incident slips arranged in order, pencil and empty time-log sheet. No readable time or text; chronological record supplied by the game."
+    },
+    {
+      "name": "hallway-footage",
+      "evidence": "CCTV-BW, BP-BLUE",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/hallway-footage.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: School CCTV viewpoint: fictional Brian, 13, wavy dark brown hair, charcoal zip hoodie and light T-shirt, in a school hallway. A second student walks away at the far right, partly cropped, face completely hidden, carrying a clearly BLUE backpack. Brian looks calm; no danger. Almost monochrome security-camera palette with visible muted blue backpack. No readable timestamp; the game overlays 04/14 15:40:27 and CAM 03."
+    },
+    {
+      "name": "room-access",
+      "evidence": "ACCESS204",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/room-access.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Close view of a school storage-room door with a brushed-metal electronic card reader and door handle, a plain cream access printout on a clip nearby. No person, no readable card ID, room number or times. Hardware has a small neutral green status light."
+    },
+    {
+      "name": "access-card",
+      "evidence": "B4",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/access-card.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: A single worn blank school access card attached to a simple black lanyard, lying on a cream security-office document. Gray-green card face, subtle magnetic strip and contactless mark, no name, portrait, digits or text. The game overlays the exact ID B4."
+    },
+    {
+      "name": "equipment-record",
+      "evidence": "PREP",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/equipment-record.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: A school robotics kit at a clean storage-room workbench, small wheeled educational robot, battery pack connected to a charging cable, components in a tray. Empty chairs, no people. No readable battery values; exact before/after percentages provided in HTML. Calm ordinary Maker project preparation."
+    },
+    {
+      "name": "equipment-log",
+      "evidence": "FINAL-01",
+      "status": "generated_and_integrated",
+      "output": "public/cases/case001/evidence/equipment-log.webp",
+      "prompt": "Use case: illustration-story. Asset type: one individual landscape 3:2 evidence illustration for COLD CASE. Sophisticated hand-painted graphic-novel/editorial artwork with believable objects, fine charcoal and gouache grain, restrained ink contours, muted charcoal, warm parchment, gray-green and lightly desaturated materials. School appropriate, intriguing but not frightening. Clear focal subject suitable for both a thumbnail and an expanded document. No collage, UI, watermark, weapons or police tape. No readable text or numbers; exact facts and labels will be accessible HTML. Scene: Final reveal in a school storage-room workshop: Brian, 13, tousled dark brown hair and charcoal hoodie, and Emily, 13, shoulder-length straight dark brown hair and olive-gray sweater, calmly preparing a small wheeled robotics kit plugged in to charge. Blue backpack rests beside Emily's chair. Both safe and relaxed, working collaboratively at a wooden table for a Maker demonstration. No readable text or numbers. Use the generated Brian and Emily portraits as character references when generation becomes available."
+    }
+  ]
+}

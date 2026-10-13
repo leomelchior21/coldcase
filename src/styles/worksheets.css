@@ -1,0 +1,16 @@
+.student-worksheet{padding:30px;background:#fcfbf4;color:#24352b;min-height:760px;display:flex;flex-direction:column;gap:17px}
+.worksheet-kicker{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #90978370;padding-bottom:14px;font:8px/1.5 var(--mono);letter-spacing:1px}
+.student-worksheet h2{font:700 33px/1.1 var(--heading);text-transform:uppercase;margin:0}
+.worksheet-instruction{font:12px/1.7 var(--mono)}
+.worksheet-photo{margin:0;border:1px solid #adb29c;padding:5px;background:white}
+.worksheet-photo img{display:block;width:100%;height:175px;object-fit:contain}
+.worksheet-givens{padding:12px 15px;border:1px solid #b0b69e;background:#eceddf;font:12px/1.7 var(--mono)}
+.worksheet-givens>b{font-size:9px;letter-spacing:1px;display:block;margin-bottom:4px}
+.worksheet-answers{display:flex;flex-direction:column;gap:14px}
+.worksheet-answer>span{font:600 12px/1.5 var(--mono)}
+.answer-line{height:35px;border-bottom:1px solid #879078;min-width:0}
+.student-worksheet footer{border-top:1px solid #a2aa9555;margin-top:auto;padding-top:16px;font:8px var(--mono);letter-spacing:1px}
+.worksheet-observation-box{height:130px;border:1px dashed #89967b;padding:12px}.worksheet-observation-box>span{font:10px var(--mono);color:#69735f}
+.worksheet-roster{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center}.worksheet-roster .portrait{height:165px;width:100%;background:#dee1d1}.worksheet-roster .portrait img{object-fit:contain}.worksheet-roster strong{font:600 21px var(--heading);display:block;margin-top:7px}
+.worksheet-comparison{border-collapse:collapse;width:100%;font:10px var(--mono);table-layout:fixed}.worksheet-comparison th,.worksheet-comparison td{padding:8px;border:1px solid #959f86;text-align:left}.worksheet-comparison thead th{background:#e9eddf;font-size:9px}.worksheet-comparison tbody th{font-weight:500}.worksheet-comparison th:first-child{width:28%}.worksheet-comparison .portrait{height:43px;width:34px;display:inline-block;vertical-align:middle;margin-right:7px}.worksheet-comparison .blank-cell{display:block;min-height:35px}
+@media print{.student-worksheet{padding:0;min-height:240mm;gap:4mm;background:white;color:black}.worksheet-kicker{font-size:8px}.student-worksheet h2{font-size:28px}.worksheet-instruction{font-size:12px}.worksheet-photo{max-width:150mm;width:100%;margin-inline:auto}.worksheet-photo img{height:45mm}.worksheet-givens{background:white;break-inside:avoid}.worksheet-answer{break-inside:avoid}.worksheet-answer>span{font-size:12px}.answer-line{height:9mm}.worksheet-answers{gap:3mm}.worksheet-observation-box{height:32mm}.worksheet-roster .portrait{height:42mm}.worksheet-roster strong{font-size:20px}.worksheet-comparison th,.worksheet-comparison td{font-size:11px;padding:3mm}.worksheet-comparison .portrait{height:14mm;width:11mm}.student-worksheet footer{font-size:8px}.worksheet-photo,.worksheet-roster,.worksheet-comparison{break-inside:avoid}}

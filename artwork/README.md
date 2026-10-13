@@ -1,0 +1,28 @@
+# Case 001 artwork
+
+Seventeen original illustrations were generated with the built-in image_gen tool:
+seven fictional portraits and ten clue scenes. The cast is Brian, Emily, Tyler,
+Luke, Anna, Noah, and Sophie. No API fallback was used.
+
+- source/: original generated PNGs copied into the project.
+- ../public/cases/case001/portraits/: optimized character WebP images.
+- ../public/cases/case001/evidence/: optimized clue WebP images.
+- prompts.json: exact successful prompts, references, original paths and destinations.
+- clue-plan.json: original clue-art brief, with completion status.
+
+Every digital evidence file uses generated imagery; student worksheets include
+only neutral illustrations and monochrome footage. Restored-color and final-reveal
+images stay in the game. Suspect boards and profiles reuse the individual portraits. Evidence thumbnails
+use the same assets. Exact names, IDs, times and table entries remain readable HTML.
+The initial camera archive does not show the backpack. The hallway frame keeps
+the second student's face hidden. The final equipment log uses Brian and Emily's
+portraits as references to keep their faces consistent.
+
+The timestamp illustration was corrected with the built-in image generator to
+remove a clock displaying an unrelated time. The app uses
+`../public/cases/case001/evidence/timeline-record-v2.webp`; the original is retained.
+The edit prompt, reference and saved paths are in `timestamp-correction.json`.
+
+Run node scripts/prepare-artwork.mjs to copy and optimize entries in prompts.json.
+The script only encodes existing files, preserves original PNGs and skips existing
+outputs. It makes no API calls.

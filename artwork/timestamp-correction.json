@@ -1,0 +1,13 @@
+{
+  "tool": "Built-in image_gen",
+  "asset": {
+    "name": "timeline-record-v2",
+    "kind": "evidence",
+    "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-f849f18f-8412-48df-89ab-6da2a6490594.png",
+    "output": "public/cases/case001/evidence/timeline-record-v2.webp",
+    "prompt": "Use case: precise-object-edit. Edit target: the attached COLD CASE timestamp evidence illustration. Remove ONLY the analog clock in the upper-right portion of the wooden desk and fill that area with a natural continuation of the desk surface and the existing background. Keep the five blank lined index cards, arrows between cards, plant, pencil cup, filing box, foreground folder, pen, lighting, perspective, painterly textures, and landscape composition unchanged. No replacement timepiece, no new objects, no hands or digits, no text, no watermark. This prevents a misleading clock time in an educational mystery; the actual recovered time is presented separately as accessible HTML.",
+    "references": [
+      "public/cases/case001/evidence/timeline-record.webp"
+    ]
+  }
+}

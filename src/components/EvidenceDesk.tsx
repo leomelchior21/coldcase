@@ -1,0 +1,17 @@
+import { useCallback } from 'react';
+import { ArrowUpRight, Files, Search, X } from 'lucide-react';
+import { case001, suspects } from '../cases/case001';
+import { EvidenceDocument, EvidenceIcon } from './EvidenceDocument';
+import { Modal } from './Modal';
+import { Portrait } from './Artwork';
+import { EvidenceImage } from './EvidenceImage';
+import { evidenceArtwork } from '../cases/case001-artwork';
+export function EvidenceDesk({ evidence, onOpen, newest, drawer, onClose, onTerminal }: { evidence: string[]; onOpen: (id: string) => void; newest: string[]; drawer: boolean; onClose: () => void; onTerminal?: () => void }) {
+  const docs = case001.documents.filter(d => evidence.includes(d.id));
+  return <aside className={`evidence-panel ${drawer ? 'drawer-open' : ''}`} aria-label="Evidence desk"><div className="panel-header"><span><Files size={18}/> EVIDENCE DESK</span><span className="evidence-count">{String(docs.length).padStart(2,'0')} FILES</span><button className="drawer-close" aria-label="Close evidence desk" onClick={onClose}><X/></button></div><div className="evidence-instruction"><Search size={13}/> TAP A FILE. TAKE A CLOSER LOOK.</div>{onTerminal && <button className="security-terminal-link" onClick={onTerminal}>SECURITY TERMINAL <ArrowUpRight size={16}/></button>}<div className="evidence-stack">{docs.map((doc,i) => <button key={doc.id} className={`evidence-card evidence-${doc.type} ${newest.includes(doc.id) ? 'new-evidence' : ''}`} style={{ '--tilt': `${i % 2 ? 1.4 : -1.5}deg` } as React.CSSProperties} onClick={() => onOpen(doc.id)} aria-label={`Open ${doc.title}`}><div className="evidence-card-id">{doc.id} <ArrowUpRight size={13}/></div><h3>{doc.title}</h3><div className="card-art">{doc.type === 'suspects' || doc.type === 'profiles' ? <div className="mini-suspect-board">{suspects.slice(0,3).map(person => <Portrait key={person.id} name={person.name}/>)}</div> : evidenceArtwork[doc.id] ? <EvidenceImage id={doc.id} thumbnail/> : doc.type === 'person' ? <Portrait name="Emily"/> : <><EvidenceIcon type={doc.type} size={38}/></>}</div><span className="card-bottom">{newest.includes(doc.id) ? 'NEW EVIDENCE' : 'TAP TO EXAMINE'}</span></button>)}</div><div className="evidence-desk-footer"><span className="status-dot"/> ALL DISCOVERED FILES STAY HERE</div></aside>;
+}
+export function EvidenceModal({ activeId, evidence, onOpen, onClose, highlightAccess = false, reveal = false, selectedSuspect, onChooseSuspect }: { activeId: string; evidence: string[]; onOpen: (id: string) => void; onClose: () => void; highlightAccess?: boolean; reveal?: boolean; selectedSuspect?: string; onChooseSuspect?: (id: string) => void }) {
+  const document = case001.documents.find(d => d.id === activeId)!;
+  const close = useCallback(() => onClose(), [onClose]);
+  return <Modal title={document.title} onClose={close} className="evidence-modal"><div className="document-scroll" key={activeId}><EvidenceDocument document={document} highlightAccess={highlightAccess} reveal={reveal} selectedSuspect={selectedSuspect} onChooseSuspect={onChooseSuspect}/></div><nav className="document-switcher" aria-label="Switch evidence document">{case001.documents.filter(d => evidence.includes(d.id)).map(doc => <button key={doc.id} onClick={() => onOpen(doc.id)} aria-current={activeId === doc.id ? 'page' : undefined}><EvidenceIcon type={doc.type} size={17}/><span>{doc.title}</span></button>)}</nav></Modal>;
+}

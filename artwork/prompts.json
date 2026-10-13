@@ -1,0 +1,142 @@
+{
+  "tool": "Built-in image_gen",
+  "assets": [
+    {
+      "name": "brian",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-b2ef1d6f-c8e9-4645-8968-97fd000be87b.png",
+      "output": "public/cases/case001/portraits/brian.webp",
+      "prompt": "Use case: stylized-concept. Asset type: an individual fictional school ID portrait for COLD CASE, a premium classroom mystery game. Create ONE portrait, not a sheet or collage. Subject: Brian, a fictional American 13-year-old boy, tousled wavy dark brown hair, warm light-medium skin, brown eyes, friendly slightly curious expression, charcoal zip hoodie over a light T-shirt. Medium: sophisticated hand-painted editorial / graphic-novel illustration, recognizable expressive face, natural proportions, fine charcoal and gouache texture, subtle ink edges; definitely illustrated, not a photograph, not flat vector, not cartoon mascot. Framing: centered head and shoulders, entire head and hairstyle visible with generous margin, neutral straight-on school yearbook pose; portrait aspect ratio 3:4. Background: plain softly mottled muted gray-green. Palette: desaturated charcoal, warm parchment, subtle natural skin colors, understated noir archive atmosphere. Soft side light, school appropriate, calm and inviting. No text, letters, numbers, badges, frames, watermark, weapons, injuries, police attire, backpack, or story spoilers. This image must stand alone as a polished character portrait. Generate the image and return the saved local image path."
+    },
+    {
+      "name": "emily",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-95d67e73-b1a2-4544-a32b-036f71077230.png",
+      "output": "public/cases/case001/portraits/emily.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hair visible, centered straight-on yearbook pose, calm friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with subtle ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Emily, a fictional American 13-year-old girl, warm medium skin, shoulder-length straight dark brown hair parted slightly off-center, oval face, brown eyes, a light scattering of freckles, muted olive-gray crew-neck sweater. Distinct from Brian."
+    },
+    {
+      "name": "tyler",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-587dbb92-1a6d-460b-ace5-c27c4d21aab2.png",
+      "output": "public/cases/case001/portraits/tyler.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hair visible, centered straight-on yearbook pose, calm friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with subtle ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Tyler, a fictional American 13-year-old boy, light skin, straight sandy-blond hair swept sideways, slim oval face, round dark-framed eyeglasses, hazel eyes, faded slate-blue crew-neck sweatshirt. Distinctive glasses and blond hair."
+    },
+    {
+      "name": "luke",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-51752c30-266b-42c5-8433-709acdd6c4c2.png",
+      "output": "public/cases/case001/portraits/luke.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hair visible, centered straight-on yearbook pose, calm friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with subtle ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Luke, a fictional American 13-year-old boy, medium olive skin, short curly dark hair with closely trimmed sides, brown eyes, round face, subtle confident smile, warm rust-brown plaid overshirt over charcoal T-shirt."
+    },
+    {
+      "name": "anna",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-e4b51d4e-bf7d-4f72-abbd-48d853b3e6b8.png",
+      "output": "public/cases/case001/portraits/anna.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hairstyle visible, centered straight-on yearbook pose, relaxed friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with delicate ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Anna, a fictional American 13-year-old girl, fair skin with freckles, auburn-red hair tied in a loose high ponytail, green eyes, rounded cheeks, soft thoughtful smile, plain muted sage-green sweater. Visually distinctive red hair and ponytail."
+    },
+    {
+      "name": "noah",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-d1aaa401-912d-48cb-a760-03b37931fe97.png",
+      "output": "public/cases/case001/portraits/noah.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hairstyle visible, centered straight-on yearbook pose, relaxed friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with delicate ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Noah, a fictional Black American 13-year-old boy, deep brown skin, short tightly coiled black hair in a neat natural crop, dark brown eyes, broad warm smile, plain charcoal-black sweatshirt, distinctive strong eyebrows and gentle face."
+    },
+    {
+      "name": "sophie",
+      "kind": "portrait",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-2bde85b6-d300-4dbf-8860-9bbc0fc0c9ff.png",
+      "output": "public/cases/case001/portraits/sophie.webp",
+      "prompt": "Use case: stylized-concept. Asset type: ONE individual fictional school ID portrait for COLD CASE classroom mystery. Create a single head-and-shoulders illustration, portrait 3:4, entire hairstyle visible, centered straight-on yearbook pose, relaxed friendly expression. Sophisticated hand-painted editorial graphic-novel artwork, natural proportions, expressive detailed face, charcoal and gouache with delicate ink strokes and paper grain, NOT a photograph, NOT flat vector, NOT a cartoon mascot. Soft side lighting, plain mottled gray-green background, desaturated charcoal and parchment with natural subdued skin tones. School appropriate. No text, numbers, badges, border, watermark, backpack, access card, room numbers or story clues. Subject: Sophie, a fictional Asian American 13-year-old girl, warm light-medium skin, straight black hair cut in a chin-length bob with blunt bangs, dark brown almond-shaped eyes, small friendly closed-mouth smile, muted mustard-ochre sweater. Distinctive bob and bangs."
+    },
+    {
+      "name": "maker-lab",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-d0997526-9bf4-4a41-9844-322871b346dc.png",
+      "output": "public/cases/case001/evidence/maker-lab.webp",
+      "prompt": "Use case: illustration-story. Asset type: an individual evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. ONE landscape 3:2 image, no collage, no UI mockup, no frames. Sophisticated hand-painted graphic-novel / editorial illustration with believable objects and architecture, charcoal and gouache grain, restrained ink contours. Muted charcoal, warm paper beige, gray-green, lightly desaturated natural materials. Soft cinematic afternoon light; intriguing but ordinary and school appropriate, no horror. Carefully composed focal subject legible as a small evidence thumbnail. No readable text, letters, numbers, branding, watermarks, captions, police tape or weapons; game text will be drawn separately in HTML. Scene: The empty school Maker Lab shortly after classes. Orderly wooden worktables, stools, pegboard hand tools, paper plans, closed equipment cabinets, a simple wall schedule board with blank unlabeled lines, and warm window light. A quiet unexplained absence, not an abandoned or damaged room. No people, no backpacks, no keys with readable labels, no robotics kit being charged, no spoilers about the final room."
+    },
+    {
+      "name": "camera-archive",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-f64996ce-19bd-450f-a389-66d3c5281f4f.png",
+      "output": "public/cases/case001/evidence/camera-archive.webp",
+      "prompt": "Use case: illustration-story. Asset type: an individual evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. ONE landscape 3:2 image, no collage, no UI mockup, no frames. Sophisticated hand-painted graphic-novel / editorial illustration with believable objects and architecture, charcoal and gouache grain, restrained ink contours. Muted charcoal, warm paper beige, gray-green, lightly desaturated natural materials. Soft cinematic afternoon light; intriguing but ordinary and school appropriate, no horror. Carefully composed focal subject legible as a small evidence thumbnail. No readable text, letters, numbers, branding, watermarks, captions, police tape or weapons; game text will be drawn separately in HTML. Scene: Close-up of a slightly worn box-shaped CCTV security camera mounted on a bracket high on the wall of an ordinary school hallway. Lens and metal housing clearly visible; cream plaster, blurred classroom doors, subtle green-gray shadows. No people, no backpacks, no screen showing footage. This is a found camera record, not the footage itself."
+    },
+    {
+      "name": "key-registry",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-317949d5-ddaa-4a3a-bddd-5b266c0877b5.png",
+      "output": "public/cases/case001/evidence/key-registry.webp",
+      "prompt": "Use case: illustration-story. Asset type: an individual evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. ONE landscape 3:2 image, no collage, no UI mockup, no frames. Sophisticated hand-painted graphic-novel / editorial illustration with believable objects and architecture, charcoal and gouache grain, restrained ink contours. Muted charcoal, warm paper beige, gray-green, lightly desaturated natural materials. Soft cinematic afternoon light; intriguing but ordinary and school appropriate, no horror. Carefully composed focal subject legible as a small evidence thumbnail. No readable text, letters, numbers, branding, watermarks, captions, police tape or weapons; game text will be drawn separately in HTML. Scene: A small institutional wooden key cabinet hanging open in a school facilities office, several metal keys on separate hooks with blank paper tags, one conspicuously empty hook. A single brass key with a plain blank tag rests on a worn desk in the foreground beside a cream ledger with completely blank cells. Clear keys and tactile metal, no readable words or digits. No room numbers and no answer highlighted."
+    },
+    {
+      "name": "room-directory",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-d3224c06-bbf8-440f-a5e4-78a2b836e1f9.png",
+      "output": "public/cases/case001/evidence/room-directory.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE individual landscape 3:2 evidence image for COLD CASE, a premium school mystery for ages 12–13. Sophisticated painted editorial graphic-novel illustration, realistic architecture and objects, charcoal and gouache detail, delicate ink contours and paper texture. Desaturated gray-green, warm cream, brown wood, charcoal. Calm school setting, soft afternoon light, intriguing but not scary. No collage, framing border, watermark, readable text, digits, logos, people, weapons or police tape. Do not invent readable facts: the game supplies exact records and numbers as accessible HTML. Scene: A quiet second-floor school corridor viewed in perspective, four simple wood storage-room doors with muted green lower walls and cream upper walls, a large institutional room directory with four blank cream nameplates prominently visible in the foreground on the wall. Practical orderly school, no signs of danger or neglect. Emphasize finding a location by comparing the doors and directory. No room labels readable."
+    },
+    {
+      "name": "timeline-record",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-37a5faec-dfe2-47fd-ae6b-2783f9e7fd7c.png",
+      "output": "public/cases/case001/evidence/timeline-record.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE individual landscape 3:2 evidence image for COLD CASE, a premium school mystery for ages 12–13. Sophisticated painted editorial graphic-novel illustration, realistic architecture and objects, charcoal and gouache detail, delicate ink contours and paper texture. Desaturated gray-green, warm cream, brown wood, charcoal. Calm school setting, soft afternoon light, intriguing but not scary. No collage, framing border, watermark, readable text, digits, logos, people, weapons or police tape. Do not invent readable facts: the game supplies exact records and numbers as accessible HTML. Scene: Overhead close-up of a school security office desk. Five cream incident slips arranged from left to right in chronological order, connected by a pencil-drawn line; a simple analog desk clock with a completely unnumbered face, a worn dark pen, a small paper clip, and an archival logbook edge. All papers completely blank except ruled lines. Tactile records, no text, no digits, no highlighted event or solved answer."
+    },
+    {
+      "name": "room-access",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-2b1debd8-f7a0-462c-ac7c-cbc9de89bbf4.png",
+      "output": "public/cases/case001/evidence/room-access.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE individual landscape 3:2 evidence image for COLD CASE, a premium school mystery for ages 12–13. Sophisticated painted editorial graphic-novel illustration, realistic architecture and objects, charcoal and gouache detail, delicate ink contours and paper texture. Desaturated gray-green, warm cream, brown wood, charcoal. Calm school setting, soft afternoon light, intriguing but not scary. No collage, framing border, watermark, readable text, digits, logos, people, weapons or police tape. Do not invent readable facts: the game supplies exact records and numbers as accessible HTML. Scene: A close view of an ordinary school storage-room door: brushed-metal contactless access-card reader and steel lever handle on a muted gray-green door, small green status light, cream access-log sheet clipped to a board beside the doorway with blank ruled rows. Strong focus on reader hardware and door handle, realistic school facilities, soft window light. No people, card in hand, readable room numbers, names or times."
+    },
+    {
+      "name": "access-card",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-90d5af0a-b25b-4dae-ace6-70bc9aa1950f.png",
+      "output": "public/cases/case001/evidence/access-card.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE landscape 3:2 evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. Sophisticated hand-painted editorial graphic-novel illustration, realistic objects, charcoal and gouache grain, restrained ink outlines, muted gray-green, warm cream, wood brown and charcoal. School appropriate, calm intriguing atmosphere. No collage, border, UI, readable text or numbers, captions, watermark, branding, violence, fear or weapons. Exact labels will be drawn by the game. Scene: A single gray-green school contactless access card attached to a plain black lanyard, lying on a cream paper document on a worn dark wooden security-office desk. Close-up composition, entire card visible, realistic scuffed plastic and small chip, completely blank broad card face with ample space for the game to overlay B4. No printed person name, photo or numbers. Clean archival object study."
+    },
+    {
+      "name": "equipment-record",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-05542a13-73c5-45d8-8e6f-4509ea03d196.png",
+      "output": "public/cases/case001/evidence/equipment-record.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE landscape 3:2 evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. Sophisticated hand-painted editorial graphic-novel illustration, realistic objects, charcoal and gouache grain, restrained ink outlines, muted gray-green, warm cream, wood brown and charcoal. School appropriate, calm intriguing atmosphere. No collage, border, UI, readable text or numbers, captions, watermark, branding, violence, fear or weapons. Exact labels will be drawn by the game. Scene: A small educational wheeled robotics kit at a clean school storage-room workbench: compact robot with two wheels and a simple sensor mast, battery pack connected to a charging cable, components in a shallow tray, basic hand tools neatly arranged, soft afternoon light. No students or other people present. No readable battery values or display text. The equipment is being prepared for a classroom demonstration. Frame the complete robot and attached charging cable clearly."
+    },
+    {
+      "name": "hallway-footage",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-b036f2ce-e134-4eb6-bcaa-19f871c34abc.png",
+      "output": "public/cases/case001/evidence/hallway-footage.webp",
+      "prompt": "Use case: illustration-story. Asset type: ONE landscape 3:2 evidence illustration for COLD CASE, a premium school mystery game for ages 12–13. Sophisticated hand-painted editorial graphic-novel illustration, realistic objects, charcoal and gouache grain, restrained ink outlines, muted gray-green, warm cream, wood brown and charcoal. School appropriate, calm intriguing atmosphere. No collage, border, UI, readable text or numbers, captions, watermark, branding, violence, fear or weapons. Exact labels will be drawn by the game. Scene: Transform the provided Brian portrait into a new illustrated SCHOOL CCTV SCENE, preserving Brian's recognizable face, age, wavy dark brown hair and charcoal hoodie with light T-shirt. High fixed security camera viewpoint down an ordinary school hallway with lockers and classroom doors. Brian is walking normally in the near left foreground, face visible, relaxed and unharmed. In the right background, a second student is partly cropped and walking AWAY, seen only from behind; shoulder-length dark brown hair and a clearly BLUE BACKPACK. The second student's entire face MUST remain hidden and impossible to identify. Security footage aesthetic, desaturated almost monochrome except muted but unmistakably blue backpack, subtle horizontal scan lines. Do not add timestamp text; the game adds it. Only two students, no alarming activity.",
+      "references": [
+        "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-b2ef1d6f-c8e9-4645-8968-97fd000be87b.png"
+      ]
+    },
+    {
+      "name": "equipment-log",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-547fd9c1-a662-4231-b536-7604b156b602.png",
+      "output": "public/cases/case001/evidence/equipment-log.webp",
+      "prompt": "Use case: identity-preserving scene composition for COLD CASE educational mystery. Create ONE landscape 3:2 final-reveal illustration. Reference 1 is Brian: preserve his fictional 13-year-old face, curly dark brown hair, charcoal hoodie. Reference 2 is Emily: preserve her fictional 13-year-old face, shoulder-length dark brown hair, freckles, olive-gray sweater. Reference 3 is the small wheeled school robotics kit and storage room workbench: preserve its recognizably similar equipment design. Show Brian and Emily together calmly preparing that wheeled robot for a school maker demonstration, robot visibly connected to a charger on the wooden workbench, both students safe and relaxed, looking at their project with subtle smiles. A blue backpack rests beside Emily's chair. Medium-wide environmental composition, both faces clearly visible. Sophisticated painted editorial graphic-novel style, natural proportions, gouache and charcoal texture, subtle ink edges, muted gray-green and warm wood with natural skin colors, gentle afternoon light. Age-appropriate positive resolution, no distress, no villains. Do not include any text, letters, numbers, labels, logos, watermark, borders or UI. Exact evidence facts are supplied as HTML by the game. Generate the scene as the final equipment log evidence image.",
+      "references": [
+        "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-b2ef1d6f-c8e9-4645-8968-97fd000be87b.png",
+        "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-95d67e73-b1a2-4544-a32b-036f71077230.png",
+        "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-05542a13-73c5-45d8-8e6f-4509ea03d196.png"
+      ]
+    },
+    {
+      "name": "timeline-record-v2",
+      "kind": "evidence",
+      "source": "C:\\Users\\Administrador\\.codex\\generated_images\\01a0caa3-66b4-7c11-931b-b805d55c77d2\\exec-f849f18f-8412-48df-89ab-6da2a6490594.png",
+      "output": "public/cases/case001/evidence/timeline-record-v2.webp",
+      "prompt": "Use case: precise-object-edit. Edit target: the attached COLD CASE timestamp evidence illustration. Remove ONLY the analog clock in the upper-right portion of the wooden desk and fill that area with a natural continuation of the desk surface and the existing background. Keep the five blank lined index cards, arrows between cards, plant, pencil cup, filing box, foreground folder, pen, lighting, perspective, painterly textures, and landscape composition unchanged. No replacement timepiece, no new objects, no hands or digits, no text, no watermark. This prevents a misleading clock time in an educational mystery; the actual recovered time is presented separately as accessible HTML.",
+      "references": [
+        "public/cases/case001/evidence/timeline-record.webp"
+      ]
+    }
+  ]
+}
