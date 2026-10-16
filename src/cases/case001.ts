@@ -1,4 +1,5 @@
-﻿import type { CaseDefinition, EvidenceDocument, StepDefinition, SuspectDefinition } from '../types';
+﻿import { codeForStep } from '../engine/language';
+import type { CaseDefinition, CodeLanguage, EvidenceDocument, StepDefinition, SuspectDefinition } from '../types';
 
 export const suspects: SuspectDefinition[] = [
   { id: 'emily', name: 'Emily', backpack: 'Blue', card: 'B4', room: 204, color: '#426575' },
@@ -10,7 +11,7 @@ export const suspects: SuspectDefinition[] = [
 ];
 
 export const documents: EvidenceDocument[] = [
-  { id: 'BRIEF', type: 'brief', title: 'Case brief', subtitle: 'School incident report · 001', content: ['Brian was last seen near the Maker Lab. Now nobody knows where he is.', 'The room is empty. The schedule says he should be here.', 'Find the records. Follow the evidence. What really happened?'], printable: true },
+  { id: 'BRIEF', type: 'brief', title: 'Case brief', subtitle: 'School incident report · 001', content: ['Brian was last seen near the Maker Lab. Now nobody knows where he is.', 'The room is empty. The schedule says he should be here. These are fictional school records: each calculation repairs a damaged field.', 'Find the records. Follow the evidence. What really happened?'], printable: true },
   { id: 'BOARD', type: 'suspects', title: 'Suspect board', subtitle: 'Six people. One school.', content: ['These students were at school today. A name on this board does not mean someone did anything wrong.'], printable: true },
   { id: 'C280', type: 'camera', title: 'Security camera record', subtitle: 'Recovered security record', content: ['CAMERA CODE: 280', 'STATUS: ARCHIVE AVAILABLE', 'The footage is still locked. The security terminal also needs the last seen time.'], unlockedBy: 1, printable: true },
   { id: 'K27', type: 'registry', title: 'Missing key record', subtitle: 'Maker Lab · Inventory recovery', content: ['MISSING KEY: 27', 'This key was not returned.', 'ROOM: RECORD DAMAGED', 'Keep this key code. The room record can be recovered later.'], unlockedBy: 2, printable: true },
@@ -18,13 +19,13 @@ export const documents: EvidenceDocument[] = [
   { id: 'A1220', type: 'camera', title: 'CCTV archive file', subtitle: 'Security terminal · Archive found', content: ['CCTV ARCHIVE FILE: 1220', 'CAMERA CODE: 280', 'LAST SEEN: 15:40', 'COLOR CHANNEL: CORRUPTED', 'Use this file number to restore the missing colors.'], printable: true },
   { id: 'CCTV-BW', type: 'footage', title: 'Original CCTV frame', subtitle: 'Camera 280 · 15:40 · Monochrome', content: ['Brian is in the hallway. Another student carries a backpack.', 'COLOR CHANNEL: CORRUPTED', 'The backpack color and the second student’s identity are not confirmed.'], printable: true },
   { id: 'BP-BLUE', type: 'footage', title: 'Restored CCTV frame', subtitle: 'Archive 1220 · Color channel restored', content: ['CCTV DETAIL: BLUE BACKPACK', 'The colors are back. The second student’s face is still hidden.', 'A backpack is a clue. It does not identify a person by itself.'], unlockedBy: 4, printable: true },
-  { id: 'R204', type: 'directory', title: 'Room 204 record', subtitle: 'School facilities · Recovered key record', content: ['KEY: 27', 'ROOM: 204', 'LOCATION: STORAGE B', 'The missing key opens this room. Check its access log.'], unlockedBy: 5, printable: true },
+  { id: 'R204', type: 'directory', title: 'Room 204 record', subtitle: 'School facilities · Recovered key record', content: ['KEY: 27', 'ROOM: 204', 'LOCATION: STORAGE B', 'The missing key opens this room. Its electronic door also records card access. Check its access log.'], unlockedBy: 5, printable: true },
   { id: 'ACCESS204', type: 'access', title: 'Room 204 access log', subtitle: 'Security system · Nearby access events', content: ['Find the first entry for Room 204 after Brian’s last sighting.', 'A card records access. It does not explain why someone entered.'], headers: ['CARD','TIME','ROOM'], rows: [['A7','15:21','204'],['C2','15:32','101'],['B4','15:43','204'],['D1','16:18','204']], highlightRow: 2, unlockedBy: 5, printable: true },
   { id: 'B4', type: 'card', title: 'Access card B4', subtitle: 'Verified access event', content: ['CARD: B4', 'TIME: 15:43', 'ROOM: 204', '3 MINUTES AFTER BRIAN’S LAST SIGHTING'], unlockedBy: 6, printable: true },
   { id: 'PROFILES', type: 'profiles', title: 'Detailed suspect files', subtitle: 'School records · Compare the clues', content: ['Compare the backpack, access card, and project room.', 'Inspect a file. Then choose the person whose clues you want to check.'], unlockedBy: 6, printable: true },
   { id: 'E01', type: 'person', title: 'Emily file', subtitle: 'Person of interest · Not a conclusion', content: ['BACKPACK: BLUE', 'ACCESS CARD: B4', 'PROJECT ROOM: 204', '3 / 3 CLUES MATCH', 'Emily matches the evidence. We still need to learn what happened.'], unlockedBy: 7, printable: true },
   { id: 'PREP', type: 'equipment', title: 'Room 204 project prep log', subtitle: 'Damaged equipment record', content: ['DEVICE BATTERY BEFORE: 8%', 'DEVICE BATTERY AFTER: 76%', 'OPERATOR: [CORRUPTED]', 'ASSISTANT: [CORRUPTED]', 'STATUS: [CORRUPTED]', 'Recover the charge change to restore the rest of this record.'], unlockedBy: 7, printable: true },
-  { id: 'FINAL-01', type: 'final', title: 'Equipment log', subtitle: 'Room 204 · Maker project prep', content: ['DEVICE: ROBOTICS KIT', 'CHARGE ADDED: +68%', 'OPERATOR: BRIAN', 'ASSISTANT: EMILY', 'STATUS: PREPARING MAKER DEMONSTRATION', 'Schedule update: not submitted.'], unlockedBy: 8, printable: true },
+  { id: 'FINAL-01', type: 'final', title: 'Equipment log', subtitle: 'Room 204 · Maker project prep', content: ['DEVICE: ROBOTICS KIT', 'CHARGE ADDED: +68%', 'OPERATOR: BRIAN', 'ASSISTANT: EMILY', 'STATUS: PREPARING MAKER DEMONSTRATION', 'STAFF CHECK, 15:50: Brian and Emily confirmed safe in Room 204.', 'KEY 27: Signed out for project equipment; return pending.', 'Schedule update: not submitted.'], unlockedBy: 8, printable: true },
 ];
 
 const steps: StepDefinition[] = [
@@ -80,7 +81,7 @@ const steps: StepDefinition[] = [
   {
     id: 6, shortLabel: 'The access', title: 'Three minutes later',
     narrative: 'Room 204 was opened shortly after Brian disappeared.', question: 'How long after Brian’s last sighting?', objective: 'Connect the access record.',
-    caseNote: ['Check the Last Seen Record and the access log.', 'Find the first Room 204 entry after the sighting.', 'Use four-digit times without a colon.', '', 'Create the variable last_seen.', 'Create the variable room_opened.', '', 'Subtract last_seen from room_opened.', 'Store the difference in the variable result.', 'Use print(result).'],
+    caseNote: ['Check the Last Seen Record and the access log.', 'Find the first Room 204 entry after the sighting.', 'Use four-digit times without a colon.', 'Both events are in the same hour, so their difference is minutes.', '', 'Create the variable last_seen.', 'Create the variable room_opened.', '', 'Subtract last_seen from room_opened.', 'Store the difference in the variable result.', 'Use print(result).'],
     requiredEvidence: ['T1540','R204','ACCESS204'], requiredVariables: { last_seen: 1540, room_opened: 1543 },
     expectedResult: 3, requiredResultDependencies: ['last_seen','room_opened'], requiredOperations: ['-'], formula: 'room_opened - last_seen',
     unlockEvidence: ['B4','PROFILES'], hints: ['Use the first entry for this room after Brian’s sighting.', 'Both times are in the same hour. Subtract their four-digit values.', 'result = room_opened - last_seen'],
@@ -106,7 +107,7 @@ const steps: StepDefinition[] = [
   },
 ];
 export const case001: CaseDefinition = { id: '001', title: 'Who took Brian?', tagline: 'The records don’t agree. Find out what happened.', steps, documents, finalDeduction: { person: 'emily', account: 'prep' } };
-export const initialCode = (step: StepDefinition) => (step.id === 8 ? '# FINAL CASE NOTE\n' : '# CASE NOTE\n') + step.caseNote.map(line => '# ' + line).join('\n') + '\n\n' + (step.starterCode ? step.starterCode.join('\n') + '\n' : '');
+export const initialCode = (step: StepDefinition, language: CodeLanguage = 'python') => codeForStep(step, language);
 export function stepWithSuspect(step: StepDefinition, selected: string): StepDefinition {
   const person = suspects.find(s => s.id === selected);
   return step.id === 7 && person ? { ...step, caseNote: ['Check ' + person.name + '’s file.', ...step.caseNote.slice(2)] } : step;

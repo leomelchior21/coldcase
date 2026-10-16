@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { unlockTeacher } from './fixtures';
+import { test, expect } from './fixtures';
 import { evidenceArtwork } from '../src/cases/case001-artwork';
 import { case001 } from '../src/cases/case001';
 
@@ -26,7 +27,7 @@ test('every clue uses a loaded generated illustration and keeps record facts rea
 });
 
 test('student print pack has blank answers and no revealing photo or solved record',async({page})=>{
-  await page.goto('/teacher/case/001/print');
+  await page.goto('/teacher/case/001/print');await unlockTeacher(page);
   await expect(page.locator('.print-sheet')).toHaveCount(16);
   await expect(page.locator('.print-documents')).not.toContainText(/\b280\b|\b27\b|15:40|1540|1220|2440|\b204\b|\bB4\b|\b68\b|BLUE BACKPACK|OPERATOR: BRIAN|ASSISTANT: EMILY/i);
   expect(await page.locator('.answer-line').count()).toBeGreaterThan(40);

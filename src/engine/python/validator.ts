@@ -1,4 +1,6 @@
-import type { StepDefinition, Value } from '../../types';
+import type { CodeLanguage, StepDefinition, Value } from '../../types';
+import { executeCSharp } from '../csharp';
+import { languageText } from '../language';
 import { execute, type Trace } from './evaluator';
 import { PythonError } from './tokenizer';
 import { parse, type Expr } from './parser';
@@ -14,9 +16,9 @@ function expressionKey(expr: Expr): string {
   return `${expr.op}(${expressionKey(expr.left)},${expressionKey(expr.right)})`;
 }
 export type Feedback = { ok: boolean; title: string; message: string; output: Value[]; detail?: string };
-export function validate(source: string, step: StepDefinition): Feedback {
+export function validate(source: string, step: StepDefinition, language: CodeLanguage = 'python'): Feedback {
   try {
-    const execution = execute(source);
+    const execution = language === 'csharp' ? executeCSharp(source) : execute(source);
     const fail = (title: string, message: string): Feedback => ({ ok: false, title, message, output: execution.output });
     const result = execution.variables.get('result');
     if (!result) return fail(execution.output.length ? 'Result found — but not stored' : 'Result not found', 'Create the variable result. Store your answer in it.');
@@ -28,10 +30,10 @@ export function validate(source: string, step: StepDefinition): Feedback {
     const matchesTrace = (trace: Trace) => step.requiredResultDependencies.every(name => trace.refs.get(name)?.includes(step.requiredVariables[name])) && step.requiredOperations.every(op => trace.operations.has(op)) && (!expectedExpression || expressionKey(trace.expression) === expectedExpression);
     if (!matchesTrace(result)) return fail('Connect your variables', 'Use the named variables and the operation in the Case Note to calculate result.');
     if (result.value !== step.expectedResult) return fail('The clue doesn’t match', 'The code runs. Check your values or operation.');
-    if (!execution.printedResults.some(trace => trace.value === result.value && matchesTrace(trace))) return fail('Result found — but not reported', 'Use print(result) after you calculate result.');
+    if (!execution.printedResults.some(trace => trace.value === result.value && matchesTrace(trace))) return fail('Result found — but not reported', languageText('Use print(result) after you calculate result.', language));
     return { ok: true, title: step.stamp, message: 'New evidence is on your desk. Open it and take a look.', output: execution.output };
   } catch (error) {
-    if (error instanceof PythonError) return { ok: false, title: error.title, message: error.help, detail: error.detail, output: [] };
-    return { ok: false, title: 'Check your Python', message: 'Check your brackets and expressions, then try again.', output: [] };
+    if (error instanceof PythonError) return { ok: false, title: languageText(error.title, language), message: languageText(error.help.replace('print().', language === 'csharp' ? 'Console.WriteLine().' : 'print().'), language), detail: error.detail, output: [] };
+    return { ok: false, title: languageText('Check your Python', language), message: 'Check your brackets and expressions, then try again.', output: [] };
   }
 }

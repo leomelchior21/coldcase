@@ -1,13 +1,15 @@
-﻿import { test, expect, type Page } from '@playwright/test';
+import { unlockTeacher } from './fixtures';
+﻿import { test, expect, type Page } from './fixtures';
 import { solutions } from '../tests/fixtures/casePrograms';
 
-async function code(page: Page, source: string) { await page.getByRole('textbox',{name:'Python code editor'}).fill(source); }
-async function run(page: Page, index: number) { await code(page, solutions[index]); await page.getByRole('button',{name:'RUN CASE',exact:true}).click(); }
+async function code(page: Page, source: string) { await page.getByRole('textbox',{name:/^(Python|C#) code editor$/}).fill(source); }
+async function run(page: Page, index: number) { const isCSharp = (await page.locator('.terminal-title').innerText()).includes('C#'); const source = isCSharp ? solutions[index].split('\n').map(line => line.startsWith('print(') ? 'Console.WriteLine(result);' : `double ${line};`).join('\n') : solutions[index]; await code(page, source); await page.getByRole('button',{name:'RUN CASE',exact:true}).click(); }
 async function noOverflow(page: Page) { expect(await page.evaluate(() => ({ x: document.documentElement.scrollWidth > innerWidth, y: document.documentElement.scrollHeight > innerHeight }))).toEqual({x:false,y:false}); }
 async function closeDocument(page: Page) { await page.getByRole('button',{name:'Close dialog'}).click(); }
 
-test('complete recovered investigation, CCTV authentication, visual reveal, deduction and reload', async ({page},testInfo) => {
+for (const language of ['python', 'csharp'] as const) test(`complete ${language} investigation, CCTV authentication, visual reveal, deduction and reload`, async ({page},testInfo) => {
   test.setTimeout(240000);
+  await page.addInitScript(language => { const key = 'cold-case:001:v1'; const state = JSON.parse(localStorage.getItem(key)!); state.language = language; localStorage.setItem(key, JSON.stringify(state)); }, language);
   const errors:string[]=[]; page.on('pageerror',error=>errors.push(error.message)); page.on('console',msg=>{if(msg.type()==='error')errors.push(msg.text())});
   await page.goto('/'); await expect(page.getByRole('heading',{name:'WHO TOOK BRIAN?'})).toBeVisible(); await noOverflow(page);
   await page.getByRole('button',{name:'OPEN FILE',exact:true}).click();
@@ -65,7 +67,7 @@ test('complete recovered investigation, CCTV authentication, visual reveal, dedu
   await page.getByRole('button',{name:'NEXT STEP',exact:true}).click();
   await run(page,5);await expect(page.getByRole('dialog',{name:'Room 204 access log'})).toBeVisible();await expect(page.locator('.verified-access-row')).toContainText('B4');await expect(page.locator('.verified-access-row')).toContainText('15:43');await closeDocument(page);
   await expect(page.locator('.interpreted-result')).toContainText('3 MINUTES LATER');await page.getByRole('button',{name:'NEXT STEP',exact:true}).click();
-  await expect(page.getByRole('textbox',{name:'Python code editor'})).not.toContainText('Emily');
+  await expect(page.getByRole('textbox',{name:/^(Python|C#) code editor$/})).not.toContainText('Emily');
   await page.getByRole('button',{name:'Open Detailed suspect files',exact:true}).click();
   await page.getByRole('button',{name:'Inspect Tyler',exact:true}).click();await page.getByRole('button',{name:'CHECK CLUES FOR TYLER'}).click();
   await run(page,6);await expect(page.locator('.console-output.error')).toContainText('does not match all three clues');
@@ -83,11 +85,11 @@ test('complete recovered investigation, CCTV authentication, visual reveal, dedu
 });
 
 test('notes, evidence inspection, reset confirmation, and updated print pack', async({page})=>{
-  await page.goto('/case/001');const editor=page.getByRole('textbox',{name:'Python code editor'});await expect(editor).toContainText('# CASE NOTE');await expect(editor).toContainText('camera_log = 257880');
+  await page.goto('/case/001');const editor=page.getByRole('textbox',{name:/^(Python|C#) code editor$/});await expect(editor).toContainText('# CASE NOTE');await expect(editor).toContainText('camera_log = 257880');
   await page.getByRole('button',{name:'HIDE CASE NOTE'}).click();await expect(editor).toHaveText('');await code(page,'# my draft\ncamera_log = 257880');await page.getByRole('button',{name:'SHOW CASE NOTE'}).click();await expect(editor).toContainText('# my draft');await expect(editor).toContainText('# CASE NOTE');
   await page.getByRole('button',{name:'Open Suspect board',exact:true}).click();await expect(page.getByRole('dialog')).not.toContainText('Emily');await expect(page.getByRole('dialog')).toContainText('FILES LOCKED');await page.locator('.suspect-card').first().click();await expect(page.getByRole('dialog')).toContainText('Further records have not been recovered');await expect(page.getByRole('dialog')).not.toContainText('B4');await page.getByRole('button',{name:'Case brief',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Find the records.');await closeDocument(page);
   await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'KEEP MY CODE'}).click();await expect(editor).toContainText('# my draft');await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'RESET PROGRAM'}).click();await expect(editor).not.toContainText('# my draft');await expect(editor).toContainText('camera_log = 257880');
   await page.getByRole('button',{name:'RESET CASE',exact:true}).click();await page.getByRole('button',{name:'KEEP MY CASE'}).click();await expect(page.getByRole('heading',{name:'The camera code'})).toBeVisible();await page.getByRole('button',{name:'RESET CASE',exact:true}).click();await page.getByRole('button',{name:'START OVER',exact:true}).click();await expect(page.getByRole('button',{name:'OPEN FILE',exact:true})).toBeVisible();
-  await page.getByRole('link',{name:/TEACHER TOOLS/}).click();await expect(page.getByRole('button',{name:'PRINT CASE PACK'})).toBeVisible();await expect(page.locator('.print-sheet')).toHaveCount(16);await expect(page.locator('.print-documents')).not.toContainText('OPERATOR: BRIAN');await expect(page.locator('.answer-line').first()).toBeVisible();
+  await page.getByRole('link',{name:/TEACHER TOOLS/}).click();await unlockTeacher(page);await expect(page.getByRole('button',{name:'PRINT CASE PACK'})).toBeVisible();await expect(page.locator('.print-sheet')).toHaveCount(16);await expect(page.locator('.print-documents')).not.toContainText('OPERATOR: BRIAN');await expect(page.locator('.answer-line').first()).toBeVisible();
 });
 

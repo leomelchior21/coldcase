@@ -17,15 +17,17 @@ and device; no account or cloud service is used.
 ## Included
 
 - A case archive, tactile investigation desk, and eight steps. Steps 4–8 unlock only after completing Steps 1–3 and answering both CCTV terminal prompts correctly.
-- CodeMirror Python editor with per-step code, optional Case Notes, and progressive clues.
+- A Python or C# choice before entering the case, remembered with student progress.
+- A five-screen illustrated introduction covering the story, evidence desk, a generic coding example, and the investigation sequence. **HOW TO PLAY** in the upper right reopens the guide without changing student work.
+- CodeMirror editors with a dark navy background, yellow numbers/types, red variables, cyan calls/operators, and muted blue comments, matching the supplied reference. Per-step code, optional Case Notes, and progressive clues adapt to the chosen language.
   Step 1 arrives with the recovered values and the print already written; Step 2 keeps the
   blank variables and result for students to complete, including the print.
-- A tokenizer, expression parser, evaluator, and semantic validation of the classroom Python subset.
+- Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
 - A two-stage CCTV terminal with saved camera authentication and mechanical time wheels.
 - Monochrome footage that restores its colors after students recover the color key.
-- Optional A4 evidence pack at `/teacher/case/001/print`.
+- Password-gated Teacher Tools and optional A4 evidence pack at `/teacher/case/001/print`. Enter the configured classroom password to access it; direct links also show the gate. Access lasts until page reload. This static, local-first app uses a client-side classroom gate rather than server authentication.
 - Seventeen original generated illustrations: seven character portraits and ten clue scenes, plus local fonts and a tiny grain texture.
 
 Future case folders are unavailable placeholders clearly marked **Coming soon**.
@@ -42,7 +44,7 @@ Archive 1220 × color filter 2 restores the blue backpack. Key 27 × sector 8 �
 correction 12 recovers Room 204. The access log connects 15:43 to Card B4, three
 minutes after the sighting. Students choose a suspect from the detailed files
 before coding the three matches. Only Emily matches all three. The final +68%
-charge record reveals Brian and Emily preparing their Maker demonstration.
+charge record reveals Brian and Emily preparing their Maker demonstration. A staff check at 15:50 confirms they are safe, and the key checkout explains why Key 27 was not yet returned. Room 204 supports both a physical key and logged card access.
 
 The original monochrome frame remains reopenable alongside the restored frame.
 All 15 evidence documents are available digitally. The optional 16-page A4 pack
@@ -56,7 +58,7 @@ only names and portraits.
 ## Saved work
 
 The existing localStorage key is retained. Current investigations save code,
-results, evidence, selected suspect, and all three CCTV authentication flags.
+results, evidence, selected suspect, all three CCTV authentication flags, the selected language, and tutorial completion. Existing Python drafts remain intact; choosing C# for an existing investigation preserves edited Python programs in Previous Notes. Resetting a case asks for a new language and shows the tutorial again.
 Earlier case revisions are preserved in **Previous Notes**, including student
 programs and verified results. Their old completion flags do not unlock the new
 evidence chain. Resetting the case clears the current investigation and its
@@ -70,8 +72,8 @@ npm run build
 npx playwright test
 ```
 
-Browser tests expect the local server to be running on port 5176. They cover a full
-case playthrough, saved progress, wrong deductions, hints, evidence, reset
+Browser tests expect the local server to be running on port 5176. They cover full
+case playthroughs in both Python and C#, first-time language selection, the five tutorial screens and replay, editor colors, the teacher password gate, saved progress, wrong deductions, hints, evidence, reset
 confirmation, and the print pack in Chromium and WebKit at iPad landscape size.
 Install test browsers with `npx playwright install chromium webkit` if necessary.
 
@@ -80,10 +82,21 @@ comments, parentheses, unary signs, `+ - * /`, and `print(...)`. It deliberately
 does not run arbitrary Python, imports, loops, functions, or external code. It
 never uses JavaScript `eval` or a Python execution server.
 
+The C# terminal supports numeric top-level statements: `double`, `int`, and `var`
+declarations, reassignment, arithmetic, parentheses, line/block comments, optional
+`using System;`, and `Console.WriteLine(result);` (also `System.Console.WriteLine`).
+Semicolons and declarations are required. Integer division truncates as in C#;
+`double` retains fractional values. The case teaches `double` consistently. Classes,
+loops, methods, strings, casts, and arbitrary .NET APIs are outside this classroom
+subset. Both interpreters require the actual clue variables and calculation; a
+hardcoded answer does not pass.
+
 ## Project structure
 
 - `src/cases/case001.ts`: story, step requirements, documents, and suspects.
-- `src/engine/python/`: tokenizer, parser, evaluator, and validator.
+- `src/engine/python/`: shared expressions, dependency traces, Python execution, and validation.
+- `src/engine/csharp.ts`: numeric C# parsing, declarations, and type checks.
+- `src/engine/language.ts`: language-specific starter programs and clue text.
 - `src/engine/`: state transitions and versioned local storage.
 - `src/components/`: terminal, evidence, navigation, artwork, and deduction.
 - `src/pages/`: archive, investigation, and print views.

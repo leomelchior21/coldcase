@@ -1,7 +1,7 @@
 import { PythonError, tokenize, type Token } from './tokenizer';
 import type { Value } from '../../types';
-export type Expr = { type: 'literal'; value: Value } | { type: 'variable'; name: string } | { type: 'unary'; op: string; child: Expr } | { type: 'binary'; op: string; left: Expr; right: Expr };
-export type Statement = { type: 'assign'; name: string; expression: Expr; line: number } | { type: 'print'; expression: Expr; line: number };
+export type Expr = { type: 'literal'; value: Value; numericType?: 'int' | 'double' } | { type: 'variable'; name: string } | { type: 'unary'; op: string; child: Expr } | { type: 'binary'; op: string; left: Expr; right: Expr };
+export type Statement = { type: 'assign'; name: string; expression: Expr; line: number; declaration?: 'int' | 'double' | 'var' } | { type: 'print'; expression: Expr; line: number };
 class Parser {
   private pos = 0;
   private depth = 0;
@@ -14,7 +14,7 @@ class Parser {
     if (++this.depth > 80) throw new PythonError('Too many brackets', 'Try a shorter expression.', 'SyntaxError: expression is too deeply nested');
     let left: Expr;
     const token = this.take();
-    if (token.kind === 'number' || token.kind === 'string') left = { type: 'literal', value: token.value! };
+    if (token.kind === 'number' || token.kind === 'string') left = { type: 'literal', value: token.value!, ...(token.kind === 'number' ? { numericType: token.text.includes('.') ? 'double' as const : 'int' as const } : {}) };
     else if (token.kind === 'name') left = { type: 'variable', name: token.text };
     else if (token.text === '+' || token.text === '-') left = { type: 'unary', op: token.text, child: this.expression(30) };
     else if (token.text === '(') { left = this.expression(); this.expect(')'); }

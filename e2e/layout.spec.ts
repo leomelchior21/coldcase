@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { unlockTeacher } from './fixtures';
+import { test, expect } from './fixtures';
 test('landscape layouts keep Run and every step reachable; small screens retain evidence', async({page}) => {
   await page.goto('/case/001');
   for(const viewport of [{width:1366,height:768},{width:1024,height:768},{width:1180,height:820},{width:820,height:600},{width:844,height:390}]){
@@ -16,5 +17,5 @@ test('landscape layouts keep Run and every step reachable; small screens retain 
 });
 test('A4 pack renders printable documents without game navigation',async({page},testInfo)=>{
   test.skip(testInfo.project.name!=='chromium','PDF generation is provided by Chromium.');
-  await page.goto('/teacher/case/001/print');await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(16);await page.pdf({path:'test-results/cold-case-evidence-pack.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});
+  await page.goto('/teacher/case/001/print');await unlockTeacher(page);await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(16);await page.pdf({path:'test-results/cold-case-evidence-pack.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});
 });

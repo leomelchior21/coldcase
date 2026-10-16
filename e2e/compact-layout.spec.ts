@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test('header and step dock are ten percent shorter and the case file scrolls independently',async({page})=>{
   await page.goto('/case/001');

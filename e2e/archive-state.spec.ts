@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './fixtures';
 import { solutions } from '../tests/fixtures/casePrograms';
 
 async function seedArchive(page: Page, stage: 'camera' | 'time' | 'done') {

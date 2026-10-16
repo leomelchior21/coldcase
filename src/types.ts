@@ -1,4 +1,5 @@
 export type Value = number | string;
+export type CodeLanguage = 'python' | 'csharp';
 export type StepDefinition = {
   id: number; shortLabel: string; title: string; narrative: string; question: string; objective: string;
   caseNote: string[]; starterCode?: string[]; requiredEvidence: string[]; requiredVariables: Record<string, Value>;
@@ -14,6 +15,7 @@ export type EvidenceDocument = {
 export type SuspectDefinition = { id: string; name: string; backpack: string; card: string; room: number; color: string };
 export type CaseDefinition = { id: string; title: string; tagline: string; steps: StepDefinition[]; documents: EvidenceDocument[]; finalDeduction: { person: string; account: string } };
 export type CaseState = {
+  language: CodeLanguage; languageChosen: boolean; tutorialCompleted: boolean;
   version: 1; notesRevision?: number; caseId: string; opened: boolean; currentStep: number; visited: number[]; solved: number[];
   codes: Record<number, string>; evidence: string[]; hiddenNotes: number[]; hints: Record<number, number>;
   deduction: { person: string; account: string }; closed: boolean;
