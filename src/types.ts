@@ -19,7 +19,7 @@ export type CaseState = {
   version: 1; notesRevision?: number; caseId: string; opened: boolean; currentStep: number; visited: number[]; solved: number[];
   codes: Record<number, string>; evidence: string[]; hiddenNotes: number[]; hints: Record<number, number>;
   deduction: { person: string; account: string }; closed: boolean;
-  caseRevision: 2;
+  caseRevision: 3;
   cameraCodeAccepted: boolean; timeAccepted: boolean; archive1220Unlocked: boolean;
   selectedSuspect: string;
   results: Record<number, Value>;

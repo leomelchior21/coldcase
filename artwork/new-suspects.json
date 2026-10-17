@@ -1,0 +1,12 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Create a single portrait contact sheet for fictional school mystery game, exactly three equal vertical panels side by side, each panel separate head and shoulders portrait, no text or borders. Match the reference's muted charcoal and olive painterly pencil texture and neutral school-record backdrop. Left: Elena Brooks age 14, shoulder-length dark brown side-parted bob matching Emily reference hairstyle very closely, distinct face with rounder cheeks, gray crew-neck shirt. Middle: Maya Chen age 14, same shoulder-length dark brown side-parted bob hairstyle, distinct East Asian face, gray crew-neck shirt. Right: Oliver Grant older student age 18, short brown hair, visibly older face, gray sweater. All three fully clothed, neutral friendly expressions, same framing scale, no bags, no labels. Landscape sheet 3:1, usable for cropping into three portrait assets. Reference is style and hairstyle only; generate distinct new people.",
+  "reference": "artwork/source/emily.png",
+  "source": "artwork/source/new-suspects.png",
+  "outputs": [
+    "public/cases/case001/portraits/elena.webp",
+    "public/cases/case001/portraits/maya.webp",
+    "public/cases/case001/portraits/oliver.webp"
+  ],
+  "processing": "Three equal-width panel crops, resized to 560x747 with sharp cover, WebP quality 88."
+}

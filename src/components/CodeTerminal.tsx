@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { EditorState } from '@codemirror/state';
-import { EditorView, lineNumbers, highlightActiveLine, keymap, drawSelection } from '@codemirror/view';
+import { EditorView, lineNumbers, highlightActiveLine, keymap, drawSelection, Decoration, ViewPlugin, MatchDecorator } from '@codemirror/view';
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
 import { HighlightStyle, StreamLanguage, syntaxHighlighting } from '@codemirror/language';
@@ -30,7 +30,7 @@ const csharpLanguage = StreamLanguage.define({
     if (stream.match('/*')) { state.blockComment = true; return 'comment'; }
     if (stream.match(/"(?:[^"\\]|\\.)*"/)) return 'string';
     if (stream.match(/(?:\d+(?:\.\d*)?|\.\d+)/)) return 'number';
-    if (stream.match(/(?:double|int|var|using)\b/)) return 'keyword';
+    if (stream.match(/(?:int|using)\b/)) return 'keyword';
     if (stream.match(/(?:System|Console|WriteLine)\b/)) return 'builtin';
     if (stream.match(/[A-Za-z_]\w*/)) return 'variable';
     if (stream.match(/[+*/=\-]+/)) return 'operator';
@@ -38,13 +38,19 @@ const csharpLanguage = StreamLanguage.define({
   },
   languageData: { commentTokens: { line: '//', block: { open: '/*', close: '*/' } } },
 });
+const placeholderMatcher = new MatchDecorator({ regexp: /\bVARIABLE_\d+\b/g, decoration: Decoration.mark({ class: 'code-placeholder' }) });
+const glowingPlaceholders = ViewPlugin.fromClass(class {
+  decorations;
+  constructor(view: EditorView) { this.decorations = placeholderMatcher.createDeco(view); }
+  update(update: import('@codemirror/view').ViewUpdate) { this.decorations = placeholderMatcher.updateDeco(update, this.decorations); }
+}, { decorations: plugin => plugin.decorations });
 function CodeEditor({ language, value, onChange, onRun }: { language: CodeLanguage; value: string; onChange: (value: string) => void; onRun: () => void }) {
   const container = useRef<HTMLDivElement>(null), view = useRef<EditorView | null>(null);
   const callbacks = useRef({ onChange, onRun }); callbacks.current = { onChange, onRun };
   useEffect(() => {
     if (!container.current) return;
     const editor = new EditorView({ parent: container.current, state: EditorState.create({ doc: value, extensions: [
-      lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
+      glowingPlaceholders, lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
       keymap.of([{ key: 'Mod-Enter', run: () => { callbacks.current.onRun(); return true; } }, indentWithTab, ...defaultKeymap, ...historyKeymap]),
       EditorView.lineWrapping,
       EditorView.contentAttributes.of({ 'aria-label': `${languageName(language)} code editor`, 'autocapitalize': 'off', 'autocorrect': 'off', 'spellcheck': 'false', 'data-testid': `${language}-editor` }),
@@ -52,7 +58,12 @@ function CodeEditor({ language, value, onChange, onRun }: { language: CodeLangua
       EditorView.theme({ '&': { height: '100%', backgroundColor: '#080b19', color: '#e7e9f7' }, '.cm-scroller': { overflow: 'auto', fontFamily: '"IBM Plex Mono", monospace' }, '.cm-content': { padding: '19px 0 45px', caretColor: '#e4bd61' }, '.cm-line': { padding: '0 18px' }, '.cm-gutters': { background: 'transparent', color: '#6e827f', borderRight: '1px solid #2b3839' }, '.cm-gutterElement': { padding: '0 10px 0 8px' }, '.cm-activeLine': { background: '#b8d7c006' }, '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { background: '#3d5957' }, '&.cm-focused': { outline: 'none' }, '.cm-cursor': { borderLeftColor: '#efdeab' } }, { dark: true }),
     ] }) });
     view.current = editor;
-    return () => { editor.destroy(); view.current = null; };
+    // Bring the editable starter into view; the Case Note stays directly above it.
+    const starterOffset = value.lastIndexOf('\n\n') + 2;
+    const frame = requestAnimationFrame(() => {
+      if (/^(?:int )?result =;?$/m.test(value)) editor.dispatch({ effects: EditorView.scrollIntoView(starterOffset, { y: 'center' }) });
+    });
+    return () => { cancelAnimationFrame(frame); editor.destroy(); view.current = null; };
   // The editor is created once for each step; values sync below.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -2,30 +2,33 @@
 import type { CaseDefinition, CodeLanguage, EvidenceDocument, StepDefinition, SuspectDefinition } from '../types';
 
 export const suspects: SuspectDefinition[] = [
-  { id: 'emily', name: 'Emily', backpack: 'Blue', card: 'B4', room: 204, color: '#426575' },
-  { id: 'tyler', name: 'Tyler', backpack: 'Blue', card: 'C2', room: 204, color: '#687678' },
-  { id: 'luke', name: 'Luke', backpack: 'Red', card: 'B4', room: 101, color: '#876159' },
-  { id: 'anna', name: 'Anna', backpack: 'Green', card: 'A7', room: 204, color: '#657968' },
-  { id: 'noah', name: 'Noah', backpack: 'Black', card: 'D1', room: 115, color: '#555a59' },
-  { id: 'sophie', name: 'Sophie', backpack: 'Yellow', card: 'C2', room: 101, color: '#9d8858' },
+  { id: 'emily', name: 'Emily Carter', backpack: 'Blue', card: 'B4', room: 204, color: '#426575' },
+  { id: 'tyler', name: 'Tyler Reed', backpack: 'Blue', card: 'C2', room: 204, color: '#687678' },
+  { id: 'luke', name: 'Luke Bennett', backpack: 'Red', card: 'B4', room: 101, color: '#876159' },
+  { id: 'anna', name: 'Anna Rivera', backpack: 'Green', card: 'A7', room: 204, color: '#657968' },
+  { id: 'noah', name: 'Noah Williams', backpack: 'Black', card: 'D1', room: 115, color: '#555a59' },
+  { id: 'sophie', name: 'Sophie Turner', backpack: 'Yellow', card: 'C2', room: 101, color: '#9d8858' },
+  { id: 'elena', name: 'Elena Brooks', backpack: 'Blue', card: 'B4', room: 204, color: '#426575' },
+  { id: 'maya', name: 'Maya Chen', backpack: 'Red', card: 'A7', room: 115, color: '#657968' },
+  { id: 'oliver', name: 'Oliver Grant', backpack: 'Blue', card: 'B4', room: 204, color: '#687678' },
 ];
 
 export const documents: EvidenceDocument[] = [
   { id: 'BRIEF', type: 'brief', title: 'Case brief', subtitle: 'School incident report · 001', content: ['Brian was last seen near the Maker Lab. Now nobody knows where he is.', 'The room is empty. The schedule says he should be here. These are fictional school records: each calculation repairs a damaged field.', 'Find the records. Follow the evidence. What really happened?'], printable: true },
-  { id: 'BOARD', type: 'suspects', title: 'Suspect board', subtitle: 'Six people. One school.', content: ['These students were at school today. A name on this board does not mean someone did anything wrong.'], printable: true },
+  { id: 'BOARD', type: 'suspects', title: 'Suspect board', subtitle: 'Nine people. One school.', content: ['These students were at school today. A name on this board does not mean someone did anything wrong.'], printable: true },
   { id: 'C280', type: 'camera', title: 'Security camera record', subtitle: 'Recovered security record', content: ['CAMERA CODE: 280', 'STATUS: ARCHIVE AVAILABLE', 'The footage is still locked. The security terminal also needs the last seen time.'], unlockedBy: 1, printable: true },
   { id: 'K27', type: 'registry', title: 'Missing key record', subtitle: 'Maker Lab · Inventory recovery', content: ['MISSING KEY: 27', 'This key was not returned.', 'ROOM: RECORD DAMAGED', 'Keep this key code. The room record can be recovered later.'], unlockedBy: 2, printable: true },
   { id: 'T1540', type: 'timeline', title: 'Last seen record', subtitle: 'Brian · Last confirmed sighting', content: ['BRIAN LAST SEEN: 15:40', 'LOCATION: MAKER LAB HALLWAY', 'The damaged timestamp has been recovered.'], unlockedBy: 3, printable: true },
   { id: 'A1220', type: 'camera', title: 'CCTV archive file', subtitle: 'Security terminal · Archive found', content: ['CCTV ARCHIVE FILE: 1220', 'CAMERA CODE: 280', 'LAST SEEN: 15:40', 'COLOR CHANNEL: CORRUPTED', 'Use this file number to restore the missing colors.'], printable: true },
-  { id: 'CCTV-BW', type: 'footage', title: 'Original CCTV frame', subtitle: 'Camera 280 · 15:40 · Monochrome', content: ['Brian is in the hallway. Another student carries a backpack.', 'COLOR CHANNEL: CORRUPTED', 'The backpack color and the second student’s identity are not confirmed.'], printable: true },
+  { id: 'CCTV-BW', type: 'footage', title: 'Original CCTV frame', subtitle: 'Camera 280 · 15:40 · Monochrome', content: ['Brian is in the hallway. Another student carries a backpack.', 'COLOR CHANNEL: CORRUPTED', 'COLOR FILTER N# 2: use color_filter = 2 to restore Archive 1220.', 'The backpack color and the second student’s identity are not confirmed.'], printable: true },
   { id: 'BP-BLUE', type: 'footage', title: 'Restored CCTV frame', subtitle: 'Archive 1220 · Color channel restored', content: ['CCTV DETAIL: BLUE BACKPACK', 'The colors are back. The second student’s face is still hidden.', 'A backpack is a clue. It does not identify a person by itself.'], unlockedBy: 4, printable: true },
   { id: 'R204', type: 'directory', title: 'Room 204 record', subtitle: 'School facilities · Recovered key record', content: ['KEY: 27', 'ROOM: 204', 'LOCATION: STORAGE B', 'The missing key opens this room. Its electronic door also records card access. Check its access log.'], unlockedBy: 5, printable: true },
   { id: 'ACCESS204', type: 'access', title: 'Room 204 access log', subtitle: 'Security system · Nearby access events', content: ['Find the first entry for Room 204 after Brian’s last sighting.', 'A card records access. It does not explain why someone entered.'], headers: ['CARD','TIME','ROOM'], rows: [['A7','15:21','204'],['C2','15:32','101'],['B4','15:43','204'],['D1','16:18','204']], highlightRow: 2, unlockedBy: 5, printable: true },
-  { id: 'B4', type: 'card', title: 'Access card B4', subtitle: 'Verified access event', content: ['CARD: B4', 'TIME: 15:43', 'ROOM: 204', '3 MINUTES AFTER BRIAN’S LAST SIGHTING'], unlockedBy: 6, printable: true },
-  { id: 'PROFILES', type: 'profiles', title: 'Detailed suspect files', subtitle: 'School records · Compare the clues', content: ['Compare the backpack, access card, and project room.', 'Inspect a file. Then choose the person whose clues you want to check.'], unlockedBy: 6, printable: true },
-  { id: 'E01', type: 'person', title: 'Emily file', subtitle: 'Person of interest · Not a conclusion', content: ['BACKPACK: BLUE', 'ACCESS CARD: B4', 'PROJECT ROOM: 204', '3 / 3 CLUES MATCH', 'Emily matches the evidence. We still need to learn what happened.'], unlockedBy: 7, printable: true },
-  { id: 'PREP', type: 'equipment', title: 'Room 204 project prep log', subtitle: 'Damaged equipment record', content: ['DEVICE BATTERY BEFORE: 8%', 'DEVICE BATTERY AFTER: 76%', 'OPERATOR: [CORRUPTED]', 'ASSISTANT: [CORRUPTED]', 'STATUS: [CORRUPTED]', 'Recover the charge change to restore the rest of this record.'], unlockedBy: 7, printable: true },
-  { id: 'FINAL-01', type: 'final', title: 'Equipment log', subtitle: 'Room 204 · Maker project prep', content: ['DEVICE: ROBOTICS KIT', 'CHARGE ADDED: +68%', 'OPERATOR: BRIAN', 'ASSISTANT: EMILY', 'STATUS: PREPARING MAKER DEMONSTRATION', 'STAFF CHECK, 15:50: Brian and Emily confirmed safe in Room 204.', 'KEY 27: Signed out for project equipment; return pending.', 'Schedule update: not submitted.'], unlockedBy: 8, printable: true },
+  { id: 'B4', type: 'card', title: 'Access card B4', subtitle: 'Verified access event', content: ['CARD: B4', 'TIME: 15:43', 'ROOM: 204', '3 MINUTES AFTER BRIAN’S LAST SIGHTING', 'B4 is a shared access group, not a unique student ID.', 'PASSWORD SUFFIX CHECKSUM: 900', 'SUFFIX CORRECTION: 473'], unlockedBy: 6, printable: true },
+  { id: 'PROFILES', type: 'profiles', title: 'Detailed suspect files', subtitle: 'School records · Compare the clues', content: ['Compare the backpack, access group, and project room. Three students share all three clues.', 'Emily and Elena have similar shoulder-length dark hair. Oliver is 18. Use the password records to distinguish the remaining students.'], unlockedBy: 6, printable: true },
+  { id: 'SUFFIX', type: 'card', title: 'Recovered password suffix', subtitle: 'B4 / Room 204 / 15:43', content: ['LAST THREE PASSWORD DIGITS: 427', 'FIRST DIGITS: [CORRUPTED]', 'Two students with matching hair, backpack, access group, and room share this suffix. The suffix alone is not enough.'], unlockedBy: 7, printable: true },
+  { id: 'PREP', type: 'registry', title: 'Damaged sign-in record', subtitle: 'Room 204 / Individual student authentication', content: ['FIRST-NAME INITIAL: E.', 'PREFIX CHECKSUM: 864', 'PREFIX DIVISOR: 12', 'PASSWORD FORMAT: two prefix digits + three suffix digits', 'Recover the first two digits. Compare the complete password and initial with the printed student register.'], unlockedBy: 7, printable: true },
+  { id: 'FINAL-01', type: 'card', title: 'Recovered sign-in record', subtitle: 'Room 204 / 15:43 / Identity still to be deduced', content: ['FIRST-NAME INITIAL: E.', 'FIRST TWO PASSWORD DIGITS: 72', 'Combine this prefix with the recovered suffix. Find the matching student in the printed register from your teacher.', 'Who was with Brian? Make your final deduction to uncover the story.'], unlockedBy: 8, printable: true },
 ];
 
 const steps: StepDefinition[] = [
@@ -44,7 +47,6 @@ const steps: StepDefinition[] = [
     id: 2, shortLabel: 'Missing key', title: 'The missing key',
     narrative: 'One Maker Lab key was never returned.', question: 'Which key is missing?', objective: 'Recover the key record.',
     caseNote: ['The full key inventory checksum is 864.', 'The returned keys checksum is 837.', '', 'Create the variable inventory_checksum.', 'Create the variable returned_checksum.', '', 'Subtract returned_checksum from inventory_checksum.', 'Store the difference in the variable result.', 'Use print(result).'],
-    starterCode: ['inventory_checksum =', 'returned_checksum =', 'result ='],
     requiredEvidence: [], requiredVariables: { inventory_checksum: 864, returned_checksum: 837 },
     expectedResult: 27, requiredResultDependencies: ['inventory_checksum','returned_checksum'], requiredOperations: ['-'], formula: 'inventory_checksum - returned_checksum',
     unlockEvidence: ['K27'], hints: ['The checksum is a total used to check the key records.', 'Subtract the returned checksum from the full checksum.', 'result = inventory_checksum - returned_checksum'],
@@ -88,28 +90,25 @@ const steps: StepDefinition[] = [
     stamp: 'Access verified', resultLabel: 'ROOM 204 OPENED', resultDisplay: '3 MINUTES LATER',
   },
   {
-    id: 7, shortLabel: 'The match', title: 'Who matches?',
-    narrative: 'Three clues point to the same person.', question: 'Who matches everything we found?', objective: 'Check the three clues.',
-    caseNote: ['Inspect the Detailed Suspect Files.', 'Choose a person to check.', 'Use 1 for a match. Use 0 for no match.', '', 'Create the variable backpack_match.', 'Create the variable card_match.', 'Create the variable room_match.', '', 'Add the three match values.', 'Store the sum in the variable result.', 'Use print(result).'],
-    requiredEvidence: ['BP-BLUE','B4','R204','PROFILES'], requiredVariables: { backpack_match: 1, card_match: 1, room_match: 1 },
-    expectedResult: 3, requiredResultDependencies: ['backpack_match','card_match','room_match'], requiredOperations: ['+'], formula: 'backpack_match + card_match + room_match',
-    unlockEvidence: ['E01','PREP'], hints: ['Compare all three clues with the detailed suspect records.', 'Inspect a file and choose that person before you check the matches.', 'result = backpack_match + card_match + room_match'],
-    stamp: 'Person of interest', resultLabel: '3 / 3 CLUES MATCH', resultDisplay: 'EMILY',
+    id: 7, shortLabel: 'The match', title: 'Two possible matches',
+    narrative: 'Three students share a blue backpack, access group B4, and Room 204. Appearance alone cannot identify who was with Brian.',
+    question: 'Which passwords match the access record?', objective: 'Recover the final three password digits.',
+    caseNote: ['Inspect Access Card B4 and the Detailed Suspect Files.', 'The password suffix checksum is 900. The correction is 473.', '', 'Create the variable suffix_checksum.', 'Create the variable suffix_correction.', '', 'Subtract suffix_correction from suffix_checksum.', 'Store the last three password digits in result.', 'Use print(result).', 'Ask your teacher for the printed student register. Compare passwords ending with this suffix.'],
+    requiredEvidence: ['BP-BLUE','B4','R204','PROFILES'], requiredVariables: { suffix_checksum: 900, suffix_correction: 473 },
+    expectedResult: 427, requiredResultDependencies: ['suffix_checksum','suffix_correction'], requiredOperations: ['-'], formula: 'suffix_checksum - suffix_correction',
+    unlockEvidence: ['SUFFIX','PREP'], hints: ['The B4 record contains the checksum and correction.', 'Subtract the correction to recover the last three digits.', 'result = suffix_checksum - suffix_correction'],
+    stamp: 'Suffix recovered', resultLabel: 'LAST THREE PASSWORD DIGITS', resultDisplay: '427',
   },
   {
-    id: 8, shortLabel: 'The truth', title: 'The truth',
-    narrative: 'The last record changes the story.', question: 'What was happening in Room 204?', objective: 'Restore the final record.',
-    caseNote: ['Check the Room 204 Project Prep Log.', 'The device started at 8%. Later it had 76%.', '', 'Create the variable battery_before.', 'Create the variable battery_after.', '', 'Subtract battery_before from battery_after.', 'Store the charge added in the variable result.', 'Use print(result).'],
-    requiredEvidence: ['PREP'], requiredVariables: { battery_before: 8, battery_after: 76 },
-    expectedResult: 68, requiredResultDependencies: ['battery_before','battery_after'], requiredOperations: ['-'], formula: 'battery_after - battery_before',
-    unlockEvidence: ['FINAL-01'], hints: ['Check the device’s charge before and after.', 'Subtract the starting charge from the final charge.', 'result = battery_after - battery_before'],
-    stamp: 'Record restored', resultLabel: 'DEVICE CHARGE', resultDisplay: '+68%',
+    id: 8, shortLabel: 'The truth', title: 'The missing prefix',
+    narrative: 'Two students still match. The sign-in record contains an initial and a damaged password prefix.',
+    question: 'Who actually entered with Brian?', objective: 'Recover the first two password digits.',
+    caseNote: ['Read the Damaged Sign-in Record.', 'The prefix checksum is 864. The divisor is 12.', '', 'Create the variable prefix_checksum.', 'Create the variable prefix_divisor.', '', 'Divide prefix_checksum by prefix_divisor.', 'Store the first two password digits in result.', 'Use print(result).', 'Combine the prefix and recovered suffix. Use the initial and printed student register to choose who was with Brian.'],
+    requiredEvidence: ['PREP','SUFFIX'], requiredVariables: { prefix_checksum: 864, prefix_divisor: 12 },
+    expectedResult: 72, requiredResultDependencies: ['prefix_checksum','prefix_divisor'], requiredOperations: ['/'], formula: 'prefix_checksum / prefix_divisor',
+    unlockEvidence: ['FINAL-01'], hints: ['Recover the prefix from the checksum and divisor.', 'Divide the checksum by the divisor, then compare the complete password.', 'result = prefix_checksum / prefix_divisor'],
+    stamp: 'Prefix recovered', resultLabel: 'INITIAL E. / FIRST TWO PASSWORD DIGITS', resultDisplay: '72',
   },
 ];
 export const case001: CaseDefinition = { id: '001', title: 'Who took Brian?', tagline: 'The records don’t agree. Find out what happened.', steps, documents, finalDeduction: { person: 'emily', account: 'prep' } };
 export const initialCode = (step: StepDefinition, language: CodeLanguage = 'python') => codeForStep(step, language);
-export function stepWithSuspect(step: StepDefinition, selected: string): StepDefinition {
-  const person = suspects.find(s => s.id === selected);
-  return step.id === 7 && person ? { ...step, caseNote: ['Check ' + person.name + '’s file.', ...step.caseNote.slice(2)] } : step;
-}
-

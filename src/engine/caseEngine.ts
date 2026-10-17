@@ -1,5 +1,4 @@
 ﻿import type { CaseDefinition, CaseState } from '../types';
-import { suspects } from '../cases/case001';
 
 export const archiveReady = (state: CaseState) => [1,2,3].every(id => state.solved.includes(id));
 export const archiveAuthenticated = (state: CaseState) => archiveReady(state) && state.cameraCodeAccepted && state.timeAccepted && state.archive1220Unlocked;
@@ -10,11 +9,6 @@ export function stepBlockReason(state: CaseState, id: number, definition: CaseDe
   if (!canSelectStep(state, id)) return archiveReady(state) ? 'CCTV ARCHIVE NOT RECOVERED. Enter the camera code and last seen time at the Security Terminal.' : 'Complete Steps 01, 02, and 03. Then answer the Security Terminal to open Steps 04–08.';
   if (id === 4 && !state.archive1220Unlocked) return 'CCTV ARCHIVE NOT RECOVERED. CHECK EARLIER EVIDENCE.';
   if (step.requiredEvidence.some(key => !state.evidence.includes(key))) return 'Check earlier evidence. Recover the records for this step first.';
-  if (id === 7) {
-    const person = suspects.find(s => s.id === state.selectedSuspect);
-    if (!person) return 'Inspect the Detailed Suspect Files. Choose a person to check.';
-    if (person.backpack !== 'Blue' || person.card !== 'B4' || person.room !== 204) return 'This person does not match all three clues. Check the backpack, card, and room again.';
-  }
   return null;
 }
 export function solveStep(state: CaseState, id: number, definition: CaseDefinition): CaseState {

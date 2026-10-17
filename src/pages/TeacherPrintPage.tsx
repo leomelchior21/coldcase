@@ -1,7 +1,16 @@
-﻿import { Printer, ArrowLeft } from 'lucide-react';
-import { worksheets } from '../cases/case001-worksheets';
-import { StudentWorksheet } from '../components/StudentWorksheet';
-export function TeacherPrintPage() {
-  return <main className="print-page"><header className="print-toolbar"><a href="/"><ArrowLeft size={17}/> CASE ARCHIVE</a><div><h1>CASE 001 / TEACHER TOOLS</h1><p>Optional A4 student worksheets. The complete case also works without printing.</p></div><button className="primary" onClick={() => window.print()}><Printer size={18}/> PRINT CASE PACK</button></header><p className="print-notice">Student copy: answers are blank. Fill in each record as you recover evidence in the digital case. Inspect the restored footage and final reveal in the game.</p><div className="print-documents">{worksheets.map((sheet,index) => <section className="print-sheet" key={sheet.title}><StudentWorksheet sheet={sheet} number={index + 1}/></section>)}<section className="print-sheet detective-notes"><span className="small-label">COLD CASE / CASE 001</span><h2>DETECTIVE NOTES</h2><p>What do we know? What do we still need to check?</p>{Array.from({ length: 16 },(_,i) => <div key={i}/>)}</section></div></main>;
-}
+import { Printer, ArrowLeft } from 'lucide-react';
+import { studentRegister } from '../cases/student-register';
 
+export function TeacherPrintPage() {
+  return <main className="print-page">
+    <header className="print-toolbar"><a href="/"><ArrowLeft size={17}/> CASE ARCHIVE</a><div><h1>CASE 001 / TEACHER TOOLS</h1><p>Print one student register per team for the final two rounds.</p></div><button className="primary" onClick={() => window.print()}><Printer size={18}/> PRINT STUDENT REGISTER</button></header>
+    <p className="print-notice">This is the only printed handout. Students compare their recovered password digits with this list. All other records stay in the game.</p>
+    <div className="print-documents"><section className="print-sheet student-register">
+      <div className="register-kicker"><span>COLD CASE / CASE 001</span><span>SCHOOL RECORDS</span></div>
+      <h2>STUDENT NUMBER REGISTER</h2>
+      <p>Compare the recovered sign-in details with these records.</p>
+      <table><thead><tr><th scope="col">STUDENT NO.</th><th scope="col">FULL NAME</th><th scope="col">CARD PASSWORD</th></tr></thead><tbody>{studentRegister.map(student => <tr key={student.number}><td>{student.number}</td><td>{student.name}</td><td>{student.password}</td></tr>)}</tbody></table>
+      <footer>30 fictional students. Invented passwords for this classroom mystery only.</footer>
+    </section></div>
+  </main>;
+}

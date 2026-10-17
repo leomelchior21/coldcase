@@ -22,9 +22,9 @@ export function executeCSharp(source: string) {
     const text = chunk.trim();
     if (text === 'using System') continue;
     const output = text.match(/^(?:System\.)?Console\s*\.\s*WriteLine\s*\(([\s\S]*)\)$/);
-    const assignment = text.match(/^(?:(double|int|var)\s+)?([A-Za-z_]\w*)\s*=\s*([\s\S]+)$/);
+    const assignment = text.match(/^(?:(int)\s+)?([A-Za-z_]\w*)\s*=\s*([\s\S]+)$/);
     if (/=\s*$/.test(text)) fail('Complete the expression after = before running your program.', line);
-    if (!output && !assignment) fail('Use numeric declarations, arithmetic, and Console.WriteLine(result); as top-level statements.', line);
+    if (!output && !assignment) fail('Use int declarations, arithmetic, and Console.WriteLine(result); as top-level statements.', line);
     const expression = output ? output[1] : assignment![3];
     if (!/^[\d\w\s.+*/()=-]+$/.test(expression) || /\b(?:true|false|null|new)\b/.test(expression)) fail('Use numbers, variable names, parentheses, and + - * / in this terminal.', line);
     const normalized = output ? `print(${expression})` : `${assignment![2]} = ${expression}`;
@@ -37,10 +37,10 @@ export function executeCSharp(source: string) {
     }
     statement.line = line;
     if (statement.type === 'assign') {
-      const declaration = assignment![1] as 'double' | 'int' | 'var' | undefined;
+      const declaration = assignment![1] as 'int' | undefined;
       if (reserved.has(statement.name)) fail('Choose a variable name that is not a C# keyword or Console.', line);
       if (declaration && declared.has(statement.name)) fail(`${statement.name} is already declared. Assign a new value without repeating its type.`, line);
-      if (!declaration && !declared.has(statement.name)) fail(`Declare ${statement.name} first, for example: double ${statement.name} = 0;`, line);
+      if (!declaration && !declared.has(statement.name)) fail(`Declare ${statement.name} first, for example: int ${statement.name} = 0;`, line);
       if (declaration) { declared.add(statement.name); statement.declaration = declaration; }
     }
     statements.push(statement);

@@ -17,5 +17,5 @@ test('landscape layouts keep Run and every step reachable; small screens retain 
 });
 test('A4 pack renders printable documents without game navigation',async({page},testInfo)=>{
   test.skip(testInfo.project.name!=='chromium','PDF generation is provided by Chromium.');
-  await page.goto('/teacher/case/001/print');await unlockTeacher(page);await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(16);await page.pdf({path:'test-results/cold-case-evidence-pack.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});
+  await page.goto('/teacher/case/001/print');await unlockTeacher(page);await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(1);const pdf = await page.pdf({path:'test-results/cold-case-student-register.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});expect(pdf.toString('latin1').match(/\/Type\s*\/Page\b/g)).toHaveLength(1);
 });

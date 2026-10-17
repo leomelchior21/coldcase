@@ -27,7 +27,7 @@ describe('Saved investigation migration', () => {
     expect(updated.previousWork?.results).toEqual({1:3,2:27,3:1540,4:3});
     expect(updated.solved).toEqual([]); expect(updated.evidence).toEqual(['BRIEF','BOARD']);
     expect(updated.codes[1]).toBe(initialCode(case001.steps[0]));
-    expect(updated.caseRevision).toBe(2);
+    expect(updated.caseRevision).toBe(3);
     saveState(updated); expect(loadState()).toEqual(updated);
   });
   it('preserves a completed legacy investigation in the previous-work archive', () => {
@@ -54,3 +54,15 @@ describe('Saved investigation migration', () => {
   });
 });
 
+
+
+it('archives revision 2 without carrying its Emily reveal into the password case', () => {
+  memory({ ...freshState(), caseRevision: 2, language: 'csharp', codes: {7:'// old match program'}, solved:[1,2,3,4,5,6,7,8], results:{7:3,8:68}, closed:true });
+  const state = loadState();
+  expect(state.previousWork?.codes[7]).toBe('// old match program');
+  expect(state.previousWork?.results[8]).toBe(68);
+  expect(state.solved).toEqual([]);
+  expect(state.evidence).toEqual(['BRIEF','BOARD']);
+  expect(state.language).toBe('csharp');
+  expect(state.codes[1]).toContain('int camera_log');
+});

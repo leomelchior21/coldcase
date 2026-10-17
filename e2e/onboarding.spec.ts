@@ -27,8 +27,8 @@ for (const language of ['Python', 'C#']) test(`fresh ${language} student chooses
   const editor = page.getByRole('textbox', { name: `${language} code editor`, exact: true });
   await expect(editor).toBeVisible();
   await expect(page.locator('.subset-label')).toContainText(language.toUpperCase());
-  await expect(editor).toContainText(language === 'C#' ? 'double camera_log = 257880;' : 'camera_log = 257880');
-  const draft = language === 'C#' ? '// my draft\ndouble clues = 2;' : '# my draft\nclues = 2';
+  await expect(editor).toContainText(language === 'C#' ? 'int camera_log = 257880;' : 'camera_log = 257880');
+  const draft = language === 'C#' ? '// my draft\nint clues = 2;' : '# my draft\nclues = 2';
   await editor.fill(draft);
   await page.getByRole('button', { name: 'HOW TO PLAY', exact: true }).click();
   await expect(page.getByRole('heading', { name: headings[0] })).toBeVisible();
@@ -41,7 +41,7 @@ for (const language of ['Python', 'C#']) test(`fresh ${language} student chooses
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[1])).toBe(draft);
   await expect(page.getByRole('button', { name: 'HOW TO PLAY', exact: true })).toBeVisible();
   await expect(page.getByText('SAVED ON THIS DEVICE', { exact: true })).toHaveCount(0);
-  await editor.fill(language === 'C#' ? '// Recover the camera code\ndouble camera_log = 257880;\ndouble backup_log = 921;\ndouble result = camera_log / backup_log;\nConsole.WriteLine(result);' : '# Recover the camera code\ncamera_log = 257880\nbackup_log = 921\nresult = camera_log / backup_log\nprint(result)');
+  await editor.fill(language === 'C#' ? '// Recover the camera code\nint camera_log = 257880;\nint backup_log = 921;\nint result = camera_log / backup_log;\nConsole.WriteLine(result);' : '# Recover the camera code\ncamera_log = 257880\nbackup_log = 921\nresult = camera_log / backup_log\nprint(result)');
   await expect(page.locator('.cm-line span').filter({ hasText: /^257880$/ }).first()).toHaveCSS('color', 'rgb(255, 195, 66)');
   await expect(page.locator('.cm-line span').filter({ hasText: /^camera_log$/ }).first()).toHaveCSS('color', 'rgb(255, 83, 95)');
   await expect(page.locator('.cm-line span').filter({ hasText: /Recover the camera code/ }).first()).toHaveCSS('color', 'rgb(113, 133, 159)');
@@ -74,7 +74,7 @@ test('an existing Python draft survives choosing C# for an older saved investiga
   await page.getByRole('button', { name: /START WITH C#/ }).click();
   for (let index = 0; index < 4; index++) await next(page);
   await page.getByRole('button', { name: 'START INVESTIGATING' }).click();
-  await expect(page.getByRole('textbox', { name: 'C# code editor' })).toContainText('double camera_log');
+  await expect(page.getByRole('textbox', { name: 'C# code editor' })).toContainText('int camera_log');
   await page.getByRole('button', { name: 'PREVIOUS NOTES', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('our existing program');
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!));
@@ -93,7 +93,7 @@ test('teacher password gates homepage access, direct URLs, reloads and printable
   await expect(page.locator('.print-sheet')).toHaveCount(0);
   await page.getByLabel('Password', { exact: true }).fill('leleomaker');
   await page.getByRole('button', { name: 'UNLOCK TEACHER TOOLS' }).click();
-  await expect(page.locator('.print-sheet')).toHaveCount(16);
+  await expect(page.locator('.print-sheet')).toHaveCount(1);
   await page.reload();
   await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
   await expect(page.locator('.print-sheet')).toHaveCount(0);

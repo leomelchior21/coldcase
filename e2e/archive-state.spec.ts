@@ -43,6 +43,7 @@ test('confirmed case reset clears every CCTV phase and saved results',async({pag
 test('color restoration respects reduced motion while preserving the original monochrome frame',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});await seedArchive(page,'done');
   await page.getByRole('button',{name:/04 The footage/}).click();await page.getByRole('textbox',{name:'Python code editor'}).fill(solutions[3]);await page.getByRole('button',{name:'RUN CASE',exact:true}).click();
+  await page.getByRole('dialog',{name:'New evidence recovered'}).getByRole('button',{name:/Restored CCTV frame/}).click();
   const dialog=page.getByRole('dialog',{name:'Restored CCTV frame'});await expect(dialog).toBeVisible();
   expect(await dialog.locator('.color-reveal img').evaluate(node=>getComputedStyle(node).animationName)).toBe('none');
   await dialog.getByRole('button',{name:'Original CCTV frame',exact:true}).click();

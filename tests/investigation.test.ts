@@ -1,3 +1,4 @@
+import { studentRegister } from '../src/cases/student-register';
 import { describe, expect, it } from 'vitest';
 import { case001, initialCode, suspects } from '../src/cases/case001';
 import { redactName } from '../src/components/anonymous';
@@ -47,8 +48,8 @@ describe('Recovered evidence chain', () => {
     const frame=case001.documents.find(d=>d.id==='CCTV-BW')!;expect(JSON.stringify(frame).toLowerCase()).not.toContain('blue');expect(evidenceArtwork['CCTV-BW'].alt.toLowerCase()).not.toContain('blue');expect(evidenceArtwork['CCTV-BW'].monochrome).toBe(true);
     expect(case001.steps[6].caseNote.join(' ')).not.toContain('Emily');
   });
-  it('only Emily matches all three and no person is selected initially', () => {
-    expect(suspects.filter(s=>s.backpack==='Blue'&&s.card==='B4'&&s.room===204).map(s=>s.id)).toEqual(['emily']);expect(freshState().selectedSuspect).toBe('');
+  it('three suspects match all three and no person is selected initially', () => {
+    expect(suspects.filter(s=>s.backpack==='Blue'&&s.card==='B4'&&s.room===204).map(s=>s.id)).toEqual(['emily','elena','oliver']);expect(freshState().selectedSuspect).toBe('');
   });
   it('rejects decoy operations that cancel to a hardcoded answer', () => {
     expect(validate('camera_log=257880\nbackup_log=921\nresult=280 + (camera_log / backup_log) * 0\nprint(result)',case001.steps[0]).ok).toBe(false);
@@ -64,16 +65,16 @@ describe('Starter programs and redacted identities', () => {
   it('starts Step 1 with the recovered values, a blank result line, and the print', () => {
     expect(starter(1)).toEqual(['camera_log = 257880', 'backup_log = 921', 'result =', 'print(result)']);
   });
-  it('starts Step 2 with blank variables and result but no print line', () => {
-    expect(starter(2)).toEqual(['inventory_checksum =', 'returned_checksum =', 'result =']);
+  it('starts Step 2 with placeholder names, empty values and result, and output', () => {
+    expect(starter(2)).toEqual(['VARIABLE_1 =', 'VARIABLE_2 =', 'result =', 'print(result)']);
   });
-  it('keeps every later step comment-only', () => {
-    for (const id of [3,4,5,6,7,8]) expect(starter(id)).toEqual([]);
+  it('provides editable scaffolding for every later step', () => {
+    for (const id of [3,4,5,6,7,8]) expect(starter(id)).toEqual([...Object.keys(case001.steps[id - 1].requiredVariables).map((_, i) => `VARIABLE_${i + 1} =`), 'result =', 'print(result)']);
   });
   it('accepts the Step 1 and Step 2 starter lines once the student completes them', () => {
     const first = initialCode(case001.steps[0]).replace('result =', 'result = camera_log / backup_log');
     expect(validate(first, case001.steps[0]).ok).toBe(true);
-    const second = initialCode(case001.steps[1]).replace('inventory_checksum =', 'inventory_checksum = 864').replace('returned_checksum =', 'returned_checksum = 837').replace('result =', 'result = inventory_checksum - returned_checksum') + 'print(result)';
+    const second = initialCode(case001.steps[1]).replace('VARIABLE_1 =', 'inventory_checksum = 864').replace('VARIABLE_2 =', 'returned_checksum = 837').replace('result =', 'result = inventory_checksum - returned_checksum');
     expect(validate(second, case001.steps[1]).ok).toBe(true);
   });
   it('renders suspect names as indecipherable glyphs without leaking letters', () => {
@@ -83,5 +84,23 @@ describe('Starter programs and redacted identities', () => {
       expect(hidden).not.toContain(suspect.name);
       expect(hidden).not.toMatch(/[a-z]/i);
     }
+  });
+});
+
+
+describe('Individual password deduction', () => {
+  it('keeps two candidates after the suffix and identifies only Emily with the prefix and initial', () => {
+    expect(studentRegister).toHaveLength(30);
+    expect(new Set(studentRegister.map(s => s.number)).size).toBe(30);
+    expect(new Set(studentRegister.map(s => s.password)).size).toBe(30);
+    const matching = studentRegister.filter(s => s.password.endsWith('427'));
+    expect(matching.map(s => s.name).sort()).toEqual(['Elena Brooks','Emily Carter']);
+    expect(matching.filter(s => s.password.startsWith('72') && s.name.startsWith('E')).map(s => s.name)).toEqual(['Emily Carter']);
+    expect(suspects.every(person => studentRegister.some(student => student.name === person.name))).toBe(true);
+  });
+  it('does not identify the student or reveal the story in the final record', () => {
+    const record = case001.documents.find(d => d.id === 'FINAL-01')!;
+    expect(JSON.stringify(record)).not.toMatch(/Emily|Carter|demonstration|72427/);
+    expect(case001.documents.some(d => d.id === 'E01')).toBe(false);
   });
 });

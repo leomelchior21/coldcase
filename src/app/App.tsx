@@ -9,7 +9,6 @@ import { loadState, freshState, saveState } from '../engine/storage';
 import { CaseTutorial, LanguageSelection } from '../components/CaseOnboarding';
 import { TeacherAccess } from '../components/TeacherAccess';
 import { codeForStep } from '../engine/language';
-import { stepWithSuspect } from '../cases/case001';
 import type { CodeLanguage } from '../types';
 import { case001 } from '../cases/case001';
 export default function App() {
@@ -32,7 +31,7 @@ export default function App() {
   useEffect(() => { if (inCase && !state.opened) setState(previous => ({ ...previous, opened: true })); }, [inCase, state.opened]);
   function chooseLanguage(language: CodeLanguage) {
     setState(previous => ({ ...previous, language, languageChosen: true,
-      codes: language === previous.language ? previous.codes : Object.fromEntries(case001.steps.map(step => [step.id, codeForStep(stepWithSuspect(step, previous.selectedSuspect), language)])),
+      codes: language === previous.language ? previous.codes : Object.fromEntries(case001.steps.map(step => [step.id, codeForStep(step, language)])),
       previousWork: language !== previous.language && previous.opened && Object.values(previous.codes).some((code, index) => code !== codeForStep(case001.steps[index], previous.language)) ? { codes: previous.codes, solved: previous.solved, results: previous.results, closed: previous.closed } : previous.previousWork,
     }));
   }

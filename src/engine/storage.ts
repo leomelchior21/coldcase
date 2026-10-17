@@ -4,14 +4,14 @@ import type { CaseState, Value } from '../types';
 import { codeForStep } from './language';
 export const STORAGE_KEY = 'cold-case:001:v1';
 export function freshState(): CaseState {
-  return { language: 'python', languageChosen: false, tutorialCompleted: false, version: 1, caseRevision: 2, notesRevision: 3, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
+  return { language: 'python', languageChosen: false, tutorialCompleted: false, version: 1, caseRevision: 3, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
 }
 const ids = (list: unknown) => Array.isArray(list) ? [...new Set(list.filter((id): id is number => Number.isInteger(id) && id >= 1 && id <= 8))] : [];
 const cleanCodes = (codes: unknown): Record<number,string> => Object.fromEntries(Object.entries(codes && typeof codes === 'object' ? codes : {}).filter(([id, code]) => +id >= 1 && +id <= 8 && typeof code === 'string' && code.length <= 20000));
 function previousWork(raw: Partial<CaseState>): CaseState['previousWork'] {
   if (!raw.codes || typeof raw.codes !== 'object') return undefined;
   const solved = ids(raw.solved);
-  const oldResults = [3,27,1540,3,204,3,3,68];
+  const oldResults = raw.caseRevision ? [280,27,1540,2440,204,3,3,68] : [3,27,1540,3,204,3,3,68];
   return { codes: cleanCodes(raw.codes), solved, results: Object.fromEntries(solved.map(id => [id, oldResults[id - 1]])), closed: raw.closed === true };
 }
 export function loadState(): CaseState {
@@ -21,14 +21,14 @@ export function loadState(): CaseState {
     const clean = freshState();
     clean.languageChosen = raw.languageChosen === true;
     clean.tutorialCompleted = raw.tutorialCompleted === true;
-    if (raw.caseRevision !== 2) {
+    clean.language = raw.language === 'csharp' ? 'csharp' : 'python';
+    clean.codes = Object.fromEntries(case001.steps.map(step => [step.id, codeForStep(step, clean.language)]));
+    if (raw.caseRevision !== 3) {
       // Keep the old investigation intact, separate from the new evidence chain.
       clean.opened = raw.opened === true;
       clean.previousWork = previousWork(raw);
       return clean;
     }
-    clean.language = raw.language === 'csharp' ? 'csharp' : 'python';
-    clean.codes = Object.fromEntries(case001.steps.map(step => [step.id, codeForStep(step, clean.language)]));
     clean.opened = raw.opened === true; clean.visited = ids(raw.visited); clean.hiddenNotes = ids(raw.hiddenNotes);
     clean.currentStep = typeof raw.currentStep === 'number' && raw.currentStep >= 1 && raw.currentStep <= 8 ? Math.floor(raw.currentStep) : 1;
     clean.selectedSuspect = suspects.some(s => s.id === raw.selectedSuspect) ? raw.selectedSuspect! : '';

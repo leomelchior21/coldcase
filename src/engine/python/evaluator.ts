@@ -52,9 +52,9 @@ export function executeStatements(statements: Statement[], csharp = false): Exec
       if (statement.type === 'assign') {
         if (csharp) {
           const target = statement.declaration === 'var' ? evaluated.numericType : statement.declaration ?? variables.get(statement.name)?.numericType;
-          if (target === 'int' && evaluated.numericType === 'double') throw new PythonError('Check the variable type', 'A double value needs a double variable. Use double for this investigation.', 'Cannot implicitly convert double to int');
+          if (target === 'int' && evaluated.numericType === 'double') throw new PythonError('Check the variable type', 'Use whole-number values with int for this investigation.', 'Cannot implicitly convert double to int');
           evaluated.numericType = target;
-          if (target === 'int' && typeof evaluated.value === 'number' && (evaluated.value > 2147483647 || evaluated.value < -2147483648)) throw new PythonError('Number too large', 'Use double for larger numbers.', 'Int32 value out of range');
+          if (target === 'int' && typeof evaluated.value === 'number' && (evaluated.value > 2147483647 || evaluated.value < -2147483648)) throw new PythonError('Number too large', 'Use whole-number clues within the int range. Check the Case Note.', 'Int32 value out of range');
         }
         variables.set(statement.name, evaluated);
       }

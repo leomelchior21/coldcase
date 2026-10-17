@@ -5,6 +5,6 @@ export const solutions = [
   'archive_file = 1220\ncolor_filter = 2\nresult = archive_file * color_filter\nprint(result)',
   'key_code = 27\nsector_value = 8\ncorrection = 12\nresult = (key_code * sector_value) - correction\nprint(result)',
   'last_seen = 1540\nroom_opened = 1543\nresult = room_opened - last_seen\nprint(result)',
-  'backpack_match = 1\ncard_match = 1\nroom_match = 1\nresult = backpack_match + card_match + room_match\nprint(result)',
-  'battery_before = 8\nbattery_after = 76\nresult = battery_after - battery_before\nprint(result)',
+  'suffix_checksum = 900\nsuffix_correction = 473\nresult = suffix_checksum - suffix_correction\nprint(result)',
+  'prefix_checksum = 864\nprefix_divisor = 12\nresult = prefix_checksum / prefix_divisor\nprint(result)',
 ];

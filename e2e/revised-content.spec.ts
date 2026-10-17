@@ -1,7 +1,7 @@
 import { unlockTeacher } from './fixtures';
 import { test, expect } from './fixtures';
 import { evidenceArtwork } from '../src/cases/case001-artwork';
-import { case001 } from '../src/cases/case001';
+import { case001, suspects } from '../src/cases/case001';
 
 test('every clue uses a loaded generated illustration and keeps record facts readable', async ({ page }, testInfo) => {
   const failures: string[] = [];
@@ -26,19 +26,21 @@ test('every clue uses a loaded generated illustration and keeps record facts rea
   expect(failures).toEqual([]);
 });
 
-test('student print pack has blank answers and no revealing photo or solved record',async({page})=>{
+test('teacher tools prints only the thirty-student register without highlighting the answer', async({page})=>{
   await page.goto('/teacher/case/001/print');await unlockTeacher(page);
-  await expect(page.locator('.print-sheet')).toHaveCount(16);
-  await expect(page.locator('.print-documents')).not.toContainText(/\b280\b|\b27\b|15:40|1540|1220|2440|\b204\b|\bB4\b|\b68\b|BLUE BACKPACK|OPERATOR: BRIAN|ASSISTANT: EMILY/i);
-  expect(await page.locator('.answer-line').count()).toBeGreaterThan(40);
-  for(const cell of await page.locator('.worksheet-comparison td').all())await expect(cell).toHaveText('');
-  await expect(page.locator('img[src*="equipment-log"]')).toHaveCount(0);
-  await expect(page.locator('img[src*="timeline-record-v2"]')).toHaveCount(1);
+  await expect(page.locator('.print-sheet')).toHaveCount(1);
+  await expect(page.locator('.student-register tbody tr')).toHaveCount(30);
+  await expect(page.locator('.student-register')).toContainText('Emily Carter');
+  await expect(page.locator('.student-register')).toContainText('72427');
+  await expect(page.locator('.student-register')).toContainText('Elena Brooks');
+  await expect(page.locator('.student-register')).toContainText('39427');
+  await expect(page.locator('.print-documents img')).toHaveCount(0);
+  await expect(page.locator('.print-documents')).not.toContainText(/OPERATOR|ASSISTANT|recovered suffix|recovered prefix/i);
   await page.emulateMedia({media:'print'});
-  expect(await page.locator('.worksheet-photo.cctv-monochrome').evaluate(node=>getComputedStyle(node).filter)).toContain('grayscale(1)');
+  await expect(page.locator('.print-toolbar')).toBeHidden();
 });
 
-test('explicit variable instructions and seven generated portraits are used throughout the case', async ({ page }) => {
+test('explicit variable instructions and ten generated portraits are used throughout the case', async ({ page }) => {
   const broken: string[] = [];
   page.on('response', response => { if (response.url().includes('/portraits/') && response.status() >= 400) broken.push(response.url()); });
   await page.goto('/');
@@ -53,8 +55,8 @@ test('explicit variable instructions and seven generated portraits are used thro
   const locked = page.getByRole('dialog');
   await expect(locked).toContainText('FILES LOCKED');
   await expect(locked).not.toContainText('Emily');
-  await expect(locked.locator('.portrait.redacted')).toHaveCount(6);
-  for (const name of ['Emily','Tyler','Luke','Anna','Noah','Sophie']) await expect(locked.getByRole('img', { name: `Illustrated school portrait of ${name}` })).toHaveCount(0);
+  await expect(locked.locator('.portrait.redacted')).toHaveCount(9);
+  for (const {name} of suspects) await expect(locked.getByRole('img', { name: `Illustrated school portrait of ${name}` })).toHaveCount(0);
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await page.evaluate(() => {
     const key = 'cold-case:001:v1', state = JSON.parse(localStorage.getItem(key)!);
@@ -64,14 +66,14 @@ test('explicit variable instructions and seven generated portraits are used thro
   await page.reload();
   await page.getByRole('button', { name: 'Open Suspect board', exact: true }).click();
   const dialog = page.getByRole('dialog');
-  for (const name of ['Emily','Tyler','Luke','Anna','Noah','Sophie']) {
+  for (const {name} of suspects) {
     const portrait = dialog.getByRole('img', { name: `Illustrated school portrait of ${name}` });
-    await expect(portrait).toHaveAttribute('src', `/cases/case001/portraits/${name.toLowerCase()}.webp`);
+    await expect(portrait).toHaveAttribute('src', `/cases/case001/portraits/${name.split(' ')[0].toLowerCase()}.webp`);
     await expect(portrait).toBeVisible();
     expect(await portrait.evaluate(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     await expect(dialog.getByRole('button', { name: `Inspect ${name}` })).toBeVisible();
   }
-  await expect(dialog).not.toContainText('Maya');
+  await expect(dialog).toContainText('Maya Chen');
   await expect(dialog).not.toContainText('B4');
   expect(broken).toEqual([]);
 });

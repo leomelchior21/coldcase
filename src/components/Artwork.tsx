@@ -9,12 +9,13 @@ export function RedactedPortrait({ name = '', className = '' }: { name?: string;
 }
 
 export function Portrait({ name = 'Brian', className = '' }: { name?: string; className?: string }) {
-  const custom = customPortraits[`/public/cases/case001/${name.toLowerCase()}.webp`] as string | undefined;
+  const firstName = name.split(' ')[0];
+  const custom = customPortraits[`/public/cases/case001/${firstName.toLowerCase()}.webp`] as string | undefined;
   const [failedSources, setFailedSources] = useState<string[]>([]);
-  const generatedNames = ['Brian','Emily','Tyler','Luke','Anna','Noah','Sophie'];
-  const source = custom ?? (generatedNames.includes(name) ? `/cases/case001/portraits/${name.toLowerCase()}.webp` : undefined);
+  const generatedNames = ['Brian','Emily','Tyler','Luke','Anna','Noah','Sophie','Elena','Maya','Oliver'];
+  const source = custom ?? (generatedNames.includes(firstName) ? `/cases/case001/portraits/${firstName.toLowerCase()}.webp` : undefined);
   const id = useId().replace(/:/g, '');
-  const index = ['Brian','Emily','Tyler','Luke','Anna','Noah','Sophie'].indexOf(name);
+  const index = ['Brian','Emily','Tyler','Luke','Anna','Noah','Sophie'].indexOf(firstName);
   const long = [1,4,6].includes(index);
   const skin = ['#b9b6a7','#a9a08d','#c0b8a7','#aaa89e','#bcb19c','#8e897b','#c1b8a2'][Math.max(0,index)];
   const art = <svg viewBox="0 0 240 275" role="img" aria-label={`Illustrated school portrait of ${name}`}>

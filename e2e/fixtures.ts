@@ -5,7 +5,7 @@ import { test as base, expect, type Page } from '@playwright/test';
 export const test = base.extend({ page: async ({ page }, use) => {
   await page.addInitScript(() => {
     const key = 'cold-case:001:v1';
-    const state = JSON.parse(localStorage.getItem(key) || 'null') || { version: 1, caseId: '001', caseRevision: 2 };
+    const state = JSON.parse(localStorage.getItem(key) || 'null') || { version: 1, caseId: '001', caseRevision: 3 };
     localStorage.setItem(key, JSON.stringify({ ...state, languageChosen: true, tutorialCompleted: true }));
   });
   await use(page);
