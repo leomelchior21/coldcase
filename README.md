@@ -30,7 +30,7 @@ and device; no account or cloud service is used.
 - Automatic localStorage persistence and confirmed resets.
 - A two-stage CCTV terminal with saved camera authentication and mechanical time wheels.
 - Monochrome footage that restores its colors after students recover the color key.
-- Password-gated Teacher Tools at `/teacher/case/001/print` offer **only one A4 student register** with 30 fictional names, student numbers, and puzzle passwords. Print one per team for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
+- Password-gated Teacher Tools at `/teacher/case/001/print` offer an **A4 student register** with 30 fictional names, student numbers, and puzzle passwords, plus a **landscape A4 clue worksheet** with eight blank squares titled by step. Each has its own print button. Print a worksheet per team for notes and a register for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
 - Nine named suspects plus Brian, with three new generated portraits. Emily and Elena share similar hair, blue backpacks, B4 access, and Room 204; older student Oliver shares the backpack, access group, and room.
 - A dimmed-screen discovery spotlight invites students to open each newly recovered clue.
 - All nine suspects return for the final choice. A wrong choice fades to an unresolved ending with a return to the levels; Emily unlocks the animated true story.
@@ -130,3 +130,8 @@ All images are local; the running app makes no image API calls.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad
 keyboard behavior should also be checked on hardware before a classroom rollout.
+
+The How to Play mission and ready screens continue the opening comic with
+matching three-panel artwork. Case Notes share the editor color cues: red for
+variable instructions and names, yellow for values, and cyan for operations and
+output calls. These are visual annotations; saved code remains plain text.

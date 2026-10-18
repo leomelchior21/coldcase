@@ -9,6 +9,7 @@ import { Play, RotateCcw, Lightbulb, Eye, EyeOff, Terminal, Check, ArrowRight } 
 import type { CodeLanguage, StepDefinition } from '../types';
 import { languageName } from '../engine/language';
 import { glowingAnswers } from './codeBlanks';
+import { caseNoteColors } from './caseNoteColors';
 import type { Feedback } from '../engine/python/validator';
 const highlighting = HighlightStyle.define([
   { tag: tags.comment, color: '#71859f' },
@@ -45,13 +46,13 @@ const glowingPlaceholders = ViewPlugin.fromClass(class {
   constructor(view: EditorView) { this.decorations = placeholderMatcher.createDeco(view); }
   update(update: import('@codemirror/view').ViewUpdate) { this.decorations = placeholderMatcher.updateDeco(update, this.decorations); }
 }, { decorations: plugin => plugin.decorations });
-function CodeEditor({ language, value, onChange, onRun }: { language: CodeLanguage; value: string; onChange: (value: string) => void; onRun: () => void }) {
+function CodeEditor({ language, value, variableNames, onChange, onRun }: { language: CodeLanguage; value: string; variableNames: string[]; onChange: (value: string) => void; onRun: () => void }) {
   const container = useRef<HTMLDivElement>(null), view = useRef<EditorView | null>(null);
   const callbacks = useRef({ onChange, onRun }); callbacks.current = { onChange, onRun };
   useEffect(() => {
     if (!container.current) return;
     const editor = new EditorView({ parent: container.current, state: EditorState.create({ doc: value, extensions: [
-      glowingAnswers, glowingPlaceholders, lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
+      caseNoteColors(variableNames), glowingAnswers, glowingPlaceholders, lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
       keymap.of([{ key: 'Mod-Enter', run: () => { callbacks.current.onRun(); return true; } }, indentWithTab, ...defaultKeymap, ...historyKeymap]),
       EditorView.lineWrapping,
       EditorView.contentAttributes.of({ 'aria-label': `${languageName(language)} code editor`, 'autocapitalize': 'off', 'autocorrect': 'off', 'spellcheck': 'false', 'data-testid': `${language}-editor` }),
@@ -77,7 +78,7 @@ export function CodeTerminal({ language, step, code, onChange, onRun, onReset, o
   return <section className="terminal-panel" aria-label={`${languageName(language)} terminal`}>
     <div className="panel-header"><span className="terminal-title"><span className="python-symbol">{language === 'csharp' ? 'C#' : 'Py'}</span> {languageName(language).toUpperCase()} TERMINAL</span><span className="terminal-mode">INVESTIGATION MODE <i className="status-dot"/></span></div>
     <div className="editor-toolbar"><span>case_001 / step_{String(step.id).padStart(2,'0')}.{language === 'csharp' ? 'cs' : 'py'}</span><div className="editor-tools"><button onClick={onReset} disabled={running}><RotateCcw size={13}/> RESET</button><button onClick={onToggleNote}>{hiddenNote ? <Eye size={13}/> : <EyeOff size={13}/>} {hiddenNote ? 'SHOW' : 'HIDE'} CASE NOTE</button></div></div>
-    <CodeEditor language={language} key={`${step.id}-${language}`} value={code} onChange={onChange} onRun={onRun}/>
+    <CodeEditor language={language} key={`${step.id}-${language}`} value={code} variableNames={Object.keys(step.requiredVariables)} onChange={onChange} onRun={onRun}/>
     <div className={`console-output ${feedback ? feedback.ok ? 'success' : 'error' : ''}`} aria-live="polite" aria-atomic="true"><div className="console-main"><div className="console-label"><Terminal size={16}/><span>CONSOLE OUTPUT</span><span className="subset-label">{languageName(language).toUpperCase()} &middot; CLASSROOM EDITION</span></div>{running ? <div className="console-wait"><span className="blink">▌</span> Checking the records…</div> : feedback ? <><div className="output-line">{feedback.ok ? <div className="result-value interpreted-result"><span>{step.resultLabel}</span><strong>{step.resultDisplay}</strong>{step.id === 3 && <small>raw value: 1540</small>}</div> : feedback.output.length > 0 && <div className="result-value">RESULT: <strong>{feedback.output.map(value => typeof value === 'number' ? String(value) : value).join('\n')}</strong></div>}{feedback.ok && <span className="stamp green"><Check size={21}/>{feedback.title}</span>}</div>{!feedback.ok && <div className="error-message"><b>{feedback.title}</b><p>{feedback.message}</p>{feedback.detail && <details><summary>VIEW {languageName(language).toUpperCase()} ERROR</summary><code>{feedback.detail}</code></details>}</div>}{feedback.ok && <div className="console-actions"><button onClick={onEvidence}>OPEN NEW EVIDENCE <ArrowRight size={14}/></button><button onClick={onNext}>{step.id === 8 ? 'RECONSTRUCT THE CASE' : 'NEXT STEP'} <ArrowRight size={14}/></button></div>}</> : <div className="console-idle"><span>›</span>{solved ? 'Evidence verified. You can run your code again.' : 'Write your program. Follow the evidence.'}</div>}</div><div className="console-side"><button className="primary run-button" disabled={running} onClick={onRun}><Play fill="currentColor"/>{running ? 'CHECKING…' : 'RUN CASE'}</button><button className="secondary clue-button" onClick={onHint}><Lightbulb/><span>CLUE</span></button></div></div>
   </section>;
 }

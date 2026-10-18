@@ -26,9 +26,9 @@ test('every clue uses a loaded generated illustration and keeps record facts rea
   expect(failures).toEqual([]);
 });
 
-test('teacher tools prints only the thirty-student register without highlighting the answer', async({page})=>{
+test('teacher tools offers the register and blank clue worksheet without highlighting the answer', async({page})=>{
   await page.goto('/teacher/case/001/print');await unlockTeacher(page);
-  await expect(page.locator('.print-sheet')).toHaveCount(1);
+  await expect(page.locator('.print-sheet')).toHaveCount(2);
   await expect(page.locator('.student-register tbody tr')).toHaveCount(30);
   await expect(page.locator('.student-register')).toContainText('Emily Carter');
   await expect(page.locator('.student-register')).toContainText('72427');

@@ -7,7 +7,28 @@
 .student-register th,.student-register td{padding:7px 12px;border:1px solid #a2aa96;text-align:left}
 .student-register th{background:#e5e8dc;font-size:11px}.student-register td:last-child{letter-spacing:2px}
 .student-register footer{margin-top:16px;font:10px/1.5 var(--mono)}
+.print-actions{display:flex;flex-wrap:wrap;gap:12px}
+.clue-worksheet{margin-top:28px;padding:30px;background:#fff;color:#24352b}
+.clue-worksheet h2{font:700 32px/1.2 var(--heading);margin:15px 0 10px}
+.worksheet-details{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:11px/1.6 var(--mono)}
+.clue-worksheet>p{font:12px/1.6 var(--mono);margin:10px 0 16px}
+.clue-boxes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.clue-box{aspect-ratio:1;border:1.5px solid #24352b;background:white;padding:10px;break-inside:avoid}
+.clue-box h3{font:600 16px/1.25 var(--heading);text-transform:uppercase;border-bottom:1px solid #a2aa96;padding-bottom:8px}
+.clue-box h3 span{font:700 12px var(--mono);margin-right:5px}
+@media screen and (max-width:650px){.clue-boxes{grid-template-columns:repeat(2,minmax(0,1fr))}.clue-worksheet{padding:18px}.print-actions{width:100%}.print-actions button{width:100%}}
+@page clue-worksheet{size:A4 landscape;margin:10mm}
 @media print{
+.print-page[data-print-target="register"] .clue-worksheet,.print-page[data-print-target="worksheet"] .student-register{display:none}
+.print-documents:has(.student-register){max-width:none}
+.print-sheet{break-after:auto;page-break-after:auto}
+.clue-worksheet{page:clue-worksheet;padding:0;margin:0;color:black;width:277mm}
+.clue-worksheet .register-kicker{padding-bottom:3mm;font-size:8px}
+.clue-worksheet h2{font-size:24px;margin:3mm 0 2mm}
+.clue-worksheet>p{font-size:11px;margin:2mm 0 4mm}
+.clue-boxes{grid-template-columns:repeat(4,62mm);gap:3mm;justify-content:space-between}
+.clue-box{width:62mm;height:62mm;padding:3mm;border-color:black}
+.clue-box h3{font-size:17px;color:black}
 .student-register{padding:0;min-height:0!important;background:white;color:black}
 .student-register h2{font-size:25px;margin:10px 0 6px}
 .student-register>p{font-size:10px;margin-bottom:10px}

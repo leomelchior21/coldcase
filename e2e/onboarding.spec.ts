@@ -93,7 +93,7 @@ test('teacher password gates homepage access, direct URLs, reloads and printable
   await expect(page.locator('.print-sheet')).toHaveCount(0);
   await page.getByLabel('Password', { exact: true }).fill('leleomaker');
   await page.getByRole('button', { name: 'UNLOCK TEACHER TOOLS' }).click();
-  await expect(page.locator('.print-sheet')).toHaveCount(1);
+  await expect(page.locator('.print-sheet')).toHaveCount(2);
   await page.reload();
   await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
   await expect(page.locator('.print-sheet')).toHaveCount(0);

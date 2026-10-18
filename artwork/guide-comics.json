@@ -1,0 +1,18 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "artwork/source/opening-comic.png",
+  "chapters": [
+    {
+      "chapter": "mission",
+      "prompt": "Use case: illustration-story. Create a NEW landscape 3:2 comic triptych for screen 02 YOUR MISSION of a classroom detective game. Input image is STYLE REFERENCE ONLY: match its bold ink contours, halftone dots, print texture, ochre/cream/charcoal/teal palette with restrained scarlet accents and cinematic school mystery mood. Exactly three equal vertical panels with black ink gutters, full bleed. Left panel: close-up of a school security monitor with damaged monochrome footage, horizontal interference and unreadable broken log rows, security camera mounted above. Middle panel: school key cabinet with several keys on hooks and ONE conspicuously empty central hook, warm light and dramatic shadows. Right panel: close-up of a damaged paper timestamp record next to an electronic archive display whose time field is completely obscured by static, teal light. No people. Each scene visually distinct. Important objects within middle 65 percent of each panel, top and bottom breathing room for HTML captions. Urgent investigation mood suitable for 13-year-old students. No text, lettering, numbers, readable times, codes, labels or speech bubbles anywhere. Do not reveal clues, answers, suspect identities or outcome. Match the supplied comic's craftsmanship and school setting; do not copy its boy or robot.",
+      "source": "artwork/source/mission-comic.png",
+      "output": "public/cases/case001/evidence/mission-comic.webp"
+    },
+    {
+      "chapter": "ready",
+      "prompt": "Use case: illustration-story. Create a NEW landscape 3:2 comic triptych for screen 05 READY, INVESTIGATORS? of a classroom detective game. Input image is STYLE REFERENCE ONLY: match bold black ink contours, expressive halftone dots, print texture, ochre/cream/charcoal/teal palette with restrained scarlet accents. Exactly three equal vertical panels separated by black gutters, full bleed. Tell a sequence of student investigators working together at a classroom investigation desk, shown ONLY through cropped hands and objects, no faces or identifiable suspects. Left panel: hands typing on a laptop keyboard to recover a damaged school archive; screen glows teal with abstract lines and a simple open padlock symbol, no readable code. Middle panel: two students' hands comparing anonymous evidence photographs and record sheets spread across a desk, magnifying glass, evidence details indistinct so no answer is revealed. Right panel: a finger carefully tracing a row on a PHYSICAL PRINTED school register sheet with a dense grid of unreadable short ink strokes, beside handwritten detective notes, warm lamp light; register only on paper, no digital register. Strong diagonal compositions, energetic teamwork and sense that the investigation is about to begin. Keep key objects within middle 65 percent of each panel; leave some top and bottom breathing room for HTML captions. No text, numbers, letters, names, passwords, readable codes, speech bubbles, suspect portraits or ending spoilers. Match the supplied comic's school mystery visual language.",
+      "source": "artwork/source/ready-comic.png",
+      "output": "public/cases/case001/evidence/ready-comic.webp"
+    }
+  ]
+}

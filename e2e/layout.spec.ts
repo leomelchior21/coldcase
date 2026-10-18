@@ -17,5 +17,25 @@ test('landscape layouts keep Run and every step reachable; small screens retain 
 });
 test('A4 pack renders printable documents without game navigation',async({page},testInfo)=>{
   test.skip(testInfo.project.name!=='chromium','PDF generation is provided by Chromium.');
-  await page.goto('/teacher/case/001/print');await unlockTeacher(page);await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(1);const pdf = await page.pdf({path:'test-results/cold-case-student-register.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});expect(pdf.toString('latin1').match(/\/Type\s*\/Page\b/g)).toHaveLength(1);
+  await page.goto('/teacher/case/001/print');await unlockTeacher(page);await page.emulateMedia({media:'print'});await expect(page.locator('.print-toolbar')).toBeHidden();await expect(page.locator('.print-sheet')).toHaveCount(2);const pdf = await page.pdf({path:'test-results/cold-case-student-register.pdf',format:'A4',printBackground:false,preferCSSPageSize:true});expect(pdf.toString('latin1').match(/\/Type\s*\/Page\b/g)).toHaveLength(1);
+  await expect(page.locator('.clue-worksheet')).toBeHidden();
+  await page.emulateMedia({media:'screen'});
+  await page.evaluate(() => { window.print = () => {}; });
+  await page.getByRole('button',{name:'PRINT CLUE WORKSHEET',exact:true}).click();
+  await page.emulateMedia({media:'print'});
+  await expect(page.locator('.student-register')).toBeHidden();
+  await expect(page.locator('.clue-box')).toHaveCount(8);
+  for (const box of await page.locator('.clue-box').all()) {
+    const size = await box.boundingBox();
+    expect(size!.width / size!.height).toBeCloseTo(1, 2);
+    expect(await box.evaluate(node => node.textContent)).toBe(await box.locator('h3').textContent());
+  }
+  const worksheet = await page.pdf({path:'test-results/cold-case-clue-worksheet.pdf',printBackground:false,preferCSSPageSize:true});
+  expect(worksheet.toString('latin1').match(/\/Type\s*\/Page\b/g)).toHaveLength(1);
+  await page.locator('.clue-worksheet').screenshot({path:'test-results/clue-worksheet.png'});
+  await page.emulateMedia({media:'screen'});
+  await page.getByRole('button',{name:'PRINT STUDENT REGISTER',exact:true}).click();
+  await page.emulateMedia({media:'print'});
+  await expect(page.locator('.clue-worksheet')).toBeHidden();
+  await expect(page.locator('.student-register')).toBeVisible();
 });

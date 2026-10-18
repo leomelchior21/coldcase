@@ -116,4 +116,8 @@
 .code-answer-blank.calculation-blank{min-width:18ch;border-color:#63e1ff;background:#36ddff15;color:#a5efff!important;box-shadow:0 0 12px #36ddff35}
 .code-answer-blank>span{font-size:.85em;font-style:italic;color:inherit!important;opacity:.85;pointer-events:none}
 .code-answer-blank:focus-visible{outline:2px solid #fff4c4;outline-offset:2px}
+.cm-editor .note-variable,.cm-editor .note-variable span{color:#ff535f!important}
+.cm-editor .note-value,.cm-editor .note-value span{color:#ffc342!important}
+.cm-editor .note-operation,.cm-editor .note-operation span{color:#36ddff!important}
+.cm-editor .note-value .note-variable,.cm-editor .note-value .note-variable span{color:#ff535f!important}
 @media(prefers-reduced-motion:reduce){.code-answer-blank{animation:none}}

@@ -11,7 +11,7 @@ Luke, Anna, Noah, and Sophie. No API fallback was used.
 - clue-plan.json: original clue-art brief, with completion status.
 
 Scene evidence uses generated imagery; password records use readable HTML.
-The teacher handout is now only the student register, with no illustrations. Restored-color and final-reveal
+The teacher handouts are the student register and blank clue worksheet, with no illustrations. Restored-color and final-reveal
 images stay in the game. Suspect boards and profiles reuse the individual portraits. Evidence thumbnails
 use the same assets. Exact names, IDs, times and table entries remain readable HTML.
 The initial camera archive does not show the backpack. The hallway frame keeps
@@ -43,3 +43,12 @@ built-in image generator, using Brian and the Maker Lab as references. The local
 WebP is `../public/cases/case001/evidence/opening-comic.webp`. The same component
 renders it in the Case brief and the first How to Play screen, with HTML captions.
 The exact prompt and reference paths are saved in `opening-comic.json`.
+
+## Mission and ready comics
+
+`source/mission-comic.png` and `source/ready-comic.png` extend the opening comic
+into How to Play screens 02 and 05. Both were generated with the built-in image
+generator, using `source/opening-comic.png` as a style reference. Optimized assets
+are `../public/cases/case001/evidence/mission-comic.webp` and `ready-comic.webp`.
+Exact prompts and paths are in `guide-comics.json`. Captions remain readable HTML;
+the illustrated register contains no readable names or passwords.
