@@ -1,17 +1,61 @@
 import { test, expect, type Page } from './fixtures';
 import { solutions } from '../tests/fixtures/casePrograms';
 
-async function seedArchive(page: Page, stage: 'camera' | 'time' | 'done') {
+async function seedArchive(page: Page, stage: 'camera' | 'time' | 'done', language: 'python' | 'csharp' = 'python') {
   await page.goto('/case/001');
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened === true);
-  await page.evaluate(stage => {
+  await page.evaluate(({ stage, language }) => {
     const key = 'cold-case:001:v1';
     const state = JSON.parse(localStorage.getItem(key)!);
-    Object.assign(state, { solved: [1,2,3], results: {1:280,2:27,3:1540}, currentStep:3, cameraCodeAccepted:stage!=='camera',timeAccepted:stage==='done',archive1220Unlocked:stage==='done' });
+    Object.assign(state, { language, solved: [1,2,3], results: {1:280,2:27,3:1540}, currentStep:3, cameraCodeAccepted:stage!=='camera',timeAccepted:stage==='done',archive1220Unlocked:stage==='done' });
     localStorage.setItem(key,JSON.stringify(state));
-  },stage);
+  },{ stage, language });
   await page.reload();
 }
+
+for (const language of ['python', 'csharp'] as const) test(`later ${language} steps unlock sequentially and persist after reload`, async ({ page }, testInfo) => {
+  await seedArchive(page, 'done', language);
+  await expect(page.getByRole('textbox', { name: language === 'python' ? 'Python code editor' : 'C# code editor' })).toBeVisible();
+  const tabs = page.getByRole('navigation', { name: 'Investigation steps' }).getByRole('button');
+  for (let id = 4; id <= 8; id++) {
+    for (let next = 1; next <= 8; next++) {
+      if (next <= id) await expect(tabs.nth(next - 1)).toBeEnabled();
+      else await expect(tabs.nth(next - 1)).toBeDisabled();
+    }
+    await tabs.nth(id - 1).click();
+    const editor = page.getByRole('textbox', { name: /^(Python|C#) code editor$/ });
+    const source = language === 'python' ? solutions[id - 1] : solutions[id - 1].split('\n').map(line => line.startsWith('print(') ? 'Console.WriteLine(result);' : `int ${line};`).join('\n');
+    await editor.fill(source);
+    await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+    await expect(page.locator('.console-output.success')).toBeVisible();
+    if (id === 8) {
+      const clue = page.getByRole('dialog', { name: 'Recovered sign-in record', exact: true });
+      await expect(clue).toBeVisible();
+      await expect(clue).toContainText('FIRST-NAME INITIAL: E.');
+      await expect(clue).toContainText('FIRST TWO PASSWORD DIGITS: 72');
+      await expect(clue).not.toContainText('Emily');
+      const choose = clue.getByRole('button', { name: 'CHOOSE THE SUSPECT', exact: true });
+      await expect(choose).toBeInViewport();
+      expect((await choose.boundingBox())!.height).toBeGreaterThanOrEqual(56);
+      await clue.screenshot({ path: `test-results/${testInfo.project.name}-${language}-final-clue.png` });
+      await choose.click();
+      await expect(page.locator('.deduction-suspects button')).toHaveCount(9);
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await page.getByRole('button', { name: 'RETURN TO EVIDENCE', exact: true }).click();
+      await page.getByRole('button', { name: 'Open Recovered sign-in record', exact: true }).click();
+      await expect(clue.getByRole('button', { name: 'CHOOSE THE SUSPECT', exact: true })).toBeVisible();
+      await clue.getByRole('button', { name: 'Close dialog' }).click();
+    } else {
+      await page.getByRole('dialog', { name: 'New evidence recovered' }).getByRole('button', { name: 'Close dialog' }).click();
+    }
+    await page.reload();
+    await expect(tabs.nth(id - 1)).toHaveAttribute('aria-current', 'step');
+    await expect(editor).toContainText(source.split('\n')[0]);
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[id], id)).toBe(source);
+    if (id < 8) await expect(tabs.nth(id)).toBeEnabled();
+    for (let later = id + 2; later <= 8; later++) await expect(tabs.nth(later - 1)).toBeDisabled();
+  }
+});
 
 test('mechanical selectors support pointer drag, keyboard, and touch-sized controls', async({page},testInfo)=>{
   await seedArchive(page,'time');

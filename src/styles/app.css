@@ -121,3 +121,7 @@
 .cm-editor .note-operation,.cm-editor .note-operation span{color:#36ddff!important}
 .cm-editor .note-value .note-variable,.cm-editor .note-value .note-variable span{color:#ff535f!important}
 @media(prefers-reduced-motion:reduce){.code-answer-blank{animation:none}}
+.final-clue-action{display:flex;align-items:center;gap:20px;flex-shrink:0;padding:16px 24px;background:var(--noise),#e4dbc6;border-top:2px solid #576052;color:#26302c}
+.final-clue-action>span{font:700 11px/1.6 var(--mono);letter-spacing:1px;max-width:150px}
+.final-clue-action .primary{flex:1;min-height:64px;font-size:28px}
+@media(max-width:600px){.final-clue-action{flex-direction:column;gap:8px;padding:12px 16px}.final-clue-action>span{max-width:none}.final-clue-action .primary{width:100%;font-size:24px;min-height:56px}}

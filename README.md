@@ -16,7 +16,7 @@ and device; no account or cloud service is used.
 
 ## Included
 
-- A case archive, tactile investigation desk, and eight steps. Steps 4–8 unlock only after completing Steps 1–3 and answering both CCTV terminal prompts correctly.
+- A case archive, tactile investigation desk, and eight steps. Step 4 unlocks after completing Steps 1–3 and answering both CCTV terminal prompts correctly. From Step 4 onward, each step must be solved to unlock the next.
 - A Python or C# choice before entering the case, remembered with student progress.
 - A five-screen illustrated introduction covering the story, evidence desk, a generic coding example, and the investigation sequence. **HOW TO PLAY** in the upper right reopens the guide without changing student work.
 - CodeMirror editors with a dark navy background, yellow numbers/types, red variables, cyan calls/operators, and muted blue comments, matching the supplied reference. Per-step code, optional Case Notes, and progressive clues adapt to the chosen language.
@@ -24,7 +24,8 @@ and device; no account or cloud service is used.
   Steps 2-8 provide glowing placeholder variable names, blank values and result,
   and the output call. Glowing value and calculation blanks accept a click or keyboard
   activation and disappear as students type; their labels never enter saved code.
-  C# uses only `int` declarations.
+  C# uses only `int` declarations. Case Notes end at the output instruction;
+  saved generated notes are shortened automatically while student code is preserved.
 - Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
@@ -32,7 +33,7 @@ and device; no account or cloud service is used.
 - Monochrome footage that restores its colors after students recover the color key.
 - Password-gated Teacher Tools at `/teacher/case/001/print` offer an **A4 student register** with 30 fictional names, student numbers, and puzzle passwords, plus a **landscape A4 clue worksheet** with eight blank squares titled by step. Each has its own print button. Print a worksheet per team for notes and a register for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
 - Nine named suspects plus Brian, with three new generated portraits. Emily and Elena share similar hair, blue backpacks, B4 access, and Room 204; older student Oliver shares the backpack, access group, and room.
-- A dimmed-screen discovery spotlight invites students to open each newly recovered clue.
+- A dimmed-screen discovery spotlight invites students to open each newly recovered clue. Completing Step 8 opens the final sign-in record directly, with a prominent **CHOOSE THE SUSPECT** button that stays visible below the clue.
 - All nine suspects return for the final choice. A wrong choice fades to an unresolved ending with a return to the levels; Emily unlocks the animated true story.
 
 Future case folders are unavailable placeholders clearly marked **Coming soon**.

@@ -7,9 +7,11 @@ async function closeDocument(page: Page) { await page.getByRole('button',{name:'
 async function openDiscoveries(page: Page, ids: string[]) {
   for (const id of ids) {
     const title = case001.documents.find(doc => doc.id === id)!.title;
-    const spotlight = page.getByRole('dialog', {name:'New evidence recovered'});
-    await expect(spotlight).toBeVisible();
-    await spotlight.getByRole('button', {name:new RegExp(title)}).click();
+    if (id !== 'FINAL-01') {
+      const spotlight = page.getByRole('dialog', {name:'New evidence recovered'});
+      await expect(spotlight).toBeVisible();
+      await spotlight.getByRole('button', {name:new RegExp(title)}).click();
+    }
     await expect(page.getByRole('dialog', {name:title, exact:true})).toBeVisible();
     if (id === 'FINAL-01') {
       await expect(page.getByRole('button', {name:'Student number register',exact:true})).toHaveCount(0);

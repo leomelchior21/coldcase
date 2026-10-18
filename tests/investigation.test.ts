@@ -24,7 +24,27 @@ describe('Recovered evidence chain', () => {
     const wrongTime = acceptArchiveTime(camera,15,41);
     for(const id of [4,5,6,7,8]) expect(canSelectStep(wrongTime,id)).toBe(false);
     const authenticated = acceptArchiveTime(camera,15,40);
-    for(const id of [4,5,6,7,8]) expect(canSelectStep(authenticated,id)).toBe(true);
+    expect(canSelectStep(authenticated,4)).toBe(true);
+    for(const id of [5,6,7,8]) expect(canSelectStep(authenticated,id)).toBe(false);
+  });
+  it('unlocks one later step at a time and keeps earlier steps available', () => {
+    let state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
+    for (const current of [4,5,6,7,8]) {
+      for (let id = 1; id <= current; id++) expect(canSelectStep(state, id)).toBe(true);
+      for (let id = current + 1; id <= 8; id++) {
+        expect(canSelectStep(state, id)).toBe(false);
+        expect(stepBlockReason(state, id, case001)).toContain(`Solve Step ${String(current).padStart(2, '0')}`);
+        expect(solveStep(state, id, case001)).toBe(state);
+      }
+      state = solveStep(state, current, case001);
+      expect(state.solved).toContain(current);
+    }
+    expect(state.solved).toHaveLength(8);
+  });
+  it('requires the full earlier sequence even if a later step was previously solved', () => {
+    const state = { ...acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40), solved: [1,2,3,5] };
+    expect(canSelectStep(state, 6)).toBe(false);
+    expect(solveStep(state, 6, case001)).toBe(state);
   });
   it('accepts prerequisites in any order but requires all three', () => {
     expect(archiveReady(solveStep(freshState(),3,case001))).toBe(false);

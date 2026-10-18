@@ -1,7 +1,7 @@
 ﻿import { case001, initialCode, suspects } from '../cases/case001';
 import { archiveReady, canSelectStep, stepBlockReason } from './caseEngine';
 import type { CaseState, Value } from '../types';
-import { codeForStep } from './language';
+import { codeForStep, refreshCaseNotes } from './language';
 export const STORAGE_KEY = 'cold-case:001:v1';
 export function freshState(): CaseState {
   return { language: 'python', languageChosen: false, tutorialCompleted: false, version: 1, caseRevision: 3, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
@@ -37,7 +37,6 @@ export function loadState(): CaseState {
     clean.cameraCodeAccepted = archiveReady(clean) && raw.cameraCodeAccepted === true;
     clean.timeAccepted = clean.cameraCodeAccepted && raw.timeAccepted === true;
     clean.archive1220Unlocked = clean.timeAccepted && raw.archive1220Unlocked === true;
-    if (!canSelectStep(clean, clean.currentStep)) clean.currentStep = [1,2,3].find(id => !clean.solved.includes(id)) ?? 3;
     clean.evidence.push(...case001.steps.filter(s => clean.solved.includes(s.id)).flatMap(s => s.unlockEvidence));
     if (clean.archive1220Unlocked) clean.evidence.push('A1220','CCTV-BW');
     for (const step of case001.steps.filter(s => s.id > 3)) {
@@ -45,9 +44,11 @@ export function loadState(): CaseState {
         clean.solved.push(step.id); clean.evidence.push(...step.unlockEvidence);
       }
     }
+    if (!canSelectStep(clean, clean.currentStep)) clean.currentStep = case001.steps.find(step => canSelectStep(clean, step.id) && !clean.solved.includes(step.id))?.id ?? 3;
     clean.results = Object.fromEntries(case001.steps.filter(s => clean.solved.includes(s.id)).map(s => [s.id,s.expectedResult]));
     clean.codes = { ...clean.codes, ...cleanCodes(raw.codes) };
     case001.steps.forEach(step => {
+      clean.codes[step.id] = refreshCaseNotes(clean.codes[step.id], step, clean.language);
       const hint = raw.hints?.[step.id];
       if (typeof hint === 'number') clean.hints[step.id] = Math.max(0, Math.min(3, Math.floor(hint)));
     });

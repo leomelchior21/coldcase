@@ -8,13 +8,19 @@ import { TeacherPrintPage } from '../pages/TeacherPrintPage';
 import { loadState, freshState, saveState } from '../engine/storage';
 import { CaseTutorial, LanguageSelection } from '../components/CaseOnboarding';
 import { TeacherAccess } from '../components/TeacherAccess';
-import { codeForStep } from '../engine/language';
+import { codeForStep, refreshCaseNotes } from '../engine/language';
 import type { CodeLanguage } from '../types';
 import { case001 } from '../cases/case001';
 export default function App() {
   const [state, setState] = useState(loadState), [route, setRoute] = useState(window.location.pathname), [opening, setOpening] = useState(false), [resetOpen, setResetOpen] = useState(false), [saved, setSaved] = useState(true);
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    setState(previous => {
+      const codes = Object.fromEntries(case001.steps.map(step => [step.id, refreshCaseNotes(previous.codes[step.id], step, previous.language)]));
+      return case001.steps.every(step => codes[step.id] === previous.codes[step.id]) ? previous : { ...previous, codes };
+    });
+  }, []);
   useEffect(() => { setSaved(saveState(state)); }, [state]);
   useEffect(() => { const pop = () => setRoute(window.location.pathname); window.addEventListener('popstate', pop); return () => { window.removeEventListener('popstate', pop); if (timer.current) clearTimeout(timer.current); }; }, []);
   useEffect(() => {

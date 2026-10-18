@@ -3,6 +3,7 @@ import { freshState, loadState, saveState, STORAGE_KEY } from '../src/engine/sto
 import { case001, initialCode } from '../src/cases/case001';
 import { solveStep, acceptCameraCode, acceptArchiveTime } from '../src/engine/caseEngine';
 import { solutions } from './fixtures/casePrograms';
+import { codeForStep, languageText } from '../src/engine/language';
 
 function memory(value: unknown) {
   const data = new Map([[STORAGE_KEY, JSON.stringify(value)]]);
@@ -11,6 +12,65 @@ function memory(value: unknown) {
 function ready() { return [1,2,3].reduce((state,id) => solveStep(state,id,case001), freshState()); }
 
 describe('Saved investigation migration', () => {
+  it.each(['python', 'csharp'] as const)('removes the four extra comments from every saved %s step with edited headers', language => {
+    const state = freshState(), marker = language === 'csharp' ? '//' : '#';
+    const newline = language === 'csharp' ? '\r\n' : '\n';
+    const obsolete = [
+      'Declare whole numbers with int, e.g. int clues = 2;',
+      'End each statement with a semicolon (;).',
+      'Replace each glowing VARIABLE name and fill its value from the Case Note.',
+      'Complete result with your calculation, then print result below.',
+    ];
+    state.language = language;
+    const expected: Record<number, string> = {};
+    for (const step of case001.steps) {
+      const notes = codeForStep(step, language, false).trimEnd().replace(/(?:FINAL )?CASE NOTE/, 'My edited case note').split('\n');
+      const draft = [`${marker} My calculation`, language === 'csharp' ? 'int result = 42;' : 'result = 42'];
+      state.codes[step.id] = [...notes, ...obsolete.map(line => `  ${marker} ${line}  `), '', ...draft].join(newline);
+      expected[step.id] = [...notes, '', ...draft].join(newline);
+    }
+    memory(state);
+    expect(loadState().codes).toEqual(expected);
+  });
+  it.each(['python', 'csharp'] as const)('cleans saved %s Case Notes without changing student code or comments', language => {
+    const step = case001.steps[7], marker = language === 'csharp' ? '//' : '#';
+    const oldNotes = `${marker} FINAL CASE NOTE\n` + step.caseNote.map(line => `${marker} ${languageText(line, language)}`).join('\n');
+    const oldGuide = (language === 'csharp' ? '\n// Declare whole numbers with int, e.g. int clues = 2;\n// End each statement with a semicolon (;).' : '') + `\n${marker} Replace each glowing VARIABLE name and fill its value from the Case Note.\n${marker} Complete result with your calculation, then print result below.`;
+    const draft = `${marker} My own note\n` + (language === 'csharp' ? 'int prefix_checksum = 864;\nint result =;' : 'prefix_checksum = 864\nresult =');
+    const state = freshState();
+    state.language = language;
+    state.codes[8] = oldNotes + oldGuide + '\n\n' + draft;
+    memory(state);
+    const restored = loadState();
+    expect(restored.codes[8]).toBe(codeForStep(step, language, false) + draft);
+    saveState(restored);
+    expect(loadState()).toEqual(restored);
+  });
+  it.each([4,5,6,7,8])('preserves the current sequential step %i on reload', current => {
+    let state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
+    for (let id = 4; id < current; id++) state = solveStep(state, id, case001);
+    state.currentStep = current;
+    state.codes[current] = '# My in-progress solution';
+    memory(state);
+    expect(loadState()).toEqual(state);
+  });
+  it('returns a saved locked later step to the next unsolved step and preserves its draft', () => {
+    const state = solveStep(acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40), 4, case001);
+    state.currentStep = 8;
+    state.codes[8] = '# Keep my later draft';
+    memory(state);
+    expect(loadState().currentStep).toBe(5);
+    expect(loadState().codes[8]).toBe(state.codes[8]);
+  });
+  it('drops out-of-order completions and evidence after a gap in the sequence', () => {
+    const state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
+    memory({ ...state, solved: [1,2,3,5,6,7,8], currentStep: 8 });
+    const restored = loadState();
+    expect(restored.solved).toEqual([1,2,3]);
+    expect(restored.currentStep).toBe(4);
+    expect(restored.evidence).toEqual(state.evidence);
+    expect(restored.results).toEqual(state.results);
+  });
   it('returns a saved locked step to an unfinished opening step without erasing its code', () => {
     const state = solveStep(freshState(),1,case001);state.currentStep=5;state.codes[5]='# My saved work\nkey_code = 27';
     memory(state);const restored=loadState();expect(restored.currentStep).toBe(2);expect(restored.codes[5]).toBe(state.codes[5]);

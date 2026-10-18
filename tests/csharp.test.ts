@@ -57,6 +57,13 @@ describe('C# numeric classroom interpreter', () => {
     expect(validate(first.replace('int result =;', 'int result = camera_log / backup_log;'), case001.steps[0], 'csharp').ok).toBe(true);
     expect(languageText(case001.steps[0].hints[2], 'csharp')).toBe('int result = camera_log / backup_log;');
   });
+  it.each(['python', 'csharp'] as const)('ends every %s Case Note at the output instruction', language => {
+    for (const step of case001.steps) {
+      const notes = codeForStep(step, language, false).trimEnd();
+      expect(notes.endsWith(language === 'csharp' ? '// Use Console.WriteLine(result);' : '# Use print(result).')).toBe(true);
+      expect(notes).not.toMatch(/Declare whole numbers|End each statement|Replace each glowing|Complete result|Ask your teacher|Combine the prefix/);
+    }
+  });
   it('restores C# programs, language and completed tutorial without losing student work', () => {
     const data = new Map<string, string>();
     Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: (key: string) => data.get(key), setItem: (key: string, value: string) => data.set(key, value) } });
