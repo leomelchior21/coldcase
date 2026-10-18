@@ -1,5 +1,5 @@
 ﻿export const evidenceArtwork: Record<string, { file: string; alt: string; label?: string; monochrome?: boolean }> = {
-  BRIEF: { file: 'maker-lab', alt: 'The school maker lab where Brian was last seen' },
+  BRIEF: { file: 'opening-comic', alt: 'Comic story: Brian working on his robot, his empty Maker Lab seat, and a damaged security recording.' },
   C280: { file: 'camera-archive', alt: 'School security camera mounted in the hallway', label: 'CAMERA CODE 280' },
   K27: { file: 'key-registry', alt: 'School key cabinet and a brass key on the registry desk', label: 'MISSING KEY 27' },
   T1540: { file: 'timeline-record-v2', alt: 'Recovered timestamp record cards on the school archive desk', label: 'BRIAN LAST SEEN · 15:40' },

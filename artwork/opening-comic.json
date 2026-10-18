@@ -1,0 +1,11 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Use case: illustration-story. Create one landscape 3:2 comic-book triptych illustration for the opening of a classroom detective game, exactly three equal vertical panels separated by bold black ink gutters. Reference image 1: Brian's character identity, 13-year-old boy with tousled curly brown hair, gray T-shirt and charcoal hoodie. Reference image 2: Maker Lab setting, workbenches, tool pegboard, warm window light. Transform these into dramatic graphic-novel ink illustration with expressive black contours, halftone dots, limited ochre/cream/charcoal/teal and restrained scarlet accents, printed paper texture, cinematic diagonal compositions. Left panel: earlier, Brian concentrating on unfinished small robotics project at his workbench, waist-up, recognizable face, no other people. Middle panel: now the same workbench with unfinished robot and dramatically EMPTY chair, no people, oblique angle and deep shadows. Right panel: close-up of school security monitor with monochrome static, a security camera visible above it, scattered blank record sheets, dramatic teal screen glow. Urgent unsolved mystery atmosphere, suitable for young students. Do not depict abduction, injury, threatening people, or destruction. No other suspects, no backpack clues, no final reveal. NO text, numbers, lettering, speech balloons, labels, clocks or readable codes anywhere; all captions will be added in HTML. Keep important faces and objects within central 65 percent of each panel, leaving some top and bottom breathing room for overlaid captions. One cohesive comic page, full bleed.",
+  "references": [
+    "artwork/source/brian.png",
+    "artwork/source/maker-lab.png"
+  ],
+  "source": "artwork/source/opening-comic.png",
+  "output": "public/cases/case001/evidence/opening-comic.webp",
+  "usage": "Shared CaseComic component in Case brief and first How to Play screen. Captions rendered in HTML."
+}

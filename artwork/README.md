@@ -35,3 +35,11 @@ optimized crops are `../public/cases/case001/portraits/elena.webp`, `maya.webp`,
 and `oliver.webp`. Exact prompt and crop details: `new-suspects.json`.
 The two new girls have a shoulder-length side-parted dark bob similar to Emily;
 Oliver is an older student, age 18. No API fallback was used.
+
+## Opening comic
+
+`source/opening-comic.png` is the original three-panel comic generated with the
+built-in image generator, using Brian and the Maker Lab as references. The local
+WebP is `../public/cases/case001/evidence/opening-comic.webp`. The same component
+renders it in the Case brief and the first How to Play screen, with HTML captions.
+The exact prompt and reference paths are saved in `opening-comic.json`.

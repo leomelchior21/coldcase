@@ -22,7 +22,9 @@ and device; no account or cloud service is used.
 - CodeMirror editors with a dark navy background, yellow numbers/types, red variables, cyan calls/operators, and muted blue comments, matching the supplied reference. Per-step code, optional Case Notes, and progressive clues adapt to the chosen language.
   Step 1 includes the correct variables and output call with a blank result expression.
   Steps 2-8 provide glowing placeholder variable names, blank values and result,
-  and the output call. C# uses only `int` declarations.
+  and the output call. Glowing value and calculation blanks accept a click or keyboard
+  activation and disappear as students type; their labels never enter saved code.
+  C# uses only `int` declarations.
 - Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
@@ -58,6 +60,11 @@ Choosing Emily reveals that Brian was safe: they moved to Room 204 to prepare
 the Maker demonstration. A staff check at 15:50 confirmed both safe. Key 27 was
 signed out for the equipment, and they forgot to update the Maker Lab schedule.
 The reveal illustration and story appear only after the correct final choice.
+
+The brief and first field-guide screen share a three-panel comic opening: Brian
+at work, his empty seat, and the broken recording. Captions are readable HTML,
+with the illustration stored locally. Suspect records and the final selection
+show full 3:4 portraits without landscape cropping.
 
 The five-screen field guide uses larger, bolder description text and a real
 empty desk screenshot with arrows labeling the case file, code editor, and

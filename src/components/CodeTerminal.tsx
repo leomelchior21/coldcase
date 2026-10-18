@@ -8,6 +8,7 @@ import { tags } from '@lezer/highlight';
 import { Play, RotateCcw, Lightbulb, Eye, EyeOff, Terminal, Check, ArrowRight } from 'lucide-react';
 import type { CodeLanguage, StepDefinition } from '../types';
 import { languageName } from '../engine/language';
+import { glowingAnswers } from './codeBlanks';
 import type { Feedback } from '../engine/python/validator';
 const highlighting = HighlightStyle.define([
   { tag: tags.comment, color: '#71859f' },
@@ -50,7 +51,7 @@ function CodeEditor({ language, value, onChange, onRun }: { language: CodeLangua
   useEffect(() => {
     if (!container.current) return;
     const editor = new EditorView({ parent: container.current, state: EditorState.create({ doc: value, extensions: [
-      glowingPlaceholders, lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
+      glowingAnswers, glowingPlaceholders, lineNumbers(), history(), drawSelection(), highlightActiveLine(), language === 'csharp' ? csharpLanguage : python(), syntaxHighlighting(highlighting),
       keymap.of([{ key: 'Mod-Enter', run: () => { callbacks.current.onRun(); return true; } }, indentWithTab, ...defaultKeymap, ...historyKeymap]),
       EditorView.lineWrapping,
       EditorView.contentAttributes.of({ 'aria-label': `${languageName(language)} code editor`, 'autocapitalize': 'off', 'autocorrect': 'off', 'spellcheck': 'false', 'data-testid': `${language}-editor` }),

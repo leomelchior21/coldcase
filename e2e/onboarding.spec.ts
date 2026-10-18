@@ -8,7 +8,7 @@ for (const language of ['Python', 'C#']) test(`fresh ${language} student chooses
   await expect(page.getByRole('heading', { name: 'CHOOSE YOUR CODE.' })).toBeVisible();
   await expect(page.locator('.investigation-page')).toHaveCount(0);
   await page.getByRole('button', { name: new RegExp(`START WITH ${language === 'C#' ? 'C#' : 'PYTHON'}`) }).click();
-  const headings = ['AN EMPTY MAKER LAB.', 'FOLLOW RECORDS. QUESTION ASSUMPTIONS.', 'THREE PLACES TO LOOK.', 'TURN CLUES INTO AN ANSWER.', 'RECOVER. COMPARE. RECONSTRUCT.'];
+  const headings = ['BRIAN IS MISSING.', 'FOLLOW RECORDS. QUESTION ASSUMPTIONS.', 'THREE PLACES TO LOOK.', 'TURN CLUES INTO AN ANSWER.', 'RECOVER. COMPARE. RECONSTRUCT.'];
   for (let index = 0; index < 5; index++) {
     await expect(page.getByRole('heading', { name: headings[index], exact: true })).toBeVisible();
     await expect(page.getByLabel(`Screen ${index + 1} of 5`)).toBeVisible();
@@ -55,7 +55,7 @@ test('direct case URL requires language and tutorial; partial tutorial is not co
   await page.getByRole('button', { name: /START WITH C#/ }).click();
   await next(page);
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'AN EMPTY MAKER LAB.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'BRIAN IS MISSING.' })).toBeVisible();
   await expect(page.locator('.investigation-page')).toHaveCount(0);
 });
 

@@ -108,3 +108,12 @@
 .ending-paper{animation:clue-arrives .8s ease-out}.closed-stamp{animation:case-stamp 1s ease-out}.ending-scene{position:relative;margin:25px 0;overflow:hidden;animation:story-reveal 1.8s ease-out}.ending-scene img{display:block;width:100%;max-height:330px;object-fit:cover;object-position:center 42%}.ending-scene span{position:absolute;bottom:0;left:0;right:0;background:#10271edc;color:#efe7d0;font:11px var(--mono);padding:14px}.reconstruction-chain>div{animation:clue-arrives .7s both}.reconstruction-chain>div:nth-child(2n){animation-delay:.15s}.reconstruction-chain>div:nth-child(3n){animation-delay:.3s}@keyframes case-stamp{from{opacity:0;transform:scale(2) rotate(-15deg)}to{opacity:1;transform:rotate(-5deg)}}@keyframes story-reveal{from{opacity:0;filter:grayscale(1);clip-path:inset(0 50%)}to{opacity:1;filter:grayscale(0);clip-path:inset(0)}}
 @media(max-width:700px){.clue-spotlight{margin:0 auto;padding:22px!important}.clue-spotlight h2{font-size:32px}.deduction-suspects{grid-template-columns:repeat(3,minmax(0,1fr))}.deduction-suspects>button span{font-size:13px}.final-clue-summary{padding:20px}.unsolved-ending .primary{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.code-placeholder,.clue-spotlight,.modal-backdrop:has(.clue-spotlight),.discovery-card,.ending-paper,.closed-stamp,.ending-scene,.reconstruction-chain>div,.unsolved-ending{animation:none!important}}
+
+/* Full portrait framing on the board, detailed files, and final selection. */
+.suspect-card .portrait,.deduction-suspects .portrait{height:auto;aspect-ratio:3/4}
+.suspect-card .portrait img,.deduction-suspects .portrait img{object-fit:contain;object-position:center}
+.code-answer-blank{display:inline-flex;align-items:center;justify-content:center;min-width:7ch;min-height:1.35em;margin:0 .45ch;padding:0 .6ch;border:1px dashed #ffc342;border-radius:3px;background:#ffc3421c;box-shadow:0 0 10px #ffc34224;color:#ffe2a0!important;cursor:text;vertical-align:baseline;animation:placeholder-glow 1.8s ease-in-out infinite}
+.code-answer-blank.calculation-blank{min-width:18ch;border-color:#63e1ff;background:#36ddff15;color:#a5efff!important;box-shadow:0 0 12px #36ddff35}
+.code-answer-blank>span{font-size:.85em;font-style:italic;color:inherit!important;opacity:.85;pointer-events:none}
+.code-answer-blank:focus-visible{outline:2px solid #fff4c4;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.code-answer-blank{animation:none}}
