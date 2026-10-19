@@ -14,6 +14,12 @@ Open **http://localhost:5176**. To play on an iPad connected to the same network
 use the network URL printed by Vite. Progress is saved separately in each browser
 and device; no account or cloud service is used.
 
+For classroom use, share the deployed site's **HTTPS** URL. The network URL
+printed by the development server uses plain HTTP and can show a “Not Secure”
+warning on iPads. A certificate/privacy warning on an HTTPS URL needs the exact
+hostname and warning checked against the hosting certificate, device clock and
+school network settings; changing image formats does not repair certificates.
+
 ## Included
 
 - A case archive, tactile investigation desk, and eight steps. Step 4 unlocks after completing Steps 1–3 and answering both CCTV terminal prompts correctly. From Step 4 onward, each step must be solved to unlock the next.
@@ -128,6 +134,12 @@ Generated app images live in `public/cases/case001/portraits/` and
 `public/cases/case001/evidence/`. Original PNGs and exact generation prompts are
 preserved in `artwork/`. See `artwork/README.md` for the asset workflow.
 All images are local; the running app makes no image API calls.
+
+WebP artwork retries automatically as JPEG if the browser cannot decode or load
+it, including clue thumbnails, full evidence, portraits, guide comics and the
+ending. This covers iPads whose Safari version lacks WebP support. JPEG copies
+are committed for local development and refreshed by `npm run build`.
+After replacing artwork, run `npm run images:compat` to refresh those copies.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad
 keyboard behavior should also be checked on hardware before a classroom rollout.

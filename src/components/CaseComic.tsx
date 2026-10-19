@@ -1,4 +1,5 @@
 import { evidenceArtwork, evidenceImagePath } from '../cases/case001-artwork';
+import { CompatibleImage } from './CompatibleImage';
 
 const chapters = {
   opening: {
@@ -32,7 +33,7 @@ export function CaseComic({ chapter = 'opening' }: { chapter?: keyof typeof chap
   return <figure className="case-comic">
     <div className="comic-alert"><span>{story.kicker}</span><strong>{story.title}</strong></div>
     <div className="comic-strip">
-      <img src={story.image} alt={story.alt} width={1536} height={1024}/>
+      <CompatibleImage src={story.image} alt={story.alt} width={1536} height={1024}/>
       <div className="comic-panel-labels" aria-hidden="true">{story.labels.map(label => <span key={label}>{label}</span>)}</div>
       <div className="comic-panel-captions">{story.captions.map(([lead, action]) => <span key={lead}>{lead}<br/><b>{action}</b></span>)}</div>
     </div>

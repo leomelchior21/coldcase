@@ -27,6 +27,11 @@ Run node scripts/prepare-artwork.mjs to copy and optimize entries in prompts.jso
 The script only encodes existing files, preserves original PNGs and skips existing
 outputs. It makes no API calls.
 
+Run `npm run images:compat` after changing any WebP artwork to regenerate its
+JPEG fallback. This scans all case folders, including optional portrait/footage
+overrides, and also runs before every production build. The UI retries a failed
+WebP as its matching JPEG so older iPads can display the same illustrations.
+
 ## Expanded suspect cast
 
 The built-in image generator created Elena Brooks, Maya Chen, and Oliver Grant

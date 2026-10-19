@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { UserRound } from 'lucide-react';
 import { anonymousShade } from './anonymous';
+import { CompatibleImage } from './CompatibleImage';
 
 const customPortraits = import.meta.glob('/public/cases/case001/*.webp', { eager: true, query: '?url', import: 'default' });
 
@@ -40,13 +41,13 @@ export function Portrait({ name = 'Brian', className = '' }: { name?: string; cl
     <path fill={`url(#lines-${id})`} d="M0 0h240v275H0z"/>
     <text x="12" y="262" fontFamily="monospace" fontSize="9" fill="#c5c7b6" opacity=".6">SCHOOL RECORD / {String(Math.max(index,0)+1).padStart(3,'0')}</text>
   </svg>;
-  return <div className={`portrait ${className}`}>{source && !failedSources.includes(source) ? <img src={source} alt={`Illustrated school portrait of ${name}`} width={560} height={747} decoding="async" onError={() => setFailedSources(previous => [...previous, source])}/> : art}</div>;
+  return <div className={`portrait ${className}`}>{source && !failedSources.includes(source) ? <CompatibleImage src={source} alt={`Illustrated school portrait of ${name}`} width={560} height={747} decoding="async" onError={() => setFailedSources(previous => [...previous, source])}/> : art}</div>;
 }
 
 export function Scene({ kind }: { kind: 'laptop' | 'classroom' | 'usb' | 'footage' }) {
   const id = useId().replace(/:/g, '');
   const custom = kind === 'footage' ? customPortraits['/public/cases/case001/camera03.webp'] as string | undefined : undefined;
-  if (custom) return <img className="scene scene-footage" src={custom} alt="Brian in a school hallway. Another person, facing away, carries a blue backpack."/>;
+  if (custom) return <CompatibleImage className="scene scene-footage" src={custom} alt="Brian in a school hallway. Another person, facing away, carries a blue backpack."/>;
   return <svg className={`scene scene-${kind}`} viewBox="0 0 400 265" role="img" aria-label={kind === 'footage' ? 'Brian in a school hallway. Another person, facing away, carries a blue backpack.' : kind === 'laptop' ? 'An unattended school computer' : kind === 'classroom' ? 'An empty classroom' : 'An unknown USB drive'}>
     <defs><linearGradient id={id} x2=".8" y2="1"><stop stopColor="#59615c"/><stop offset="1" stopColor="#111b1b"/></linearGradient><pattern id={`${id}-scan`} width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 1H4" stroke="#050c0c" strokeOpacity=".18"/></pattern></defs>
     <path fill={`url(#${id})`} d="M0 0h400v265H0z"/>

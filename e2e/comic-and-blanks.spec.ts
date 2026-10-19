@@ -44,6 +44,7 @@ for (const language of ['python', 'csharp'] as const) test(`${language} glowing 
 
 test('all suspect photos retain portrait proportions in records and the final choice', async ({ page }, testInfo) => {
   await page.goto('/case/001');
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened === true);
   await page.evaluate(() => {
     const key = 'cold-case:001:v1', state = JSON.parse(localStorage.getItem(key)!);
     Object.assign(state, { solved: [1,2,3,4,5,6,7,8], cameraCodeAccepted: true, timeAccepted: true, archive1220Unlocked: true });
@@ -55,7 +56,8 @@ test('all suspect photos retain portrait proportions in records and the final ch
     await expect(page.locator('.suspect-card .portrait')).toHaveCount(9);
     for (const portrait of await page.locator('.suspect-card .portrait').all()) {
       // Use layout dimensions: the evidence modal has a decorative rotation.
-      expect(await portrait.evaluate(node => node.clientWidth / node.clientHeight)).toBeCloseTo(.75, 2);
+      const size = await portrait.evaluate(node => ({ width: node.clientWidth, height: node.clientHeight }));
+      expect(Math.abs(size.width - size.height * .75)).toBeLessThanOrEqual(1);
       await expect(portrait.locator('img')).toHaveCSS('object-fit', 'contain');
     }
     if (title === 'Suspect board') await page.screenshot({ path: `test-results/${testInfo.project.name}-portrait-board.png` });
@@ -63,7 +65,9 @@ test('all suspect photos retain portrait proportions in records and the final ch
   }
   await page.getByRole('button', { name: 'FINAL DEDUCTION', exact: true }).click();
   for (const portrait of await page.locator('.deduction-suspects .portrait').all()) {
-    expect(await portrait.evaluate(node => node.clientWidth / node.clientHeight)).toBeCloseTo(.75, 2);
+    // Small portraits can differ by one CSS pixel after WebKit rounds layout.
+    const size = await portrait.evaluate(node => ({ width: node.clientWidth, height: node.clientHeight }));
+    expect(Math.abs(size.width - size.height * .75)).toBeLessThanOrEqual(1);
   }
   await page.getByRole('button', { name: 'Oliver Grant', exact: true }).click();
   await expect(page.getByRole('button', { name: 'CLOSE THE CASE' })).toBeInViewport();

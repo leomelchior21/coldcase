@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "images:compat": "node scripts/prepare-compatible-images.mjs",
+    "prebuild": "npm run images:compat",
     "build": "tsc -b && vite build",
     "test": "vitest run",
     "test:e2e": "playwright test",
