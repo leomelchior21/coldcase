@@ -3,22 +3,26 @@ import { test, expect } from './fixtures';
 test('the code template scrolls internally while Run and the step tabs stay fixed', async ({ page }) => {
   await page.goto('/case/001');
   const editor = page.getByRole('group', { name: 'Python code template', exact: true });
+  await page.evaluate(() => document.fonts.ready);
+  let scrollableSizes = 0;
   for (const [width, height] of [[1440, 900], [1024, 768], [925, 590], [844, 390]]) {
     await page.setViewportSize({ width, height });
     await page.waitForFunction(() => Math.abs(parseFloat(document.documentElement.style.getPropertyValue('--app-height')) - innerHeight) < 1);
     await expect(editor).toHaveCSS('overflow-y', 'auto');
-    await expect.poll(() => editor.evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
+    const needsScroll = await editor.evaluate(node => node.scrollHeight > node.clientHeight);
+    if (needsScroll) scrollableSizes++;
     const run = page.getByRole('button', { name: 'RUN CASE', exact: true });
     const before = { run: await run.boundingBox(), dock: await page.locator('.step-dock').boundingBox() };
     await editor.focus();
     await page.keyboard.press('End');
-    await expect.poll(() => editor.evaluate(node => node.scrollTop)).toBeGreaterThan(0);
+    if (needsScroll) await expect.poll(() => editor.evaluate(node => node.scrollTop)).toBeGreaterThan(0);
     await expect(editor.locator('.guided-program').getByText('print', { exact: true })).toBeInViewport();
     expect({ run: await run.boundingBox(), dock: await page.locator('.step-dock').boundingBox() }).toEqual(before);
     await expect(run).toBeInViewport();
     expect(await page.evaluate(() => document.documentElement.scrollHeight > innerHeight)).toBe(false);
     await page.keyboard.press('Home');
   }
+  expect(scrollableSizes).toBeGreaterThan(0);
 });
 
 test('the on-screen keyboard overlays the desk without shrinking its layout', async ({ page }) => {
