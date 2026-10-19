@@ -2,20 +2,21 @@ import { test, expect, type Page } from './fixtures';
 import { evidenceArtwork } from '../src/cases/case001-artwork';
 import { case001, suspects } from '../src/cases/case001';
 
-async function expectJpegImages(page: Page, selector: string) {
+async function expectJpegImages(page: Page, selector: string, bundled = false) {
   const images = page.locator(selector);
   const count = await images.count();
   expect(count).toBeGreaterThan(0);
   // Only lazy thumbnails need scrolling; eager portraits can decode offscreen.
   for (const image of await page.locator(`${selector}[loading="lazy"]`).all()) await image.scrollIntoViewIfNeeded();
-  await expect.poll(() => images.evaluateAll((nodes, count) =>
-    nodes.length === count && nodes.every(node => {
+  await expect.poll(() => images.evaluateAll((nodes, expected) =>
+    nodes.length === expected.count && nodes.every(node => {
       const image = node as HTMLImageElement;
-      return image.getAttribute('src')?.endsWith('.jpg') && image.complete && image.naturalWidth > 0;
-    }), count)).toBe(true);
+      const source = image.getAttribute('src') || '';
+      return (expected.bundled ? source.startsWith('data:image/jpeg;base64,') : source.endsWith('.jpg')) && image.complete && image.naturalWidth > 0;
+    }), { count, bundled })).toBe(true);
 }
 
-for (const thumbnails of ['available', 'missing'] as const) {
+for (const thumbnails of ['available', 'missing', 'all downloads blocked'] as const) {
   test(`all artwork loads without WebP when small thumbnails are ${thumbnails}`, async ({ page }) => {
     const webpRequests: string[] = [];
     await page.route('**/*.webp', route => {
@@ -23,8 +24,10 @@ for (const thumbnails of ['available', 'missing'] as const) {
       return route.fulfill({ status: 200, contentType: 'image/webp', body: 'undecodable image' });
     });
     if (thumbnails === 'missing') await page.route('**/*.thumb.jpg', route => route.fulfill({ status: 404, body: '' }));
+    const bundled = thumbnails === 'all downloads blocked';
+    if (bundled) await page.route('**/*.jpg', route => route.abort('blockedbyclient'));
     await page.goto('/');
-    await expectJpegImages(page, '.portrait img');
+    await expectJpegImages(page, '.portrait img', bundled);
     await page.goto('/case/001');
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened);
     await page.evaluate(() => {
@@ -33,35 +36,36 @@ for (const thumbnails of ['available', 'missing'] as const) {
       localStorage.setItem(key, JSON.stringify(state));
     });
     await page.reload();
-    await expectJpegImages(page, '.evidence-thumbnail');
+    await expectJpegImages(page, '.evidence-thumbnail', bundled);
     if (thumbnails === 'available') expect(await page.locator('.evidence-thumbnail').first().evaluate(node => (node as HTMLImageElement).naturalWidth)).toBeLessThanOrEqual(400);
     for (const id of Object.keys(evidenceArtwork)) {
       await page.getByRole('button', { name: `Open ${case001.documents.find(doc => doc.id === id)!.title}`, exact: true }).click();
-      await expectJpegImages(page, '[role="dialog"] img');
+      await expectJpegImages(page, '[role="dialog"] img', bundled);
       await page.getByRole('button', { name: 'Close dialog' }).click();
     }
     await page.getByRole('button', { name: 'Open Suspect board', exact: true }).click();
     await expect(page.locator('[role="dialog"] .portrait img')).toHaveCount(suspects.length);
-    await expectJpegImages(page, '[role="dialog"] .portrait img');
+    await expectJpegImages(page, '[role="dialog"] .portrait img', bundled);
     await page.getByRole('button', { name: 'Close dialog' }).click();
     await page.getByRole('button', { name: 'FINAL DEDUCTION', exact: true }).click();
-    await expectJpegImages(page, '.deduction-suspects .portrait img');
+    await expectJpegImages(page, '.deduction-suspects .portrait img', bundled);
     await page.getByRole('button', { name: 'Emily Carter', exact: true }).click();
     await page.getByRole('button', { name: 'CLOSE THE CASE', exact: true }).click();
-    await expectJpegImages(page, '.ending-page img');
-    expect(webpRequests).toEqual([]);
+    await expectJpegImages(page, '.ending-page img', bundled);
+    await expect(page.getByRole('button', { name: 'RETRY IMAGE', exact: true })).toHaveCount(0);
+    if (!bundled) expect(webpRequests).toEqual([]);
   });
 }
 
-test('a portrait still uses its illustrated placeholder when both formats fail', async ({ page }) => {
+test('a portrait keeps its actual photo when both image downloads fail', async ({ page }) => {
   const attempts: string[] = [];
   await page.route(/\/portraits\/brian\.(webp|jpg)$/, route => {
     attempts.push(route.request().url());
     return route.fulfill({ status: 404, body: '' });
   });
   await page.goto('/');
-  await expect(page.locator('.portrait svg[role="img"]')).toBeVisible();
-  await expect(page.locator('.portrait img')).toHaveCount(0);
+  await expectJpegImages(page, '.portrait img', true);
+  await expect(page.locator('.portrait svg[role="img"]')).toHaveCount(0);
   expect(attempts.map(url => new URL(url).pathname)).toEqual([
     '/cases/case001/portraits/brian.jpg', '/cases/case001/portraits/brian.webp',
   ]);
@@ -75,11 +79,8 @@ test('an undecodable JPEG can fall back to WebP', async ({ page }) => {
   await expect.poll(() => portrait.evaluate(node => (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
 });
 
-test('a failed clue can retry after a network failure without losing progress', async ({ page }) => {
-  let blocked = true;
-  await page.route(/\/evidence\/opening-comic\.(webp|jpg)(\?.*)?$/, route => blocked
-    ? route.fulfill({ status: 503, body: 'Network temporarily unavailable' })
-    : route.continue());
+test('a failed clue uses its bundled photo without losing progress', async ({ page }) => {
+  await page.route(/\/evidence\/opening-comic\.(webp|jpg)(\?.*)?$/, route => route.fulfill({ status: 503, body: 'Network temporarily unavailable' }));
   await page.goto('/case/001');
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened);
   await page.getByLabel('Value for camera_log', { exact: true }).fill('257880');
@@ -87,11 +88,9 @@ test('a failed clue can retry after a network failure without losing progress', 
   const saved = await page.evaluate(() => localStorage.getItem('cold-case:001:v1'));
   await page.getByRole('button', { name: 'Open Case brief', exact: true }).click();
   const dialog = page.getByRole('dialog');
-  await expect(dialog.getByRole('button', { name: 'RETRY IMAGE', exact: true })).toBeVisible();
-  blocked = false;
-  await dialog.getByRole('button', { name: 'RETRY IMAGE', exact: true }).click();
   const image = dialog.locator('.case-comic img');
-  await expect(image).toHaveAttribute('src', /opening-comic\.jpg\?retry=\d+/);
+  await expect(image).toHaveAttribute('src', /^data:image\/jpeg;base64,/);
   await expect.poll(() => image.evaluate(node => (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
+  await expect(dialog.getByRole('button', { name: 'RETRY IMAGE', exact: true })).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem('cold-case:001:v1'))).toBe(saved);
 });

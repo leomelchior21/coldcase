@@ -139,10 +139,17 @@ brief and the ending, so older iPads do not need to request WebP to see images.
 Clue previews use small 400px JPEGs and load without waiting for Safari's lazy
 loading detection inside the scrolling desk. If a thumbnail is unavailable,
 the full JPEG is used; WebP remains an alternate if the JPEG fails.
-Failed full illustrations show a **RETRY IMAGE** button that requests a fresh
-copy without clearing student progress. Portraits retain their illustrated
-placeholder when neither format loads. JPEGs and thumbnails are committed for
-local development and refreshed by `npm run build`.
+If downloads fail or stall, a compact JPEG included in the game bundle supplies the
+actual photo without another network request. This covers every case photo,
+including portraits, clues and the ending. The embedded copies are at most
+640px wide; the normal full-resolution files remain the first choice. The pack
+loads with the application so it is available as soon as the game opens. This
+increases the initial application download by about 1 MB compressed. A three-second
+limit also catches blocked requests that never dispatch a browser error event.
+Only a failure to decode even that bundled copy shows **RETRY IMAGE** or a
+portrait placeholder. Retrying does not clear student work. JPEGs, thumbnails
+and `src/generated/case-images.json` are committed for local development and
+refreshed by `npm run build`.
 After replacing artwork, run `npm run images:compat` to refresh those copies.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad

@@ -32,7 +32,10 @@ JPEG and 400px `.thumb.jpg` preview. This scans all case folders, including
 optional portrait/footage overrides, and also runs before every production
 build. The UI requests JPEG first for iPad compatibility and uses small
 previews on the evidence desk. Full JPEG and WebP provide alternate sources
-if a thumbnail is unavailable. Failed full illustrations offer a retry button.
+if a thumbnail is unavailable. The same command generates
+`src/generated/case-images.json`, a pack of compact JPEG copies (up to 640px)
+included directly in the application. If image downloads fail or stall, the UI
+shows the bundled photo without fetching another file. Original artwork stays intact.
 
 ## Expanded suspect cast
 
