@@ -24,7 +24,7 @@ school network settings; changing image formats does not repair certificates.
 
 - A case archive, tactile investigation desk, and eight steps. Step 4 unlocks after completing Steps 1–3 and answering both CCTV terminal prompts correctly. From Step 4 onward, each step must be solved to unlock the next.
 - A Python or C# choice before entering the case, remembered with student progress.
-- A five-screen illustrated introduction covering the story, evidence desk, a generic coding example, and the investigation sequence. **HOW TO PLAY** in the upper right reopens the guide without changing student work.
+- Selecting Python or C# opens the investigation immediately. The How to Play guide and pre-game tutorial have been removed.
 - Fixed Python and C# code templates with a dark navy background, yellow values/types,
   red variables, cyan calls/operators, and muted blue Case Notes. All eight steps
   provide the variable names, assignment syntax, calculation operands and output call.
@@ -72,20 +72,15 @@ the Maker demonstration. A staff check at 15:50 confirmed both safe. Key 27 was
 signed out for the equipment, and they forgot to update the Maker Lab schedule.
 The reveal illustration and story appear only after the correct final choice.
 
-The brief and first field-guide screen share a three-panel comic opening: Brian
+The case brief contains a three-panel comic opening: Brian
 at work, his empty seat, and the broken recording. Captions are readable HTML,
 with the illustration stored locally. Suspect records and the final selection
 show full 3:4 portraits without landscape cropping.
 
-The five-screen field guide uses larger, bolder description text and a real
-empty desk screenshot with arrows labeling the case file, code template, and
-evidence desk. Regenerate that screenshot with `node scripts/capture-guide.mjs`
-while the local server runs on port 5176.
-
 ## Saved work
 
 The existing localStorage key is retained. Current investigations save code,
-results, evidence, selected suspect, all three CCTV authentication flags, the selected language, and tutorial completion. Existing Python drafts remain intact; choosing C# for an existing investigation preserves edited Python programs in Previous Notes. Resetting a case asks for a new language and shows the tutorial again.
+results, evidence, selected suspect, all three CCTV authentication flags, the selected language. Existing Python drafts remain intact; choosing C# for an existing investigation preserves edited Python programs in Previous Notes. Resetting a case asks for a new language, then opens the desk directly.
 Revision 3 starts the updated clue chain fresh. Earlier case revisions are preserved in **Previous Notes**, including student
 programs and verified results. Their old completion flags do not unlock the new
 evidence chain. Resetting the case clears the current investigation and its
@@ -100,7 +95,7 @@ npx playwright test
 ```
 
 Browser tests expect the local server to be running on port 5176. They cover full
-case playthroughs in both Python and C#, first-time language selection, the five tutorial screens and replay, editor colors, the teacher password gate, saved progress, wrong deductions, hints, evidence, reset
+case playthroughs in both Python and C#, first-time language selection and direct game entry, editor colors, the teacher password gate, saved progress, wrong deductions, hints, evidence, reset
 confirmation, and the single-page student register in Chromium and WebKit at iPad landscape size.
 Install test browsers with `npx playwright install chromium webkit` if necessary.
 
@@ -139,8 +134,8 @@ Generated app images live in `public/cases/case001/portraits/` and
 preserved in `artwork/`. See `artwork/README.md` for the asset workflow.
 All images are local; the running app makes no image API calls.
 
-Case artwork loads as JPEG first, including full evidence, portraits, guide
-comics and the ending, so older iPads do not need to request WebP to see images.
+Case artwork loads as JPEG first, including full evidence, portraits, the case
+brief and the ending, so older iPads do not need to request WebP to see images.
 Clue previews use small 400px JPEGs and load without waiting for Safari's lazy
 loading detection inside the scrolling desk. If a thumbnail is unavailable,
 the full JPEG is used; WebP remains an alternate if the JPEG fails.
@@ -156,7 +151,6 @@ The on-screen keyboard overlays the investigation desk without shrinking the
 page, editor, header or step tabs. The layout still adapts to window resizing
 and device rotation.
 
-The How to Play mission and ready screens continue the opening comic with
-matching three-panel artwork. Case Notes share the editor color cues: red for
+Case Notes share the editor color cues: red for
 variable instructions and names, yellow for values, and cyan for operations and
 output calls. These are visual annotations; saved code remains plain text.

@@ -78,7 +78,7 @@ test('all suspect photos retain portrait proportions in records and the final ch
   await expect(page.getByRole('button', { name: 'CLOSE THE CASE' })).toBeInViewport();
 });
 
-test('brief and first guide screen share the urgent comic story', async ({ page }, testInfo) => {
+test('case brief keeps the urgent comic story', async ({ page }, testInfo) => {
   await page.goto('/case/001');
   await page.getByRole('button', { name: 'Open Case brief', exact: true }).click();
   const comic = page.getByRole('dialog').locator('.case-comic');
@@ -88,10 +88,4 @@ test('brief and first guide screen share the urgent comic story', async ({ page 
   await expect.poll(() => comic.locator('img').evaluate(node => (node as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   await page.screenshot({ path: `test-results/${testInfo.project.name}-comic-brief.png` });
   await page.getByRole('button', { name: 'Close dialog' }).click();
-  await page.getByRole('button', { name: 'HOW TO PLAY', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'BRIAN IS MISSING.' })).toBeVisible();
-  await expect(page.locator('.onboarding-page .case-comic img')).toHaveAttribute('src', '/cases/case001/evidence/opening-comic.jpg');
-  await page.getByRole('button', { name: 'NEXT', exact: true }).scrollIntoViewIfNeeded();
-  await expect(page.getByRole('button', { name: 'NEXT', exact: true })).toBeInViewport();
-  await page.screenshot({ path: `test-results/${testInfo.project.name}-comic-guide.png` });
 });

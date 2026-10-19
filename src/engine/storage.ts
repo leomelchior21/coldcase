@@ -4,7 +4,7 @@ import type { CaseState, Value } from '../types';
 import { codeForStep, refreshCaseNotes } from './language';
 export const STORAGE_KEY = 'cold-case:001:v1';
 export function freshState(): CaseState {
-  return { language: 'python', languageChosen: false, tutorialCompleted: false, version: 1, caseRevision: 3, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
+  return { language: 'python', languageChosen: false, version: 1, caseRevision: 3, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
 }
 const ids = (list: unknown) => Array.isArray(list) ? [...new Set(list.filter((id): id is number => Number.isInteger(id) && id >= 1 && id <= 8))] : [];
 const cleanCodes = (codes: unknown): Record<number,string> => Object.fromEntries(Object.entries(codes && typeof codes === 'object' ? codes : {}).filter(([id, code]) => +id >= 1 && +id <= 8 && typeof code === 'string' && code.length <= 20000));
@@ -20,7 +20,6 @@ export function loadState(): CaseState {
     if (!raw || raw.version !== 1 || raw.caseId !== '001') return freshState();
     const clean = freshState();
     clean.languageChosen = raw.languageChosen === true;
-    clean.tutorialCompleted = raw.tutorialCompleted === true;
     clean.language = raw.language === 'csharp' ? 'csharp' : 'python';
     clean.codes = Object.fromEntries(case001.steps.map(step => [step.id, codeForStep(step, clean.language)]));
     if (raw.caseRevision !== 3) {

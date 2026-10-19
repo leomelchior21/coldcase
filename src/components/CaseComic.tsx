@@ -1,35 +1,17 @@
 import { evidenceArtwork, evidenceImagePath } from '../cases/case001-artwork';
 import { CompatibleImage } from './CompatibleImage';
 
-const chapters = {
-  opening: {
-    kicker: 'CASE 001 / THE DISAPPEARANCE', title: 'WHERE IS BRIAN?',
-    image: evidenceImagePath('BRIEF'), alt: evidenceArtwork.BRIEF.alt,
-    labels: ['EARLIER...', 'NOW.', 'THE TRAIL?'],
-    captions: [['His project.', 'Unfinished.'], ['His seat.', 'EMPTY.'], ['The records.', 'BROKEN.']],
-    call: "DON'T LOSE THE TRAIL.", footer: 'CODE. INVESTIGATE. SOLVE.',
-  },
-  mission: {
-    kicker: 'CASE 001 / YOUR MISSION', title: 'RECOVER THE TRAIL.',
-    image: '/cases/case001/evidence/mission-comic.webp',
-    alt: 'Comic story: a corrupted security recording, an empty hook in the key cabinet, and a damaged timestamp record.',
-    labels: ['THE CAMERA', 'THE KEY', 'THE TIME'],
-    captions: [['A damaged log.', 'RESTORE IT.'], ['A missing key.', 'TRACE IT.'], ['A lost time.', 'RECOVER IT.']],
-    call: 'LET THE EVIDENCE LEAD.', footer: 'CHECK. QUESTION. VERIFY.',
-  },
-  ready: {
-    kicker: 'CASE 001 / YOUR TEAM TAKES OVER', title: 'YOUR MOVE, INVESTIGATORS.',
-    image: '/cases/case001/evidence/ready-comic.webp',
-    alt: 'Comic story: student investigators type code, compare recovered evidence, and check a physical printed student register together.',
-    labels: ['RECOVER', 'COMPARE', 'RECONSTRUCT'],
-    captions: [['Code the clues.', 'OPEN THE ARCHIVE.'], ['Check the records.', 'CONNECT THE CLUES.'], ['Use the register.', 'MAKE YOUR CASE.']],
-    call: 'THE NEXT LEAD IS YOURS.', footer: 'READ. CODE. CHECK. DISCUSS.',
-  },
+const openingStory = {
+  kicker: 'CASE 001 / THE DISAPPEARANCE', title: 'WHERE IS BRIAN?',
+  image: evidenceImagePath('BRIEF'), alt: evidenceArtwork.BRIEF.alt,
+  labels: ['EARLIER...', 'NOW.', 'THE TRAIL?'],
+  captions: [['His project.', 'Unfinished.'], ['His seat.', 'EMPTY.'], ['The records.', 'BROKEN.']],
+  call: "DON'T LOSE THE TRAIL.", footer: 'CODE. INVESTIGATE. SOLVE.',
 };
 
-/** Shared comic treatment for the case brief and narrative guide chapters. */
-export function CaseComic({ chapter = 'opening' }: { chapter?: keyof typeof chapters }) {
-  const story = chapters[chapter];
+/** Opening comic in the case brief. */
+export function CaseComic() {
+  const story = openingStory;
   return <figure className="case-comic">
     <div className="comic-alert"><span>{story.kicker}</span><strong>{story.title}</strong></div>
     <div className="comic-strip">

@@ -19,15 +19,4 @@
 .document-brief .document-copy>p{font:500 15px/1.75 var(--mono)}
 .document-brief .document-copy>p:first-child{font:700 25px/1.25 var(--heading);text-transform:uppercase}
 .document-brief .document-copy>p:last-child{font-weight:700;color:#9a3028}
-.tutorial-visual:has(.case-comic){border:0;background:transparent;box-shadow:none}
-.tutorial-visual .case-comic{margin:0}
-.tutorial-visual .comic-alert{padding:12px}
-.tutorial-visual .comic-alert>strong{font-size:clamp(28px,3vw,40px)}
-.tutorial-visual .comic-alert>span{font-size:8px;letter-spacing:1px}
-.tutorial-visual .comic-panel-captions>span{font-size:clamp(12px,1.3vw,18px);padding:7px 5px}
-.tutorial-visual .comic-panel-labels{padding:9px;gap:7px}
-.tutorial-visual .comic-panel-labels>span{font-size:8px;padding:5px}
-.tutorial-visual .comic-call{padding:10px;gap:8px}
-.tutorial-visual .comic-call>b{font-size:19px}
-.tutorial-visual .comic-call>span{font-size:8px}
 @media(max-width:650px){.comic-panel-labels,.comic-panel-captions{padding:7px;gap:7px}.comic-panel-captions>span{padding:7px 4px}.comic-call{flex-wrap:wrap}.document-brief .document-copy{padding-left:12px}.document-brief .document-copy>p{font-size:13px}.document-brief .document-copy>p:first-child{font-size:22px}}

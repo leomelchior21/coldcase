@@ -4,7 +4,7 @@ import { chromium } from '@playwright/test';
 const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage({ viewport: { width: 1200, height: 720 }, deviceScaleFactor: 1 });
-  await page.addInitScript(() => localStorage.setItem('cold-case:001:v1', JSON.stringify({ version: 1, caseRevision: 3, caseId: '001', languageChosen: true, tutorialCompleted: true, language: 'csharp' })));
+  await page.addInitScript(() => localStorage.setItem('cold-case:001:v1', JSON.stringify({ version: 1, caseRevision: 3, caseId: '001', languageChosen: true, language: 'csharp' })));
   await page.goto('http://localhost:5176/case/001');
   await page.locator('.guided-code').waitFor();
   await page.evaluate(async () => {

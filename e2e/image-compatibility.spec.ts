@@ -44,12 +44,6 @@ for (const thumbnails of ['available', 'missing'] as const) {
     await expect(page.locator('[role="dialog"] .portrait img')).toHaveCount(suspects.length);
     await expectJpegImages(page, '[role="dialog"] .portrait img');
     await page.getByRole('button', { name: 'Close dialog' }).click();
-    await page.getByRole('button', { name: 'HOW TO PLAY', exact: true }).click();
-    for (let screen = 0; screen < 5; screen++) {
-      if ([0, 1, 4].includes(screen)) await expectJpegImages(page, '.onboarding-page .case-comic img');
-      if (screen < 4) await page.getByRole('button', { name: 'NEXT', exact: true }).click();
-    }
-    await page.getByRole('button', { name: 'RETURN TO CASE', exact: true }).last().click();
     await page.getByRole('button', { name: 'FINAL DEDUCTION', exact: true }).click();
     await expectJpegImages(page, '.deduction-suspects .portrait img');
     await page.getByRole('button', { name: 'Emily Carter', exact: true }).click();

@@ -11,7 +11,7 @@ export const csharpSolutions = solutions.map(source => source.split('\n').map(li
 
 describe('C# numeric classroom interpreter', () => {
   it('completes all eight steps and the evidence chain using real C# syntax', () => {
-    let state = { ...freshState(), language: 'csharp' as const, languageChosen: true, tutorialCompleted: true };
+    let state = { ...freshState(), language: 'csharp' as const, languageChosen: true };
     for (const step of case001.steps) {
       if (step.id === 4) state = { ...acceptArchiveTime(acceptCameraCode(state, '280'), 15, 40), language: 'csharp' };
       if (step.id === 7) state.selectedSuspect = 'emily';
@@ -64,16 +64,15 @@ describe('C# numeric classroom interpreter', () => {
       expect(notes).not.toMatch(/Declare whole numbers|End each statement|Replace each glowing|Complete result|Ask your teacher|Combine the prefix/);
     }
   });
-  it('restores C# programs, language and completed tutorial without losing student work', () => {
+  it('restores C# programs and language without losing student work', () => {
     const data = new Map<string, string>();
     Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: (key: string) => data.get(key), setItem: (key: string, value: string) => data.set(key, value) } });
-    const state = { ...freshState(), language: 'csharp' as const, languageChosen: true, tutorialCompleted: true, codes: { 1: csharpSolutions[0] } };
+    const state = { ...freshState(), language: 'csharp' as const, languageChosen: true, codes: { 1: csharpSolutions[0] } };
     saveState(state);
     const restored = loadState();
     expect(restored.codes[1]).toBe(csharpSolutions[0]);
     expect(restored.codes[2]).toContain('int inventory_checksum =;');
     expect(restored.language).toBe('csharp');
-    expect(restored.tutorialCompleted).toBe(true);
     data.set(STORAGE_KEY, JSON.stringify({ ...state, language: 'invalid' }));
     expect(loadState().language).toBe('python');
   });
