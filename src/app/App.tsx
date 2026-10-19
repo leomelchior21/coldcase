@@ -24,10 +24,10 @@ export default function App() {
   useEffect(() => { setSaved(saveState(state)); }, [state]);
   useEffect(() => { const pop = () => setRoute(window.location.pathname); window.addEventListener('popstate', pop); return () => { window.removeEventListener('popstate', pop); if (timer.current) clearTimeout(timer.current); }; }, []);
   useEffect(() => {
-    const viewport = window.visualViewport;
-    const resize = () => { document.documentElement.style.setProperty('--app-height', `${viewport?.height ?? window.innerHeight}px`); document.documentElement.classList.toggle('keyboard-open', (viewport?.height ?? window.innerHeight) < window.innerHeight * .76); };
-    viewport?.addEventListener('resize', resize); window.addEventListener('resize', resize); resize();
-    return () => { viewport?.removeEventListener('resize', resize); window.removeEventListener('resize', resize); };
+    // The keyboard covers the visual viewport; keep the desk at layout height.
+    const resize = () => document.documentElement.style.setProperty('--app-height', `${document.documentElement.clientHeight}px`);
+    window.addEventListener('resize', resize); resize();
+    return () => window.removeEventListener('resize', resize);
   }, []);
   const navigate = useCallback((path: string) => { window.history.pushState({}, '', path); setRoute(path); setTutorialOpen(false); }, []);
   const closeReset = useCallback(() => setResetOpen(false), []);

@@ -143,6 +143,9 @@ After replacing artwork, run `npm run images:compat` to refresh those copies.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad
 keyboard behavior should also be checked on hardware before a classroom rollout.
+The on-screen keyboard overlays the investigation desk without shrinking the
+page, editor, header or step tabs. The layout still adapts to window resizing
+and device rotation.
 
 The How to Play mission and ready screens continue the opening comic with
 matching three-panel artwork. Case Notes share the editor color cues: red for
