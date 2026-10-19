@@ -11,8 +11,10 @@ import { TeacherAccess } from '../components/TeacherAccess';
 import { codeForStep, refreshCaseNotes } from '../engine/language';
 import type { CodeLanguage } from '../types';
 import { case001 } from '../cases/case001';
+import { useAppViewport } from './useAppViewport';
 export default function App() {
   const [state, setState] = useState(loadState), [route, setRoute] = useState(window.location.pathname), [opening, setOpening] = useState(false), [resetOpen, setResetOpen] = useState(false), [saved, setSaved] = useState(true);
+  useAppViewport(route === '/case/001');
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     setState(previous => {
@@ -22,12 +24,6 @@ export default function App() {
   }, []);
   useEffect(() => { setSaved(saveState(state)); }, [state]);
   useEffect(() => { const pop = () => setRoute(window.location.pathname); window.addEventListener('popstate', pop); return () => { window.removeEventListener('popstate', pop); if (timer.current) clearTimeout(timer.current); }; }, []);
-  useEffect(() => {
-    // The keyboard covers the visual viewport; keep the desk at layout height.
-    const resize = () => document.documentElement.style.setProperty('--app-height', `${document.documentElement.clientHeight}px`);
-    window.addEventListener('resize', resize); resize();
-    return () => window.removeEventListener('resize', resize);
-  }, []);
   const navigate = useCallback((path: string) => { window.history.pushState({}, '', path); setRoute(path); }, []);
   const closeReset = useCallback(() => setResetOpen(false), []);
   function openCase() { setOpening(true); setState(previous => ({ ...previous, opened: true })); timer.current = setTimeout(() => { navigate('/case/001'); setOpening(false); }, 750); }

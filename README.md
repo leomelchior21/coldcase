@@ -147,9 +147,12 @@ After replacing artwork, run `npm run images:compat` to refresh those copies.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad
 keyboard behavior should also be checked on hardware before a classroom rollout.
-The on-screen keyboard overlays the investigation desk without shrinking the
-page, editor, header or step tabs. The layout still adapts to window resizing
-and device rotation.
+The game fits the visible screen with Safari's browser bars and safe-area
+insets included. The header and all eight step tabs stay in place; the case
+file, code editor and evidence files scroll independently. The compact evidence
+drawer and dialogs use the same available screen height. Browser-bar changes,
+window resizing and device rotation update the layout. The on-screen keyboard
+overlays the fitted desk without shrinking the editor, header or step tabs.
 
 Case Notes share the editor color cues: red for
 variable instructions and names, yellow for values, and cyan for operations and

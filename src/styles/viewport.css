@@ -1,0 +1,10 @@
+html.case-open,html.case-open body{height:100%;overflow:hidden;overscroll-behavior:none}
+html.case-open body{position:fixed;inset:0;width:100%}
+.game-shell{position:fixed;inset:0;height:var(--app-height,100vh);height:var(--app-height,100svh);min-height:0;overflow:hidden}
+.game-shell .investigation-page{min-width:0;overflow:hidden}
+.game-shell .investigation-grid{grid-template-rows:minmax(0,1fr);min-width:0}
+.game-shell .terminal-panel{min-width:0;overflow:hidden}
+.game-shell .evidence-stack{overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+.game-shell .modal-backdrop,.game-shell .opening-overlay,.game-shell .rotate-message{bottom:auto;height:var(--app-height,100vh);height:var(--app-height,100svh)}
+.game-shell .modal{max-height:calc(var(--app-height,100vh) - 50px)}
+@media(max-width:900px){.game-shell .evidence-panel.drawer-open{bottom:auto;height:var(--app-height,100vh);height:var(--app-height,100svh);padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}}

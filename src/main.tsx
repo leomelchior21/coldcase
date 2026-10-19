@@ -6,4 +6,5 @@ import './styles/cctv.css';
 import './styles/student-register.css';
 import './styles/onboarding.css';
 import './styles/comic.css';
+import './styles/viewport.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
