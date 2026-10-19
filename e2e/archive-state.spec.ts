@@ -1,4 +1,4 @@
-import { test, expect, type Page } from './fixtures';
+import { test, expect, fillTemplate, type Page } from './fixtures';
 import { solutions } from '../tests/fixtures/casePrograms';
 
 async function seedArchive(page: Page, stage: 'camera' | 'time' | 'done', language: 'python' | 'csharp' = 'python') {
@@ -15,7 +15,7 @@ async function seedArchive(page: Page, stage: 'camera' | 'time' | 'done', langua
 
 for (const language of ['python', 'csharp'] as const) test(`later ${language} steps unlock sequentially and persist after reload`, async ({ page }, testInfo) => {
   await seedArchive(page, 'done', language);
-  await expect(page.getByRole('textbox', { name: language === 'python' ? 'Python code editor' : 'C# code editor' })).toBeVisible();
+  await expect(page.getByRole('group', { name: language === 'python' ? 'Python code template' : 'C# code template' })).toBeVisible();
   const tabs = page.getByRole('navigation', { name: 'Investigation steps' }).getByRole('button');
   for (let id = 4; id <= 8; id++) {
     for (let next = 1; next <= 8; next++) {
@@ -23,9 +23,10 @@ for (const language of ['python', 'csharp'] as const) test(`later ${language} st
       else await expect(tabs.nth(next - 1)).toBeDisabled();
     }
     await tabs.nth(id - 1).click();
-    const editor = page.getByRole('textbox', { name: /^(Python|C#) code editor$/ });
+    const editor = page.getByRole('group', { name: /^(Python|C#) code template$/ });
     const source = language === 'python' ? solutions[id - 1] : solutions[id - 1].split('\n').map(line => line.startsWith('print(') ? 'Console.WriteLine(result);' : `int ${line};`).join('\n');
-    await editor.fill(source);
+    await fillTemplate(page, source);
+    const savedCode = await page.evaluate(id => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[id], id);
     await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
     await expect(page.locator('.console-output.success')).toBeVisible();
     if (id === 8) {
@@ -50,8 +51,8 @@ for (const language of ['python', 'csharp'] as const) test(`later ${language} st
     }
     await page.reload();
     await expect(tabs.nth(id - 1)).toHaveAttribute('aria-current', 'step');
-    await expect(editor).toContainText(source.split('\n')[0]);
-    expect(await page.evaluate(id => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[id], id)).toBe(source);
+    await expect(editor).toContainText(source.split('\n')[0].split(' =')[0]);
+    expect(await page.evaluate(id => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[id], id)).toBe(savedCode);
     if (id < 8) await expect(tabs.nth(id)).toBeEnabled();
     for (let later = id + 2; later <= 8; later++) await expect(tabs.nth(later - 1)).toBeDisabled();
   }
@@ -86,7 +87,7 @@ test('confirmed case reset clears every CCTV phase and saved results',async({pag
 
 test('color restoration respects reduced motion while preserving the original monochrome frame',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});await seedArchive(page,'done');
-  await page.getByRole('button',{name:/04 The footage/}).click();await page.getByRole('textbox',{name:'Python code editor'}).fill(solutions[3]);await page.getByRole('button',{name:'RUN CASE',exact:true}).click();
+  await page.getByRole('button',{name:/04 The footage/}).click();await fillTemplate(page, solutions[3]);await page.getByRole('button',{name:'RUN CASE',exact:true}).click();
   await page.getByRole('dialog',{name:'New evidence recovered'}).getByRole('button',{name:/Restored CCTV frame/}).click();
   const dialog=page.getByRole('dialog',{name:'Restored CCTV frame'});await expect(dialog).toBeVisible();
   expect(await dialog.locator('.color-reveal img').evaluate(node=>getComputedStyle(node).animationName)).toBe('none');
@@ -99,7 +100,7 @@ test('legacy student programs and results remain reviewable without granting new
   await page.goto('/');
   await page.getByRole('button',{name:'OPEN FILE',exact:true}).waitFor();
   await page.evaluate(()=>localStorage.setItem('cold-case:001:v1',JSON.stringify({version:1,caseId:'001',opened:true,solved:[1],codes:{1:'# My saved program\nhall_camera = 1\nextra_camera = 2\nresult = hall_camera + extra_camera\nprint(result)'},evidence:['C03']})));
-  await page.goto('/case/001');await expect(page.getByRole('textbox',{name:'Python code editor'})).toContainText('257880');
+  await page.goto('/case/001');await expect(page.getByRole('group',{name:'Python code template'})).toContainText('257880');
   await page.getByRole('button',{name:'PREVIOUS NOTES',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('My saved program');await expect(page.getByRole('dialog')).toContainText('Saved result: 3');
   await page.getByRole('button',{name:'Close dialog'}).click();await expect(page.getByRole('button',{name:'Open Security camera record'})).toHaveCount(0);
 });

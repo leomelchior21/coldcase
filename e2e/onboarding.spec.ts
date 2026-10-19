@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { fillTemplate } from './fixtures';
 
 async function next(page: Page) { await page.getByRole('button', { name: 'NEXT', exact: true }).click(); }
 
@@ -24,29 +25,28 @@ for (const language of ['Python', 'C#']) test(`fresh ${language} student chooses
     if (index < 4) await next(page);
   }
   await page.getByRole('button', { name: 'START INVESTIGATING', exact: true }).click();
-  const editor = page.getByRole('textbox', { name: `${language} code editor`, exact: true });
+  const editor = page.getByRole('group', { name: `${language} code template`, exact: true });
   await expect(editor).toBeVisible();
   await expect(page.locator('.subset-label')).toContainText(language.toUpperCase());
-  await expect(editor).toContainText(language === 'C#' ? 'int camera_log = 257880;' : 'camera_log = 257880');
-  const draft = language === 'C#' ? '// my draft\nint clues = 2;' : '# my draft\nclues = 2';
-  await editor.fill(draft);
+  await expect(editor).toContainText('camera_log');
+  await page.getByLabel('Value for camera_log', {exact:true}).fill('257880');
+  const draft = await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[1]);
   await page.getByRole('button', { name: 'HOW TO PLAY', exact: true }).click();
   await expect(page.getByRole('heading', { name: headings[0] })).toBeVisible();
   await next(page);
   await page.getByRole('button', { name: 'RETURN TO CASE', exact: true }).click();
-  await expect.poll(() => editor.locator('.cm-line').allTextContents()).toEqual(draft.split('\n'));
+  await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('257880');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[1])).toBe(draft);
   await page.reload();
-  await expect.poll(() => editor.locator('.cm-line').allTextContents()).toEqual(draft.split('\n'));
+  await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('257880');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[1])).toBe(draft);
   await expect(page.getByRole('button', { name: 'HOW TO PLAY', exact: true })).toBeVisible();
   await expect(page.getByText('SAVED ON THIS DEVICE', { exact: true })).toHaveCount(0);
-  await editor.fill(language === 'C#' ? '// Recover the camera code\nint camera_log = 257880;\nint backup_log = 921;\nint result = camera_log / backup_log;\nConsole.WriteLine(result);' : '# Recover the camera code\ncamera_log = 257880\nbackup_log = 921\nresult = camera_log / backup_log\nprint(result)');
-  await expect(page.locator('.cm-line span').filter({ hasText: /^257880$/ }).first()).toHaveCSS('color', 'rgb(255, 195, 66)');
-  await expect(page.locator('.cm-line span').filter({ hasText: /^camera_log$/ }).first()).toHaveCSS('color', 'rgb(255, 83, 95)');
-  await expect(page.locator('.cm-line span').filter({ hasText: /Recover the camera code/ }).first()).toHaveCSS('color', 'rgb(113, 133, 159)');
-  await expect(page.locator('.cm-line span').filter({ hasText: language === 'C#' ? /^Console$/ : /^print$/ }).first()).toHaveCSS('color', 'rgb(54, 221, 255)');
-  await expect(page.locator('.cm-editor')).toHaveCSS('background-color', 'rgb(8, 11, 25)');
+  await fillTemplate(page, 'camera_log = 257880\nbackup_log = 921\nresult = camera_log / backup_log\nprint(result)');
+  await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveCSS('color', 'rgb(255, 195, 66)');
+  await expect(page.locator('.guided-program .syntax-variable').filter({ hasText: /^camera_log$/ }).first()).toHaveCSS('color', 'rgb(255, 83, 95)');
+  await expect(page.locator('.guided-program .syntax-function').last()).toHaveCSS('color', 'rgb(54, 221, 255)');
+  await expect(editor).toHaveCSS('background-color', 'rgb(8, 11, 25)');
   await page.screenshot({ path: `test-results/${testInfo.project.name}-${language === 'C#' ? 'csharp' : 'python'}-editor.png` });
 });
 
@@ -74,7 +74,7 @@ test('an existing Python draft survives choosing C# for an older saved investiga
   await page.getByRole('button', { name: /START WITH C#/ }).click();
   for (let index = 0; index < 4; index++) await next(page);
   await page.getByRole('button', { name: 'START INVESTIGATING' }).click();
-  await expect(page.getByRole('textbox', { name: 'C# code editor' })).toContainText('int camera_log');
+  await expect(page.getByRole('group', { name: 'C# code template' })).toContainText('camera_log');
   await page.getByRole('button', { name: 'PREVIOUS NOTES', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('our existing program');
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!));

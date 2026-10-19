@@ -25,13 +25,15 @@ school network settings; changing image formats does not repair certificates.
 - A case archive, tactile investigation desk, and eight steps. Step 4 unlocks after completing Steps 1–3 and answering both CCTV terminal prompts correctly. From Step 4 onward, each step must be solved to unlock the next.
 - A Python or C# choice before entering the case, remembered with student progress.
 - A five-screen illustrated introduction covering the story, evidence desk, a generic coding example, and the investigation sequence. **HOW TO PLAY** in the upper right reopens the guide without changing student work.
-- CodeMirror editors with a dark navy background, yellow numbers/types, red variables, cyan calls/operators, and muted blue comments, matching the supplied reference. Per-step code, optional Case Notes, and progressive clues adapt to the chosen language.
-  Step 1 includes the correct variables and output call with a blank result expression.
-  Steps 2-8 provide glowing placeholder variable names, blank values and result,
-  and the output call. Glowing value and calculation blanks accept a click or keyboard
-  activation and disappear as students type; their labels never enter saved code.
-  C# uses only `int` declarations. Case Notes end at the output instruction;
-  saved generated notes are shortened automatically while student code is preserved.
+- Fixed Python and C# code templates with a dark navy background, yellow values/types,
+  red variables, cyan calls/operators, and muted blue Case Notes. All eight steps
+  provide the variable names, assignment syntax, calculation operands and output call.
+  Students fill the numeric values and choose `+`, `-`, `*` or `/` from operator menus.
+  Step 3 also provides a numeric field for the time multiplier. The surrounding code
+  cannot be edited. Blank answers receive a clear prompt before validation runs.
+  Answers and operator choices persist across reloads, and compatible saved programs
+  populate the new controls. Reset clears only the step's answers, keeping its template.
+  Optional Case Notes and progressive clues adapt to the chosen language.
 - Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
@@ -74,7 +76,7 @@ with the illustration stored locally. Suspect records and the final selection
 show full 3:4 portraits without landscape cropping.
 
 The five-screen field guide uses larger, bolder description text and a real
-empty desk screenshot with arrows labeling the case file, code editor, and
+empty desk screenshot with arrows labeling the case file, code template, and
 evidence desk. Regenerate that screenshot with `node scripts/capture-guide.mjs`
 while the local server runs on port 5176.
 
@@ -120,7 +122,7 @@ interpreters require the clue variables and calculation; hardcoded answers fail.
 - `src/engine/python/`: shared expressions, dependency traces, Python execution, and validation.
 - `src/engine/csharp.ts`: numeric C# parsing, declarations, and type checks.
 - `src/engine/language.ts`: language-specific starter programs and clue text.
-- `src/engine/`: state transitions and versioned local storage.
+- `src/engine/`: fixed-template answer serialization, state transitions and versioned local storage.
 - `src/components/`: terminal, evidence, navigation, artwork, and deduction.
 - `src/pages/`: archive, investigation, and print views.
 - `src/styles/app.css`: visual system, tablet layouts, and A4 print styles.

@@ -2,10 +2,11 @@ import { test, expect } from './fixtures';
 
 test('the on-screen keyboard overlays the desk without shrinking its layout', async ({ page }) => {
   await page.goto('/case/001');
-  const editor = page.getByRole('textbox', { name: 'Python code editor', exact: true });
+  const editor = page.getByRole('group', { name: 'Python code template', exact: true });
   await expect(editor).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
-  await editor.fill('# keyboard overlay draft\nresult = 280\nprint(result)');
+  const valueField = page.getByLabel('Value for camera_log', {exact:true});
+  await valueField.fill('257880');
   const measure = () => page.evaluate(() => Object.fromEntries([
     '.app-shell', '.site-header', '.investigation-grid', '.code-editor', '.step-dock', '.case-file-intro',
   ].map(selector => {
@@ -21,8 +22,8 @@ test('the on-screen keyboard overlays the desk without shrinking its layout', as
     window.dispatchEvent(new Event('resize'));
   });
   expect(await measure()).toEqual(before);
-  await expect(editor).toContainText('# keyboard overlay draft');
-  await expect(editor).toBeFocused();
+  await expect(valueField).toHaveValue('257880');
+  await expect(valueField).toBeFocused();
   await page.evaluate(() => {
     delete (window.visualViewport as unknown as { height?: number }).height;
     window.visualViewport!.dispatchEvent(new Event('resize'));

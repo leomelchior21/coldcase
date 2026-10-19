@@ -50,11 +50,11 @@ describe('C# numeric classroom interpreter', () => {
   });
   it('generates language-specific starters and clues without leaking later answers', () => {
     const first = codeForStep(case001.steps[0], 'csharp');
-    expect(first).toContain('int camera_log = 257880;');
+    expect(first).toContain('int camera_log =;');
     expect(first).toContain('int result =;');
     expect(first).toContain('Console.WriteLine(result);');
     expect(first).not.toContain('print(');
-    expect(validate(first.replace('int result =;', 'int result = camera_log / backup_log;'), case001.steps[0], 'csharp').ok).toBe(true);
+    expect(validate(first.replace('int camera_log =;', 'int camera_log = 257880;').replace('int backup_log =;', 'int backup_log = 921;').replace('int result =;', 'int result = camera_log / backup_log;'), case001.steps[0], 'csharp').ok).toBe(true);
     expect(languageText(case001.steps[0].hints[2], 'csharp')).toBe('int result = camera_log / backup_log;');
   });
   it.each(['python', 'csharp'] as const)('ends every %s Case Note at the output instruction', language => {
@@ -71,7 +71,7 @@ describe('C# numeric classroom interpreter', () => {
     saveState(state);
     const restored = loadState();
     expect(restored.codes[1]).toBe(csharpSolutions[0]);
-    expect(restored.codes[2]).toContain('int VARIABLE_1 =;');
+    expect(restored.codes[2]).toContain('int inventory_checksum =;');
     expect(restored.language).toBe('csharp');
     expect(restored.tutorialCompleted).toBe(true);
     data.set(STORAGE_KEY, JSON.stringify({ ...state, language: 'invalid' }));

@@ -21,7 +21,7 @@ test('all eight C# editors remove the four extra saved comments', async ({ page 
     localStorage.setItem(key, JSON.stringify(state));
   }, codes);
   await page.reload();
-  const editor = page.getByRole('textbox', { name: 'C# code editor', exact: true });
+  const editor = page.getByRole('group', { name: 'C# code template', exact: true });
   for (const step of case001.steps) {
     await page.getByRole('navigation', { name: 'Investigation steps' }).getByRole('button').nth(step.id - 1).click();
     await expect(editor).toContainText('// Use Console.WriteLine(result);');

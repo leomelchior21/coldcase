@@ -13,6 +13,7 @@ import { validate, type Feedback } from '../engine/python/validator';
 import { solveStep, archiveReady, canSelectStep, stepBlockReason } from '../engine/caseEngine';
 import { codeForStep, languageText } from '../engine/language';
 import { CctvTerminal } from '../components/CctvTerminal';
+import { guidedAnswersComplete, readGuidedAnswers, writeGuidedCode } from '../engine/guidedCode';
 export function InvestigationPage({ state, setState, onReset }: { state: CaseState; setState: React.Dispatch<React.SetStateAction<CaseState>>; onReset: () => void }) {
   const [feedback, setFeedback] = useState<Record<number, Feedback>>({});
   const [running, setRunning] = useState(false), [activeDocument, setActiveDocument] = useState<string | null>(null), [hintOpen, setHintOpen] = useState(false), [newest, setNewest] = useState<string[]>([]), [drawer, setDrawer] = useState(false), [resetEditor, setResetEditor] = useState(false);
@@ -49,10 +50,14 @@ export function InvestigationPage({ state, setState, onReset }: { state: CaseSta
   function run() {
     if (running) return;
     setRunning(true);
-    const code = state.codes[step.id];
+    const answers = readGuidedAnswers(state.codes[step.id], step);
+    const complete = guidedAnswersComplete(answers, step);
+    const code = writeGuidedCode(answers, step, state.language, state.codes[step.id]);
+    setState(previous => ({ ...previous, codes: { ...previous.codes, [step.id]: code } }));
     timer.current = setTimeout(() => {
       const blocked = stepBlockReason(state, step.id, case001);
-      const result: Feedback = blocked ? { ok: false, title: step.id === 4 ? 'CCTV ARCHIVE NOT RECOVERED' : 'Check your evidence', message: blocked, output: [] } : validate(code, step, state.language);
+      const result: Feedback = blocked ? { ok: false, title: step.id === 4 ? 'CCTV ARCHIVE NOT RECOVERED' : 'Check your evidence', message: blocked, output: [] }
+        : !complete ? { ok: false, title: 'Fill the blanks', message: 'Enter a number for each value and choose each operator before running.', output: [] } : validate(code, step, state.language);
       setFeedback(previous => ({ ...previous, [step.id]: result })); setRunning(false);
       if (result.ok) {
         setState(previous => solveStep(previous, step.id, case001));
@@ -79,7 +84,7 @@ export function InvestigationPage({ state, setState, onReset }: { state: CaseSta
     {activeDocument && <EvidenceModal activeId={activeDocument} evidence={state.evidence} onOpen={openDocument} onClose={closeDocument} highlightAccess={state.solved.includes(6)} reveal={reveal && activeDocument === 'BP-BLUE'} selectedSuspect={state.selectedSuspect} onDeduce={state.solved.includes(8) && !deductionOpen ? chooseSuspect : undefined} suspectsRevealed={state.solved.includes(3)}/>}
     {terminalOpen && <CctvTerminal state={state} setState={setState} onClose={closeTerminal} onContinue={() => { setTerminalOpen(false); selectStep(4); }}/>}
     {previousOpen && state.previousWork && <Modal title="Previous investigation notes" onClose={() => setPreviousOpen(false)} className="previous-notes paper"><h2>YOUR PREVIOUS INVESTIGATION</h2><p>The case has new records. Your earlier programs and results are saved here.</p>{Object.entries(state.previousWork.codes).map(([id, code]) => <section key={id}><h3>STEP {id} {state.previousWork!.solved.includes(+id) ? ' / VERIFIED' : ''}</h3>{state.previousWork!.results[+id] !== undefined && <p>Saved result: {state.previousWork!.results[+id]}</p>}<pre>{code}</pre></section>)}</Modal>}
-    {hintOpen && <Modal title="Investigator’s clue" onClose={closeHint} className="hint-modal paper"><span className="small-label">STEP {String(step.id).padStart(2,'0')} / A LITTLE HELP</span><Lightbulb size={38}/><h2>ANOTHER WAY TO LOOK AT IT.</h2><span className="hint-counter">CLUE {hintLevel} OF 3</span><p>{languageText(step.hints[hintLevel - 1], state.language)}</p><div className="hint-dots">{[1,2,3].map(level => <button aria-label={`Read clue ${level}`} aria-pressed={level === hintLevel} disabled={level > hintLevel} key={level} onClick={() => setState(previous => ({ ...previous, hints: { ...previous.hints, [step.id]: level } }))}>{level}</button>)}</div><button className="primary" onClick={() => hintLevel < 3 ? setState(previous => ({ ...previous, hints: { ...previous.hints, [step.id]: hintLevel + 1 } })) : setHintOpen(false)}>{hintLevel < 3 ? 'ONE MORE CLUE' : 'BACK TO THE CASE'}<ArrowRight size={18}/></button><p className="hint-footnote">Talk it through. You still write the program.</p></Modal>}
-    {resetEditor && <Modal title="Reset this step’s code?" onClose={() => setResetEditor(false)} className="confirm-modal paper"><RotateCcw size={30}/><h2>RESET THIS PROGRAM?</h2><p>Your code for this step will be cleared. Your evidence and solved steps will stay.</p><div><button className="secondary text-button" onClick={() => setResetEditor(false)}>KEEP MY CODE</button><button className="danger-button" onClick={resetCode}>RESET PROGRAM</button></div></Modal>}
+    {hintOpen && <Modal title="Investigator’s clue" onClose={closeHint} className="hint-modal paper"><span className="small-label">STEP {String(step.id).padStart(2,'0')} / A LITTLE HELP</span><Lightbulb size={38}/><h2>ANOTHER WAY TO LOOK AT IT.</h2><span className="hint-counter">CLUE {hintLevel} OF 3</span><p>{languageText(step.hints[hintLevel - 1], state.language)}</p><div className="hint-dots">{[1,2,3].map(level => <button aria-label={`Read clue ${level}`} aria-pressed={level === hintLevel} disabled={level > hintLevel} key={level} onClick={() => setState(previous => ({ ...previous, hints: { ...previous.hints, [step.id]: level } }))}>{level}</button>)}</div><button className="primary" onClick={() => hintLevel < 3 ? setState(previous => ({ ...previous, hints: { ...previous.hints, [step.id]: hintLevel + 1 } })) : setHintOpen(false)}>{hintLevel < 3 ? 'ONE MORE CLUE' : 'BACK TO THE CASE'}<ArrowRight size={18}/></button><p className="hint-footnote">Talk it through. Choose the values and operators.</p></Modal>}
+    {resetEditor && <Modal title="Reset this step’s code?" onClose={() => setResetEditor(false)} className="confirm-modal paper"><RotateCcw size={30}/><h2>RESET THIS PROGRAM?</h2><p>Your values and operators for this step will be cleared. Your evidence and solved steps will stay.</p><div><button className="secondary text-button" onClick={() => setResetEditor(false)}>KEEP MY CODE</button><button className="danger-button" onClick={resetCode}>RESET PROGRAM</button></div></Modal>}
   </>;
 }

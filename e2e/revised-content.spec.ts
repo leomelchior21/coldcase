@@ -47,8 +47,8 @@ test('explicit variable instructions and ten generated portraits are used throug
   const brian = page.getByRole('img', { name: 'Illustrated school portrait of Brian' });
   await expect(brian).toHaveAttribute('src', '/cases/case001/portraits/brian.webp');
   await page.getByRole('button', { name: 'OPEN FILE', exact: true }).click();
-  const editor = page.getByRole('textbox', { name: 'Python code editor' });
-  await expect(editor).toContainText('Create the variable camera_log.');
+  const editor = page.getByRole('group', { name: 'Python code template' });
+  await expect(editor).toContainText('Enter the value for camera_log.');
   await expect(editor).toContainText('The security camera log is 257880.');
   await expect(editor).toContainText('Use print(result).');
   await page.getByRole('button', { name: 'Open Suspect board', exact: true }).click();

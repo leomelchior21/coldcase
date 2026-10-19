@@ -82,19 +82,19 @@ describe('Recovered evidence chain', () => {
 
 describe('Starter programs and redacted identities', () => {
   const starter = (id: number) => initialCode(case001.steps[id - 1]).split('\n').filter(line => line.trim() !== '' && !line.startsWith('#'));
-  it('starts Step 1 with the recovered values, a blank result line, and the print', () => {
-    expect(starter(1)).toEqual(['camera_log = 257880', 'backup_log = 921', 'result =', 'print(result)']);
+  it('starts Step 1 with fixed variable names and blank values', () => {
+    expect(starter(1)).toEqual(['camera_log =', 'backup_log =', 'result =', 'print(result)']);
   });
-  it('starts Step 2 with placeholder names, empty values and result, and output', () => {
-    expect(starter(2)).toEqual(['VARIABLE_1 =', 'VARIABLE_2 =', 'result =', 'print(result)']);
+  it('starts Step 2 with fixed variable names, empty values and result, and output', () => {
+    expect(starter(2)).toEqual(['inventory_checksum =', 'returned_checksum =', 'result =', 'print(result)']);
   });
-  it('provides editable scaffolding for every later step', () => {
-    for (const id of [3,4,5,6,7,8]) expect(starter(id)).toEqual([...Object.keys(case001.steps[id - 1].requiredVariables).map((_, i) => `VARIABLE_${i + 1} =`), 'result =', 'print(result)']);
+  it('provides named variables for every later step', () => {
+    for (const id of [3,4,5,6,7,8]) expect(starter(id)).toEqual([...Object.keys(case001.steps[id - 1].requiredVariables).map(name => `${name} =`), 'result =', 'print(result)']);
   });
   it('accepts the Step 1 and Step 2 starter lines once the student completes them', () => {
-    const first = initialCode(case001.steps[0]).replace('result =', 'result = camera_log / backup_log');
+    const first = initialCode(case001.steps[0]).replace('camera_log =', 'camera_log = 257880').replace('backup_log =', 'backup_log = 921').replace('result =', 'result = camera_log / backup_log');
     expect(validate(first, case001.steps[0]).ok).toBe(true);
-    const second = initialCode(case001.steps[1]).replace('VARIABLE_1 =', 'inventory_checksum = 864').replace('VARIABLE_2 =', 'returned_checksum = 837').replace('result =', 'result = inventory_checksum - returned_checksum');
+    const second = initialCode(case001.steps[1]).replace('inventory_checksum =', 'inventory_checksum = 864').replace('returned_checksum =', 'returned_checksum = 837').replace('result =', 'result = inventory_checksum - returned_checksum');
     expect(validate(second, case001.steps[1]).ok).toBe(true);
   });
   it('renders suspect names as indecipherable glyphs without leaking letters', () => {

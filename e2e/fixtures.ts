@@ -11,6 +11,19 @@ export const test = base.extend({ page: async ({ page }, use) => {
   await use(page);
 } });
 export { expect, type Page };
+/** Enter a solution through the student's value fields and operator menus. */
+export async function fillTemplate(page: Page, source: string) {
+  for (const field of await page.locator('.guided-program input[aria-label^="Value for "]').all()) {
+    const name = (await field.getAttribute('aria-label'))!.slice('Value for '.length);
+    const value = source.match(new RegExp(`(?:^|\\n)(?:int )?${name}\\s*=\\s*(-?\\d+)`))?.[1] ?? '';
+    await field.fill(value);
+  }
+  const expression = source.match(/(?:^|\n)(?:int )?result\s*=\s*([^;\n]*)/)?.[1] ?? '';
+  const operations = expression.match(/[+*/-]/g) ?? [];
+  for (const [index, field] of (await page.getByRole('combobox', { name: /Operator \d+ for result/ }).all()).entries()) await field.selectOption(operations[index] ?? '');
+  const numbers = expression.match(/\b\d+\b/g) ?? [];
+  for (const [index, field] of (await page.locator('.guided-program input[aria-label$="in calculation"]').all()).entries()) await field.fill(numbers[index] ?? '');
+}
 export async function unlockTeacher(page: Page) {
   await page.getByLabel('Password', { exact: true }).fill('leleomaker');
   await page.getByRole('button', { name: 'UNLOCK TEACHER TOOLS', exact: true }).click();

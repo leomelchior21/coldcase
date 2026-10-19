@@ -6,10 +6,10 @@ try {
   const page = await browser.newPage({ viewport: { width: 1200, height: 720 }, deviceScaleFactor: 1 });
   await page.addInitScript(() => localStorage.setItem('cold-case:001:v1', JSON.stringify({ version: 1, caseRevision: 3, caseId: '001', languageChosen: true, tutorialCompleted: true, language: 'csharp' })));
   await page.goto('http://localhost:5176/case/001');
-  await page.getByRole('textbox', { name: 'C# code editor' }).fill('');
+  await page.locator('.guided-code').waitFor();
   await page.evaluate(async () => {
     await document.fonts.ready;
-    for (const selector of ['.case-file-intro', '.step-brief', '.objective', '.file-stamp', '.file-bottom-id', '.evidence-stack', '.console-idle']) {
+    for (const selector of ['.guided-code', '.case-file-intro', '.step-brief', '.objective', '.file-stamp', '.file-bottom-id', '.evidence-stack', '.console-idle']) {
       document.querySelector(selector)?.replaceChildren();
     }
   });

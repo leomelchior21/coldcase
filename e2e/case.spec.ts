@@ -1,8 +1,8 @@
-import { test, expect, unlockTeacher, type Page } from './fixtures';
+import { test, expect, unlockTeacher, fillTemplate, type Page } from './fixtures';
 import { solutions } from '../tests/fixtures/casePrograms';
 import { case001, suspects } from '../src/cases/case001';
 
-async function code(page: Page, source: string) { await page.getByRole('textbox',{name:/^(Python|C#) code editor$/}).fill(source); }
+async function code(page: Page, source: string) { await fillTemplate(page, source); }
 async function closeDocument(page: Page) { await page.getByRole('button',{name:'Close dialog'}).click(); }
 async function openDiscoveries(page: Page, ids: string[]) {
   for (const id of ids) {
@@ -45,11 +45,9 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
       await expect(terminal).toContainText('N# 2');
       await terminal.getByRole('button',{name:/CONTINUE TO THE FOOTAGE/}).click();
     }
-    const editor=page.getByRole('textbox',{name:/^(Python|C#) code editor$/});
-    if(index>0) {
-      await expect(editor).toContainText('VARIABLE_1');
-      await expect(page.locator('.code-placeholder').first()).toBeVisible();
-    }
+    const editor=page.getByRole('group',{name:/^(Python|C#) code template$/});
+    for (const name of Object.keys(step.requiredVariables)) await expect(editor.getByLabel(`Value for ${name}`, {exact:true})).toBeVisible();
+    await expect(editor).not.toContainText('VARIABLE_');
     const source=language==='python'?solutions[index]:solutions[index].split('\n').map(line=>line.startsWith('print(')?'Console.WriteLine(result);':`int ${line};`).join('\n');
     await code(page, source);
     await page.getByRole('button',{name:'RUN CASE',exact:true}).click();
@@ -89,10 +87,11 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
 });
 
 test('notes, evidence inspection, reset confirmation, and updated print pack', async({page})=>{
-  await page.goto('/case/001');const editor=page.getByRole('textbox',{name:/^(Python|C#) code editor$/});await expect(editor).toContainText('# CASE NOTE');await expect(editor).toContainText('camera_log = 257880');
-  await page.getByRole('button',{name:'HIDE CASE NOTE'}).click();await expect(editor).not.toContainText('# CASE NOTE');await expect(editor).toContainText('camera_log = 257880');await expect(editor).toContainText('print(result)');await code(page,'# my draft\ncamera_log = 257880');await page.getByRole('button',{name:'SHOW CASE NOTE'}).click();await expect(editor).toContainText('# my draft');await expect(editor).toContainText('# CASE NOTE');
+  await page.goto('/case/001');const editor=page.getByRole('group',{name:/^(Python|C#) code template$/});await expect(editor).toContainText('# CASE NOTE');
+  await page.getByLabel('Value for camera_log', {exact:true}).fill('123');
+  await page.getByRole('button',{name:'HIDE CASE NOTE'}).click();await expect(editor).not.toContainText('# CASE NOTE');await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('123');await expect(editor).toContainText('print(result)');await page.getByRole('button',{name:'SHOW CASE NOTE'}).click();await expect(editor).toContainText('# CASE NOTE');await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('123');
   await page.getByRole('button',{name:'Open Suspect board',exact:true}).click();await expect(page.getByRole('dialog')).not.toContainText('Emily');await expect(page.getByRole('dialog')).toContainText('FILES LOCKED');await page.locator('.suspect-card').first().click();await expect(page.getByRole('dialog')).toContainText('Further records have not been recovered');await expect(page.getByRole('dialog')).not.toContainText('B4');await page.getByRole('button',{name:'Case brief',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Find the records.');await closeDocument(page);
-  await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'KEEP MY CODE'}).click();await expect(editor).toContainText('# my draft');await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'RESET PROGRAM'}).click();await expect(editor).not.toContainText('# my draft');await expect(editor).toContainText('camera_log = 257880');
+  await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'KEEP MY CODE'}).click();await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('123');await page.getByRole('button',{name:'RESET',exact:true}).click();await page.getByRole('button',{name:'RESET PROGRAM'}).click();await expect(page.getByLabel('Value for camera_log', {exact:true})).toHaveValue('');await expect(editor).toContainText('camera_log');
   await page.getByRole('button',{name:'RESET CASE',exact:true}).click();await page.getByRole('button',{name:'KEEP MY CASE'}).click();await expect(page.getByRole('heading',{name:'The camera code'})).toBeVisible();await page.getByRole('button',{name:'RESET CASE',exact:true}).click();await page.getByRole('button',{name:'START OVER',exact:true}).click();await expect(page.getByRole('button',{name:'OPEN FILE',exact:true})).toBeVisible();
   await page.getByRole('link',{name:/TEACHER TOOLS/}).click();await unlockTeacher(page);await expect(page.getByRole('button',{name:'PRINT STUDENT REGISTER'})).toBeVisible();await expect(page.locator('.print-sheet')).toHaveCount(2);await expect(page.locator('.print-documents')).not.toContainText('OPERATOR: BRIAN');await expect(page.locator('.student-register tbody tr')).toHaveCount(30);
 });

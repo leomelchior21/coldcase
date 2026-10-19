@@ -11,7 +11,7 @@ export function codeForStep(step: StepDefinition, language: CodeLanguage, includ
   const outputInstruction = step.caseNote.indexOf('Use print(result).');
   const noteLines = outputInstruction < 0 ? step.caseNote : step.caseNote.slice(0, outputInstruction + 1);
   const notes = `${marker} ${step.id === 8 ? 'FINAL CASE NOTE' : 'CASE NOTE'}\n` + noteLines.map(line => `${marker} ${languageText(line, language)}`).join('\n');
-  const lines = step.id === 1 ? step.starterCode! : [...Object.keys(step.requiredVariables).map((_, i) => `VARIABLE_${i + 1} =`), 'result =', 'print(result)'];
+  const lines = [...Object.keys(step.requiredVariables).map(name => `${name} =`), 'result =', 'print(result)'];
   const starter = includeStarter ? lines.map(line => language === 'python' ? line : line.startsWith('print(') ? 'Console.WriteLine(result);' : `int ${line};`).join('\n') + '\n' : '';
   return notes + '\n\n' + starter;
 }
@@ -29,5 +29,6 @@ export function refreshCaseNotes(code: string, step: StepDefinition, language: C
   return code.split('\n').filter(line => {
     const comment = line.trim().match(/^(?:\/\/|#)\s*(.*)$/);
     return !comment || !obsoleteNotes.has(comment[1]);
-  }).join('\n');
+  }).map(line => line.replace(/^(\s*(?:\/\/|#)\s*)Create the variable ([A-Za-z_]\w*)\.$/, (original, prefix: string, name: string) =>
+    Object.prototype.hasOwnProperty.call(step.requiredVariables, name) ? `${prefix}Enter the value for ${name}.` : original)).join('\n');
 }

@@ -1,4 +1,4 @@
-﻿import { codeForStep } from '../engine/language';
+import { codeForStep } from '../engine/language';
 import type { CaseDefinition, CodeLanguage, EvidenceDocument, StepDefinition, SuspectDefinition } from '../types';
 
 export const suspects: SuspectDefinition[] = [
@@ -36,8 +36,7 @@ const steps: StepDefinition[] = [
     id: 1, shortLabel: 'The camera', title: 'The camera code',
     narrative: 'The hallway footage still exists. But the security camera ID is corrupted.',
     question: 'Which camera recorded Brian?', objective: 'Recover the camera code.',
-    caseNote: ['The security camera log is 257880.', 'The backup log is 921.', '', 'Create the variable camera_log.', 'Create the variable backup_log.', '', 'Divide camera_log by backup_log.', 'Store the answer in the variable result.', 'Use print(result).'],
-    starterCode: ['camera_log = 257880', 'backup_log = 921', 'result =', 'print(result)'],
+    caseNote: ['The security camera log is 257880.', 'The backup log is 921.', '', 'Enter the value for camera_log.', 'Enter the value for backup_log.', '', 'Divide camera_log by backup_log.', 'Store the answer in the variable result.', 'Use print(result).'],
     requiredEvidence: [], requiredVariables: { camera_log: 257880, backup_log: 921 },
     expectedResult: 280, requiredResultDependencies: ['camera_log','backup_log'], requiredOperations: ['/'], formula: 'camera_log / backup_log',
     unlockEvidence: ['C280'], hints: ['Use the camera log and its backup to recover the ID.', 'Python uses / to divide.', 'result = camera_log / backup_log'],
@@ -46,7 +45,7 @@ const steps: StepDefinition[] = [
   {
     id: 2, shortLabel: 'Missing key', title: 'The missing key',
     narrative: 'One Maker Lab key was never returned.', question: 'Which key is missing?', objective: 'Recover the key record.',
-    caseNote: ['The full key inventory checksum is 864.', 'The returned keys checksum is 837.', '', 'Create the variable inventory_checksum.', 'Create the variable returned_checksum.', '', 'Subtract returned_checksum from inventory_checksum.', 'Store the difference in the variable result.', 'Use print(result).'],
+    caseNote: ['The full key inventory checksum is 864.', 'The returned keys checksum is 837.', '', 'Enter the value for inventory_checksum.', 'Enter the value for returned_checksum.', '', 'Subtract returned_checksum from inventory_checksum.', 'Store the difference in the variable result.', 'Use print(result).'],
     requiredEvidence: [], requiredVariables: { inventory_checksum: 864, returned_checksum: 837 },
     expectedResult: 27, requiredResultDependencies: ['inventory_checksum','returned_checksum'], requiredOperations: ['-'], formula: 'inventory_checksum - returned_checksum',
     unlockEvidence: ['K27'], hints: ['The checksum is a total used to check the key records.', 'Subtract the returned checksum from the full checksum.', 'result = inventory_checksum - returned_checksum'],
@@ -55,7 +54,7 @@ const steps: StepDefinition[] = [
   {
     id: 3, shortLabel: 'Last seen', title: 'Last seen',
     narrative: 'The camera timestamp is damaged.', question: 'What time was Brian last seen?', objective: 'Recover the actual time.',
-    caseNote: ['Brian was last seen during hour 15.', 'The minute was 40.', '', 'Create the variable hour.', 'Create the variable minutes.', '', 'Multiply hour by 100. Add minutes.', 'Store the answer in the variable result.', 'Use print(result).'],
+    caseNote: ['Brian was last seen during hour 15.', 'The minute was 40.', '', 'Enter the value for hour.', 'Enter the value for minutes.', '', 'Multiply hour by 100. Add minutes.', 'Store the answer in the variable result.', 'Use print(result).'],
     requiredEvidence: [], requiredVariables: { hour: 15, minutes: 40 },
     expectedResult: 1540, requiredResultDependencies: ['hour','minutes'], requiredOperations: ['*','+'], formula: 'hour * 100 + minutes',
     unlockEvidence: ['T1540'], hints: ['The recovered value will be displayed as a real time.', 'Multiply the hour by 100, then add the minutes.', 'result = hour * 100 + minutes'],
@@ -65,7 +64,7 @@ const steps: StepDefinition[] = [
     id: 4, shortLabel: 'The footage', title: 'Restore the footage',
     narrative: 'The right footage is open. But the color channel is damaged.',
     question: 'Can we recover the missing colors?', objective: 'Restore the color channel.',
-    caseNote: ['The CCTV archive file is in your evidence.', 'The color filter value is 2.', '', 'Create the variable archive_file.', 'Set it to the recovered archive file number.', 'Create the variable color_filter.', 'Set it to the color filter value.', '', 'Multiply archive_file by color_filter.', 'Store the answer in the variable result.', 'Use print(result).'],
+    caseNote: ['The CCTV archive file is in your evidence.', 'The color filter value is 2.', '', 'Enter the value for archive_file.', 'Set it to the recovered archive file number.', 'Enter the value for color_filter.', 'Set it to the color filter value.', '', 'Multiply archive_file by color_filter.', 'Store the answer in the variable result.', 'Use print(result).'],
     requiredEvidence: ['A1220'], requiredVariables: { archive_file: 1220, color_filter: 2 },
     expectedResult: 2440, requiredResultDependencies: ['archive_file','color_filter'], requiredOperations: ['*'], formula: 'archive_file * color_filter',
     unlockEvidence: ['BP-BLUE'], hints: ['Recover the archive at the security terminal first.', 'Find the archive file number on your Evidence Desk.', 'result = archive_file * color_filter'],
@@ -74,7 +73,7 @@ const steps: StepDefinition[] = [
   {
     id: 5, shortLabel: 'The key', title: 'The key',
     narrative: 'We know which key disappeared.', question: 'Which room does Key 27 open?', objective: 'Decode the room.',
-    caseNote: ['The missing key code is in your evidence.', 'The sector value is 8.', 'The correction value is 12.', '', 'Create the variable key_code.', 'Create the variable sector_value.', 'Create the variable correction.', '', 'Multiply key_code by sector_value.', 'Then subtract correction.', 'Store the answer in the variable result.', 'Use print(result).'],
+    caseNote: ['The missing key code is in your evidence.', 'The sector value is 8.', 'The correction value is 12.', '', 'Enter the value for key_code.', 'Enter the value for sector_value.', 'Enter the value for correction.', '', 'Multiply key_code by sector_value.', 'Then subtract correction.', 'Store the answer in the variable result.', 'Use print(result).'],
     requiredEvidence: ['K27'], requiredVariables: { key_code: 27, sector_value: 8, correction: 12 },
     expectedResult: 204, requiredResultDependencies: ['key_code','sector_value','correction'], requiredOperations: ['*','-'], formula: 'key_code * sector_value - correction',
     unlockEvidence: ['R204','ACCESS204'], hints: ['Retrieve the missing key code from an earlier record.', 'Multiply first. Subtract the correction from that answer.', 'result = key_code * sector_value - correction'],
@@ -83,7 +82,7 @@ const steps: StepDefinition[] = [
   {
     id: 6, shortLabel: 'The access', title: 'Three minutes later',
     narrative: 'Room 204 was opened shortly after Brian disappeared.', question: 'How long after Brian’s last sighting?', objective: 'Connect the access record.',
-    caseNote: ['Check the Last Seen Record and the access log.', 'Find the first Room 204 entry after the sighting.', 'Use four-digit times without a colon.', 'Both events are in the same hour, so their difference is minutes.', '', 'Create the variable last_seen.', 'Create the variable room_opened.', '', 'Subtract last_seen from room_opened.', 'Store the difference in the variable result.', 'Use print(result).'],
+    caseNote: ['Check the Last Seen Record and the access log.', 'Find the first Room 204 entry after the sighting.', 'Use four-digit times without a colon.', 'Both events are in the same hour, so their difference is minutes.', '', 'Enter the value for last_seen.', 'Enter the value for room_opened.', '', 'Subtract last_seen from room_opened.', 'Store the difference in the variable result.', 'Use print(result).'],
     requiredEvidence: ['T1540','R204','ACCESS204'], requiredVariables: { last_seen: 1540, room_opened: 1543 },
     expectedResult: 3, requiredResultDependencies: ['last_seen','room_opened'], requiredOperations: ['-'], formula: 'room_opened - last_seen',
     unlockEvidence: ['B4','PROFILES'], hints: ['Use the first entry for this room after Brian’s sighting.', 'Both times are in the same hour. Subtract their four-digit values.', 'result = room_opened - last_seen'],
@@ -93,7 +92,7 @@ const steps: StepDefinition[] = [
     id: 7, shortLabel: 'The match', title: 'Two possible matches',
     narrative: 'Three students share a blue backpack, access group B4, and Room 204. Appearance alone cannot identify who was with Brian.',
     question: 'Which passwords match the access record?', objective: 'Recover the final three password digits.',
-    caseNote: ['Inspect Access Card B4 and the Detailed Suspect Files.', 'The password suffix checksum is 900. The correction is 473.', '', 'Create the variable suffix_checksum.', 'Create the variable suffix_correction.', '', 'Subtract suffix_correction from suffix_checksum.', 'Store the last three password digits in result.', 'Use print(result).', 'Ask your teacher for the printed student register. Compare passwords ending with this suffix.'],
+    caseNote: ['Inspect Access Card B4 and the Detailed Suspect Files.', 'The password suffix checksum is 900. The correction is 473.', '', 'Enter the value for suffix_checksum.', 'Enter the value for suffix_correction.', '', 'Subtract suffix_correction from suffix_checksum.', 'Store the last three password digits in result.', 'Use print(result).', 'Ask your teacher for the printed student register. Compare passwords ending with this suffix.'],
     requiredEvidence: ['BP-BLUE','B4','R204','PROFILES'], requiredVariables: { suffix_checksum: 900, suffix_correction: 473 },
     expectedResult: 427, requiredResultDependencies: ['suffix_checksum','suffix_correction'], requiredOperations: ['-'], formula: 'suffix_checksum - suffix_correction',
     unlockEvidence: ['SUFFIX','PREP'], hints: ['The B4 record contains the checksum and correction.', 'Subtract the correction to recover the last three digits.', 'result = suffix_checksum - suffix_correction'],
@@ -103,7 +102,7 @@ const steps: StepDefinition[] = [
     id: 8, shortLabel: 'The truth', title: 'The missing prefix',
     narrative: 'Two students still match. The sign-in record contains an initial and a damaged password prefix.',
     question: 'Who actually entered with Brian?', objective: 'Recover the first two password digits.',
-    caseNote: ['Read the Damaged Sign-in Record.', 'The prefix checksum is 864. The divisor is 12.', '', 'Create the variable prefix_checksum.', 'Create the variable prefix_divisor.', '', 'Divide prefix_checksum by prefix_divisor.', 'Store the first two password digits in result.', 'Use print(result).', 'Combine the prefix and recovered suffix. Use the initial and printed student register to choose who was with Brian.'],
+    caseNote: ['Read the Damaged Sign-in Record.', 'The prefix checksum is 864. The divisor is 12.', '', 'Enter the value for prefix_checksum.', 'Enter the value for prefix_divisor.', '', 'Divide prefix_checksum by prefix_divisor.', 'Store the first two password digits in result.', 'Use print(result).', 'Combine the prefix and recovered suffix. Use the initial and printed student register to choose who was with Brian.'],
     requiredEvidence: ['PREP','SUFFIX'], requiredVariables: { prefix_checksum: 864, prefix_divisor: 12 },
     expectedResult: 72, requiredResultDependencies: ['prefix_checksum','prefix_divisor'], requiredOperations: ['/'], formula: 'prefix_checksum / prefix_divisor',
     unlockEvidence: ['FINAL-01'], hints: ['Recover the prefix from the checksum and divisor.', 'Divide the checksum by the divisor, then compare the complete password.', 'result = prefix_checksum / prefix_divisor'],
