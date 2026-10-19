@@ -3,7 +3,7 @@ import { languageName } from '../engine/language';
 import { calculationTokens, isNumberSlot, isOperator, operators, readGuidedAnswers, writeGuidedCode } from '../engine/guidedCode';
 import '../styles/guided-code.css';
 
-const operatorLabels = { '+': '+ Add', '-': '− Subtract', '*': '× Multiply', '/': '÷ Divide' };
+const operatorLabels = { '+': '+ Add', '-': '− Subtract', '*': '* Multiply', '/': '/ Divide' };
 
 export function GuidedCode({ language, step, code, onChange, onRun, disabled }: {
   language: CodeLanguage; step: StepDefinition; code: string; onChange: (code: string) => void; onRun: () => void; disabled: boolean;
