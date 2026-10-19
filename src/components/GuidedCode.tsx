@@ -18,7 +18,7 @@ export function GuidedCode({ language, step, code, onChange, onRun, disabled }: 
   }}/>;
   const note = (line: string) => line.split(/(\b[A-Za-z_]\w*\b|\b\d+\b)/g).map((word, index) => <span key={index} className={names.includes(word) || word === 'result' ? 'note-variable' : /^\d+$/.test(word) ? 'note-value' : /^(?:Divide|Multiply|Subtract|Add|subtract|print|Console|WriteLine)$/.test(word) ? 'note-operation' : undefined}>{word}</span>);
   let operatorNumber = 0, valueNumber = 0;
-  return <div className="code-editor guided-code" role="group" aria-label={`${languageName(language)} code template`} onKeyDown={event => {
+  return <div className="code-editor guided-code" role="group" tabIndex={0} aria-label={`${languageName(language)} code template`} onKeyDown={event => {
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') { event.preventDefault(); onRun(); }
   }}>
     <fieldset disabled={disabled}>

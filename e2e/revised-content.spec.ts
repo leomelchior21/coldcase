@@ -18,7 +18,7 @@ test('every clue uses a loaded generated illustration and keeps record facts rea
     await page.getByRole('button',{name:`Open ${case001.documents.find(d=>d.id===id)!.title}`,exact:true}).click();
     const dialog=page.getByRole('dialog');
     const illustration = dialog.getByRole('img', { name: artwork.alt, exact: true });
-    await expect(illustration).toHaveAttribute('src', `/cases/case001/evidence/${artwork.file}.webp`);
+    await expect(illustration).toHaveAttribute('src', `/cases/case001/evidence/${artwork.file}.jpg`);
     await expect.poll(() => illustration.evaluate(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     if(id==='FINAL-01')await dialog.screenshot({path:`test-results/${testInfo.project.name}-final-evidence.png`});
     await page.getByRole('button',{name:'Close dialog'}).click();
@@ -45,7 +45,7 @@ test('explicit variable instructions and ten generated portraits are used throug
   page.on('response', response => { if (response.url().includes('/portraits/') && response.status() >= 400) broken.push(response.url()); });
   await page.goto('/');
   const brian = page.getByRole('img', { name: 'Illustrated school portrait of Brian' });
-  await expect(brian).toHaveAttribute('src', '/cases/case001/portraits/brian.webp');
+  await expect(brian).toHaveAttribute('src', '/cases/case001/portraits/brian.jpg');
   await page.getByRole('button', { name: 'OPEN FILE', exact: true }).click();
   const editor = page.getByRole('group', { name: 'Python code template' });
   await expect(editor).toContainText('Enter the value for camera_log.');
@@ -68,7 +68,7 @@ test('explicit variable instructions and ten generated portraits are used throug
   const dialog = page.getByRole('dialog');
   for (const {name} of suspects) {
     const portrait = dialog.getByRole('img', { name: `Illustrated school portrait of ${name}` });
-    await expect(portrait).toHaveAttribute('src', `/cases/case001/portraits/${name.split(' ')[0].toLowerCase()}.webp`);
+    await expect(portrait).toHaveAttribute('src', `/cases/case001/portraits/${name.split(' ')[0].toLowerCase()}.jpg`);
     await expect(portrait).toBeVisible();
     expect(await portrait.evaluate(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0)).toBe(true);
     await expect(dialog.getByRole('button', { name: `Inspect ${name}` })).toBeVisible();

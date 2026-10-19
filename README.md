@@ -34,6 +34,8 @@ school network settings; changing image formats does not repair certificates.
   Answers and operator choices persist across reloads, and compatible saved programs
   populate the new controls. Reset clears only the step's answers, keeping its template.
   Optional Case Notes and progressive clues adapt to the chosen language.
+  The code panel scrolls independently with touch, trackpad, mouse or keyboard;
+  Run, Clue and the step tabs remain outside its scrolling content.
 - Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
@@ -137,10 +139,15 @@ Generated app images live in `public/cases/case001/portraits/` and
 preserved in `artwork/`. See `artwork/README.md` for the asset workflow.
 All images are local; the running app makes no image API calls.
 
-WebP artwork retries automatically as JPEG if the browser cannot decode or load
-it, including clue thumbnails, full evidence, portraits, guide comics and the
-ending. This covers iPads whose Safari version lacks WebP support. JPEG copies
-are committed for local development and refreshed by `npm run build`.
+Case artwork loads as JPEG first, including full evidence, portraits, guide
+comics and the ending, so older iPads do not need to request WebP to see images.
+Clue previews use small 400px JPEGs and load without waiting for Safari's lazy
+loading detection inside the scrolling desk. If a thumbnail is unavailable,
+the full JPEG is used; WebP remains an alternate if the JPEG fails.
+Failed full illustrations show a **RETRY IMAGE** button that requests a fresh
+copy without clearing student progress. Portraits retain their illustrated
+placeholder when neither format loads. JPEGs and thumbnails are committed for
+local development and refreshed by `npm run build`.
 After replacing artwork, run `npm run images:compat` to refresh those copies.
 
 Browser-based WebKit checks emulate an iPad viewport and touch input. Actual iPad

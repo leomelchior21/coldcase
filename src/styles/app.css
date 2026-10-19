@@ -121,3 +121,5 @@
 .final-clue-action>span{font:700 11px/1.6 var(--mono);letter-spacing:1px;max-width:150px}
 .final-clue-action .primary{flex:1;min-height:64px;font-size:28px}
 @media(max-width:600px){.final-clue-action{flex-direction:column;gap:8px;padding:12px 16px}.final-clue-action>span{max-width:none}.final-clue-action .primary{width:100%;font-size:24px;min-height:56px}}
+.image-load-error{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:160px;padding:12px;color:var(--ink);background:var(--paper);font:13px/1.4 var(--mono);text-align:center;white-space:normal}
+.image-load-error button{min-height:44px;padding:8px 12px;border:1px solid currentColor;background:transparent;color:inherit;font:700 12px var(--mono);cursor:pointer}

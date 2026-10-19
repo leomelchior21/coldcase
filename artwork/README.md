@@ -28,9 +28,11 @@ The script only encodes existing files, preserves original PNGs and skips existi
 outputs. It makes no API calls.
 
 Run `npm run images:compat` after changing any WebP artwork to regenerate its
-JPEG fallback. This scans all case folders, including optional portrait/footage
-overrides, and also runs before every production build. The UI retries a failed
-WebP as its matching JPEG so older iPads can display the same illustrations.
+JPEG and 400px `.thumb.jpg` preview. This scans all case folders, including
+optional portrait/footage overrides, and also runs before every production
+build. The UI requests JPEG first for iPad compatibility and uses small
+previews on the evidence desk. Full JPEG and WebP provide alternate sources
+if a thumbnail is unavailable. Failed full illustrations offer a retry button.
 
 ## Expanded suspect cast
 

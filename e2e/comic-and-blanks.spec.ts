@@ -84,13 +84,13 @@ test('brief and first guide screen share the urgent comic story', async ({ page 
   const comic = page.getByRole('dialog').locator('.case-comic');
   await expect(comic).toContainText('WHERE IS BRIAN?');
   await expect(comic).toContainText("DON'T LOSE THE TRAIL.");
-  await expect(comic.locator('img')).toHaveAttribute('src', '/cases/case001/evidence/opening-comic.webp');
+  await expect(comic.locator('img')).toHaveAttribute('src', '/cases/case001/evidence/opening-comic.jpg');
   await expect.poll(() => comic.locator('img').evaluate(node => (node as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   await page.screenshot({ path: `test-results/${testInfo.project.name}-comic-brief.png` });
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await page.getByRole('button', { name: 'HOW TO PLAY', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'BRIAN IS MISSING.' })).toBeVisible();
-  await expect(page.locator('.onboarding-page .case-comic img')).toHaveAttribute('src', '/cases/case001/evidence/opening-comic.webp');
+  await expect(page.locator('.onboarding-page .case-comic img')).toHaveAttribute('src', '/cases/case001/evidence/opening-comic.jpg');
   await page.getByRole('button', { name: 'NEXT', exact: true }).scrollIntoViewIfNeeded();
   await expect(page.getByRole('button', { name: 'NEXT', exact: true })).toBeInViewport();
   await page.screenshot({ path: `test-results/${testInfo.project.name}-comic-guide.png` });

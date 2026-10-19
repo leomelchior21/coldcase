@@ -8,10 +8,11 @@ async function prepare(directory) {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) await prepare(path);
     else if (/\.webp$/i.test(entry.name)) {
-      await sharp(path).flatten({ background: '#e7e0d0' }).jpeg({ quality: 90 }).toFile(path.replace(/\.webp$/i, '.jpg'));
+      await sharp(path).flatten({ background: '#e7e0d0' }).jpeg({ quality: 85 }).toFile(path.replace(/\.webp$/i, '.jpg'));
+      await sharp(path).resize({ width: 400, withoutEnlargement: true }).flatten({ background: '#e7e0d0' }).jpeg({ quality: 80 }).toFile(path.replace(/\.webp$/i, '.thumb.jpg'));
     }
   }
 }
 
 await prepare('public/cases');
-console.log('Prepared JPEG fallbacks for all case WebP images.');
+console.log('Prepared JPEG artwork and small thumbnails for all case WebP images.');
