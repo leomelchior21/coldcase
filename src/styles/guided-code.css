@@ -10,12 +10,11 @@
 .guided-line{display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:6px;align-items:start}
 .guided-line-number{color:#6e827f;font-size:10px;padding-top:12px;text-align:right;user-select:none}
 .guided-statement{display:flex;align-items:center;flex-wrap:wrap;gap:2px;min-height:44px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.guided-statement input,.guided-statement select{box-sizing:border-box;min-height:44px;border:1px solid #8b794a;border-radius:4px;background:#ffc34212;color:#ffc342;font:16px var(--mono);padding:7px 8px;max-width:100%}
+.guided-statement input{box-sizing:border-box;min-height:44px;border:1px solid #8b794a;border-radius:4px;background:#ffc34212;color:#ffc342;font:16px var(--mono);padding:7px 8px;max-width:100%}
 .guided-statement input{width:calc(6ch + 12px);min-width:6ch;flex-shrink:1;padding-inline:5px}
 .guided-statement input::placeholder{font-size:12px;color:#dbc89e;opacity:.8;font-style:italic}
-.guided-statement select{width:4.5ch;min-width:44px;cursor:pointer;color:#36ddff;border-color:#398698;background:#36ddff12;padding-inline:5px}
-.guided-statement select option{background:#10162a;color:#e7e9f7}
-.guided-statement input:focus,.guided-statement select:focus{outline:2px solid #f8dc91;outline-offset:2px}
+.guided-statement input.guided-expression{flex:1 1 240px;width:auto;min-width:min(18ch,100%);color:#36ddff;border-color:#398698;background:#36ddff12;font-size:16px}
+.guided-statement input:focus{outline:2px solid #f8dc91;outline-offset:2px}
 .guided-calculation{gap:4px}
 .guided-code fieldset:disabled{opacity:.7}
 @media(max-width:1100px){.guided-code fieldset{padding-inline:7px}.guided-statement{font-size:11px}.guided-line{grid-template-columns:13px minmax(0,1fr);column-gap:4px}}

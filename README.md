@@ -27,11 +27,11 @@ school network settings; changing image formats does not repair certificates.
 - Selecting Python or C# opens the investigation immediately. The How to Play guide and pre-game tutorial have been removed.
 - Fixed Python and C# code templates with a dark navy background, yellow values/types,
   red variables, cyan calls/operators, and muted blue Case Notes. All eight steps
-  provide the variable names, assignment syntax, calculation operands and output call.
-  Students fill the numeric values and choose `+`, `-`, `*` or `/` from operator menus.
-  Step 3 also provides a numeric field for the time multiplier. The surrounding code
+  provide the variable names, assignment syntax and output call.
+  Students fill the numeric values and write the complete result expression using
+  the variables and required operators. The surrounding code
   cannot be edited. Blank answers receive a clear prompt before validation runs.
-  Answers and operator choices persist across reloads, and compatible saved programs
+  Values and written expressions persist across reloads, and compatible saved programs
   populate the new controls. Reset clears only the step's answers, keeping its template.
   Optional Case Notes and progressive clues adapt to the chosen language.
   The code panel scrolls independently with touch, trackpad, mouse or keyboard;
@@ -39,7 +39,7 @@ school network settings; changing image formats does not repair certificates.
 - Bounded Python and C# classroom interpreters with expression parsing, dependency tracking, and semantic validation for every step.
 - All digital evidence, interactive suspect records, and a final reconstruction.
 - Automatic localStorage persistence and confirmed resets.
-- A two-stage CCTV terminal with saved camera authentication and mechanical time wheels.
+- A two-stage CCTV terminal with a numeric camera keypad, saved authentication, and mechanical time wheels with a quiet click on each adjustment.
 - Monochrome footage that restores its colors after students recover the color key.
 - Password-gated Teacher Tools at `/teacher/case/001/print` offer an **A4 student register** with 30 fictional names, student numbers, and puzzle passwords, plus a **landscape A4 clue worksheet** with eight blank squares titled by step. Each has its own print button. Print a worksheet per team for notes and a register for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
 - Nine named suspects plus Brian, with three new generated portraits. Emily and Elena share similar hair, blue backpacks, B4 access, and Room 204; older student Oliver shares the backpack, access group, and room.
@@ -50,14 +50,19 @@ Future case folders are unavailable placeholders clearly marked **Coming soon**.
 
 ## Case 001 evidence chain
 
-Camera log / backup log recovers Camera 280. The key checksum recovers Key 27.
+Camera log / backup log recovers Camera 280. The key checksum recovers a vector key rack with 30 positions, one empty hook, and a worn label. Students identify the missing key from its neighbors.
 The damaged timestamp becomes the actual last-seen time, 15:40. After those
-three steps, students enter the camera code and physically set the terminal's
-time wheels to open Archive 1220. The terminal lets them consult recovered records.
+three steps, the security terminal opens directly. Students enter the camera code
+on its keypad and physically set the terminal's
+time wheels to open Archive 1220. The terminal lets them consult recovered records. Step 3 uses the inspector's
+statement that Brian left 20 minutes before 16:00; it no longer opens a separate
+last-seen evidence card. The CCTV archive retains the recovered time for Step 6.
 
 Archive 1220 x color filter **N# 2** restores the blue backpack. The original
 monochrome frame explicitly displays the filter number and remains reopenable.
-Key 27 x sector 8 - correction 12 recovers Room 204. The access log connects
+Step 4 directs students to the evidence for the color filter, without an explicit
+assignment instruction on the frame. Step 5 describes the correction as the number
+used as midday. Key 27 x sector 8 - correction 12 recovers Room 204. The access log connects
 15:43 to shared access group B4, three minutes after the sighting.
 
 Three suspects share the backpack, group, and room. Step 7 calculates

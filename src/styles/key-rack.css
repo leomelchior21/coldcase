@@ -1,0 +1,5 @@
+.key-rack svg,.key-rack-thumbnail svg{display:block;width:100%;height:auto}
+.key-rack{background:#192b24}
+.key-rack-thumbnail{margin:0;width:100%;overflow:hidden;border-radius:3px}
+.key-rack-thumbnail svg{max-height:150px}
+@media print{.key-rack svg{print-color-adjust:exact}}

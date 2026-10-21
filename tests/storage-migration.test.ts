@@ -12,6 +12,35 @@ function memory(value: unknown) {
 function ready() { return [1,2,3].reduce((state,id) => solveStep(state,id,case001), freshState()); }
 
 describe('Saved investigation migration', () => {
+  it.each(['python', 'csharp'] as const)('refreshes revised %s clues without resetting saved answers or progress', language => {
+    const state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
+    state.language = language;
+    const marker = language === 'csharp' ? '//' : '#';
+    const oldNotes: Record<number, string[]> = {
+      3: ['Brian was last seen during hour 15.', 'The minute was 40.'],
+      4: ['The color filter value is 2.'],
+      5: ['The correction value is 12.'],
+      6: ['Check the Last Seen Record and the access log.'],
+    };
+    for (const [id, notes] of Object.entries(oldNotes)) {
+      const source = language === 'python' ? solutions[+id - 1] : solutions[+id - 1].split('\n').map(line => line.startsWith('print(') ? 'Console.WriteLine(result);' : `int ${line};`).join('\n');
+      state.codes[+id] = notes.map(note => `${marker} ${note}\n`).join('') + source;
+    }
+    memory({ ...state, evidence: [...state.evidence, 'T1540'] });
+    const restored = loadState();
+    expect(restored.solved).toEqual(state.solved);
+    expect(restored.archive1220Unlocked).toBe(true);
+    expect(restored.evidence).not.toContain('T1540');
+    for (const [id, notes] of Object.entries(oldNotes)) {
+      const program = state.codes[+id].split('\n').filter(line => !line.startsWith(marker)).join('\n');
+      expect(restored.codes[+id]).toContain(program);
+      for (const note of notes) expect(restored.codes[+id]).not.toContain(note);
+    }
+    expect(restored.codes[3]).toContain('The inspector said that Brian left the room 20 minutes before 16:00.');
+    expect(restored.codes[4]).toContain('The color filter value is in your evidence.');
+    expect(restored.codes[5]).toContain('The correction value is the number used as midday.');
+    expect(restored.codes[6]).toContain('Check the CCTV archive file and the access log.');
+  });
   it.each(['python', 'csharp'] as const)('removes the four extra comments from every saved %s step with edited headers', language => {
     const state = freshState(), marker = language === 'csharp' ? '//' : '#';
     const newline = language === 'csharp' ? '\r\n' : '\n';

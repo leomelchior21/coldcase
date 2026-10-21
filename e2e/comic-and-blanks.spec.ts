@@ -1,6 +1,6 @@
 import { test, expect, fillTemplate } from './fixtures';
 
-for (const language of ['python', 'csharp'] as const) test(`${language} fixed templates accept only values and operators and preserve answers`, async ({ page }, testInfo) => {
+for (const language of ['python', 'csharp'] as const) test(`${language} templates accept numeric values and written expressions and preserve answers`, async ({ page }, testInfo) => {
   await page.addInitScript(language => {
     const key = 'cold-case:001:v1';
     const state = JSON.parse(localStorage.getItem(key)!);
@@ -10,8 +10,8 @@ for (const language of ['python', 'csharp'] as const) test(`${language} fixed te
   const template = page.getByRole('group', { name: `${language === 'python' ? 'Python' : 'C#'} code template` });
   await expect(template).toBeVisible();
   await expect(page.locator('[contenteditable="true"], textarea')).toHaveCount(0);
-  await expect(template.locator('input')).toHaveCount(2);
-  await expect(template.locator('select')).toHaveCount(1);
+  await expect(template.locator('input')).toHaveCount(3);
+  await expect(template.locator('select')).toHaveCount(0);
   await expect(template).not.toContainText('VARIABLE_');
   await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
   await expect(page.locator('.console-output.error')).toContainText('Fill the blanks');
@@ -21,12 +21,13 @@ for (const language of ['python', 'csharp'] as const) test(`${language} fixed te
   await expect(camera).toHaveValue('257880');
   await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
   await expect(page.locator('.console-output.error')).toBeVisible();
-  await page.getByLabel('Operator 1 for result', {exact:true}).selectOption('/');
+  await page.getByLabel('Calculation for result', {exact:true}).fill('');
+  await page.getByLabel('Calculation for result', {exact:true}).pressSequentially('camera_log / backup_log');
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('cold-case:001:v1')!).codes[1]);
   expect(saved).not.toContain('camera_log = 1');
   await page.reload();
   await expect(camera).toHaveValue('257880');
-  await expect(page.getByLabel('Operator 1 for result', {exact:true})).toHaveValue('/');
+  await expect(page.getByLabel('Calculation for result', {exact:true})).toHaveValue('camera_log / backup_log');
   for (const control of await template.locator('input, select').all()) expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   await page.locator('.terminal-panel').screenshot({path:`test-results/${testInfo.project.name}-${language}-fixed-template.png`});
   await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
@@ -41,7 +42,7 @@ for (const language of ['python', 'csharp'] as const) test(`${language} fixed te
   await page.getByRole('button', { name: 'RESET', exact: true }).click();
   await page.getByRole('button', { name: 'RESET PROGRAM', exact: true }).click();
   await expect(page.getByLabel('Value for inventory_checksum', {exact:true})).toHaveValue('');
-  await expect(page.getByLabel('Operator 1 for result', {exact:true})).toHaveValue('');
+  await expect(page.getByLabel('Calculation for result', {exact:true})).toHaveValue('');
   await page.reload();
   await expect(page.getByLabel('Value for inventory_checksum', {exact:true})).toHaveValue('');
   await expect(template).toContainText('inventory_checksum');

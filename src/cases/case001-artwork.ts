@@ -1,8 +1,6 @@
 ﻿export const evidenceArtwork: Record<string, { file: string; alt: string; label?: string; monochrome?: boolean }> = {
   BRIEF: { file: 'opening-comic', alt: 'Comic story: Brian working on his robot, his empty Maker Lab seat, and a damaged security recording.' },
   C280: { file: 'camera-archive', alt: 'School security camera mounted in the hallway', label: 'CAMERA CODE 280' },
-  K27: { file: 'key-registry', alt: 'School key cabinet and a brass key on the registry desk', label: 'MISSING KEY 27' },
-  T1540: { file: 'timeline-record-v2', alt: 'Recovered timestamp record cards on the school archive desk', label: 'BRIAN LAST SEEN · 15:40' },
   A1220: { file: 'camera-archive', alt: 'School camera linked to the recovered archive', label: 'CCTV ARCHIVE FILE 1220' },
   'CCTV-BW': { file: 'hallway-footage', alt: 'Monochrome CCTV: Brian in a school hallway with another student carrying a backpack; its color and the student’s face cannot be identified', label: 'CAM 280 · 15:40 · COLOR FILTER N# 2', monochrome: true },
   'BP-BLUE': { file: 'hallway-footage', alt: 'Restored CCTV: Brian in a school hallway with another student wearing a blue backpack, whose face is hidden', label: 'ARCHIVE 1220 · COLOR RESTORED' },
