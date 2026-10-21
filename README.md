@@ -42,9 +42,9 @@ school network settings; changing image formats does not repair certificates.
 - A two-stage CCTV terminal with a numeric camera keypad, saved authentication, and mechanical time wheels with a quiet click on each adjustment.
 - Monochrome footage that restores its colors after students recover the color key.
 - Password-gated Teacher Tools at `/teacher/case/001/print` offer an **A4 student register** with 30 fictional names, student numbers, and puzzle passwords, plus a **landscape A4 clue worksheet** with eight blank squares titled by step. Each has its own print button. Print a worksheet per team for notes and a register for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
-- Nine named suspects plus Brian, with three new generated portraits. Emily and Elena share similar hair, blue backpacks, B4 access, and Room 204; older student Oliver shares the backpack, access group, and room.
+- Nine named suspects plus Brian. Maya, Elena, and Emily share blue backpacks, B4 access, and Room 204. Students use the printed names, IDs, and passwords to verify this shortlist.
 - A dimmed-screen discovery spotlight invites students to open each newly recovered clue. Completing Step 8 opens the final sign-in record directly, with a prominent **CHOOSE THE SUSPECT** button that stays visible below the clue.
-- All nine suspects return for the final choice. A wrong choice fades to an unresolved ending with a return to the levels; Emily unlocks the animated true story.
+- All nine suspects return in shuffled order for the final choice, with full portraits and names in a single wide grid. A wrong choice fades to an unresolved ending with a return to the levels; Emily unlocks the animated true story.
 
 Future case folders are unavailable placeholders clearly marked **Coming soon**.
 
@@ -65,12 +65,18 @@ assignment instruction on the frame. Step 5 describes the correction as the numb
 used as midday. Key 27 x sector 8 - correction 12 recovers Room 204. The access log connects
 15:43 to shared access group B4, three minutes after the sighting.
 
-Three suspects share the backpack, group, and room. Step 7 calculates
-900 - 473 = 427, the last three password digits. The **printed** register leaves
-Emily Carter (72427) and Elena Brooks (39427) in consideration. Step 8 calculates
-864 / 12 = 72 and restores only initial E. and the first two digits. Students
-combine the clues and consult the printed list before choosing a suspect.
-There is no Emily evidence file and no digital student-register card.
+Three suspects share the backpack, group, and room. In Step 7, students consult
+the **printed** register and fill `suspect_01_ID`, `suspect_02_ID`, and
+`suspect_03_ID` with Maya Chen (24013), Elena Brooks (24005), and Emily Carter
+(24028), in any order. The calculation adds all three variables for **72046**.
+Each ID must appear once; a different combination with the same total is rejected.
+
+Step 8 calculates 864 / 12 = 72 to restore a damaged door-keypad scan. The final
+record is an SVG lock with fingerprints only on **2, 7, and 4**, without a textual
+password or initial. Students compare their three suspects' printed passwords;
+only Emily's **72427** uses those digits exclusively. The green **CHOOSE THE
+SUSPECT** button opens the shuffled photo grid. There is no clue-summary panel,
+Emily evidence file, or digital student-register card.
 
 Choosing Emily reveals that Brian was safe: they moved to Room 204 to prepare
 the Maker demonstration. A staff check at 15:50 confirmed both safe. Key 27 was
@@ -86,6 +92,9 @@ show full 3:4 portraits without landscape cropping.
 
 The existing localStorage key is retained. Current investigations save code,
 results, evidence, selected suspect, all three CCTV authentication flags, the selected language. Existing Python drafts remain intact; choosing C# for an existing investigation preserves edited Python programs in Previous Notes. Resetting a case asks for a new language, then opens the desk directly.
+The new deduction revision preserves Steps 1-6 and CCTV authentication from saved
+investigations. It reopens Steps 7-8 with the ID and keypad puzzles and saves the
+earlier password programs and results in Previous Notes.
 Revision 3 starts the updated clue chain fresh. Earlier case revisions are preserved in **Previous Notes**, including student
 programs and verified results. Their old completion flags do not unlock the new
 evidence chain. Resetting the case clears the current investigation and its

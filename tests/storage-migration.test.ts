@@ -12,6 +12,29 @@ function memory(value: unknown) {
 function ready() { return [1,2,3].reduce((state,id) => solveStep(state,id,case001), freshState()); }
 
 describe('Saved investigation migration', () => {
+  it('preserves Steps 1–6 and archives the old password ending when the deduction changes', () => {
+    let state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
+    for (const step of case001.steps.slice(3)) state = solveStep(state, step.id, case001);
+    state.codes[1] = solutions[0];
+    state.codes[7] = '# My suffix notes\nsuffix_checksum = 900\nsuffix_correction = 473\nresult = suffix_checksum - suffix_correction\nprint(result)';
+    state.codes[8] = 'prefix_checksum = 864\nprefix_divisor = 12\nresult = prefix_checksum / prefix_divisor\nprint(result)';
+    memory({ ...state, deductionRevision: undefined, currentStep: 8, closed: true, deduction: { person: 'emily', account: 'prep' }, results: { ...state.results, 7: 427 } });
+    const restored = loadState();
+    expect(restored.solved).toEqual([1,2,3,4,5,6]);
+    expect(restored.currentStep).toBe(7);
+    expect(restored.archive1220Unlocked).toBe(true);
+    expect(restored.codes[1]).toBe(solutions[0]);
+    expect(restored.codes[7]).toContain('suspect_01_ID =');
+    expect(restored.codes[8]).toContain('scan_checksum =');
+    expect(restored.closed).toBe(false);
+    expect(restored.deduction.person).toBe('');
+    expect(restored.evidence).not.toContain('FINAL-01');
+    expect(restored.evidence).not.toContain('MATCHES');
+    expect(restored.previousWork?.codes[7]).toBe(state.codes[7]);
+    expect(restored.previousWork?.results[7]).toBe(427);
+    saveState(restored);
+    expect(loadState()).toEqual(restored);
+  });
   it.each(['python', 'csharp'] as const)('refreshes revised %s clues without resetting saved answers or progress', language => {
     const state = acceptArchiveTime(acceptCameraCode(ready(), '280'), 15, 40);
     state.language = language;
@@ -65,7 +88,7 @@ describe('Saved investigation migration', () => {
     const step = case001.steps[7], marker = language === 'csharp' ? '//' : '#';
     const oldNotes = `${marker} FINAL CASE NOTE\n` + step.caseNote.map(line => `${marker} ${languageText(line, language)}`).join('\n');
     const oldGuide = (language === 'csharp' ? '\n// Declare whole numbers with int, e.g. int clues = 2;\n// End each statement with a semicolon (;).' : '') + `\n${marker} Replace each glowing VARIABLE name and fill its value from the Case Note.\n${marker} Complete result with your calculation, then print result below.`;
-    const draft = `${marker} My own note\n` + (language === 'csharp' ? 'int prefix_checksum = 864;\nint result =;' : 'prefix_checksum = 864\nresult =');
+    const draft = `${marker} My own note\n` + (language === 'csharp' ? 'int scan_checksum = 864;\nint result =;' : 'scan_checksum = 864\nresult =');
     const state = freshState();
     state.language = language;
     state.codes[8] = oldNotes + oldGuide + '\n\n' + draft;

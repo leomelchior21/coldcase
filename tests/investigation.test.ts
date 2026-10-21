@@ -69,7 +69,7 @@ describe('Recovered evidence chain', () => {
     expect(case001.steps[6].caseNote.join(' ')).not.toContain('Emily');
   });
   it('three suspects match all three and no person is selected initially', () => {
-    expect(suspects.filter(s=>s.backpack==='Blue'&&s.card==='B4'&&s.room===204).map(s=>s.id)).toEqual(['emily','elena','oliver']);expect(freshState().selectedSuspect).toBe('');
+    expect(suspects.filter(s=>s.backpack==='Blue'&&s.card==='B4'&&s.room===204).map(s=>s.id)).toEqual(['emily','elena','maya']);expect(freshState().selectedSuspect).toBe('');
   });
   it('rejects decoy operations that cancel to a hardcoded answer', () => {
     expect(validate('camera_log=257880\nbackup_log=921\nresult=280 + (camera_log / backup_log) * 0\nprint(result)',case001.steps[0]).ok).toBe(false);
@@ -108,14 +108,14 @@ describe('Starter programs and redacted identities', () => {
 });
 
 
-describe('Individual password deduction', () => {
-  it('keeps two candidates after the suffix and identifies only Emily with the prefix and initial', () => {
+describe('Fingerprint password deduction', () => {
+  it('identifies only Emily among the three candidates using the fingerprint digits', () => {
     expect(studentRegister).toHaveLength(30);
     expect(new Set(studentRegister.map(s => s.number)).size).toBe(30);
     expect(new Set(studentRegister.map(s => s.password)).size).toBe(30);
-    const matching = studentRegister.filter(s => s.password.endsWith('427'));
-    expect(matching.map(s => s.name).sort()).toEqual(['Elena Brooks','Emily Carter']);
-    expect(matching.filter(s => s.password.startsWith('72') && s.name.startsWith('E')).map(s => s.name)).toEqual(['Emily Carter']);
+    const matching = studentRegister.filter(s => ['Maya Chen','Elena Brooks','Emily Carter'].includes(s.name));
+    expect(matching.map(s => Number(s.number)).reduce((sum, id) => sum + id, 0)).toBe(72046);
+    expect(matching.filter(s => /^[274]+$/.test(s.password)).map(s => s.name)).toEqual(['Emily Carter']);
     expect(suspects.every(person => studentRegister.some(student => student.name === person.name))).toBe(true);
   });
   it('does not identify the student or reveal the story in the final record', () => {

@@ -5,6 +5,7 @@ test('key rack, revised notes and direct archive flow work with the keypad and a
   await page.addInitScript(() => {
     const tracked = window as Window & { terminalClicks: number };
     tracked.terminalClicks = 0;
+    if (typeof AudioBufferSourceNode === 'undefined') return;
     const start = AudioBufferSourceNode.prototype.start;
     AudioBufferSourceNode.prototype.start = function (when) {
       tracked.terminalClicks++;
@@ -63,7 +64,8 @@ test('key rack, revised notes and direct archive flow work with the keypad and a
   for (let i = 0; i < 4; i++) await terminal.getByRole('button', { name: 'Back 5 minutes', exact: true }).click();
   await expect(hour).toHaveAttribute('aria-valuenow', '15');
   await expect(terminal.getByRole('spinbutton', { name: 'minute', exact: true })).toHaveAttribute('aria-valuenow', '40');
-  expect(await page.evaluate(() => (window as Window & { terminalClicks: number }).terminalClicks)).toBe(14);
+  const audioAvailable = await page.evaluate(() => Boolean(window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext));
+  expect(await page.evaluate(() => (window as Window & { terminalClicks: number }).terminalClicks)).toBe(audioAvailable ? 14 : 0);
   await terminal.getByRole('button', { name: /SEARCH ARCHIVE/ }).click();
   await expect(terminal).toContainText('ARCHIVE FOUND');
   await terminal.getByRole('button', { name: /CONTINUE TO THE FOOTAGE/ }).click();

@@ -3,6 +3,7 @@ export type CodeLanguage = 'python' | 'csharp';
 export type StepDefinition = {
   id: number; shortLabel: string; title: string; narrative: string; question: string; objective: string;
   caseNote: string[]; starterCode?: string[]; requiredEvidence: string[]; requiredVariables: Record<string, Value>;
+  unorderedVariableGroups?: string[][];
   expectedResult: Value; requiredResultDependencies: string[]; requiredOperations: string[];
   unlockEvidence: string[]; hints: string[]; stamp: string;
   resultLabel: string; resultDisplay: string; formula?: string;
@@ -20,6 +21,7 @@ export type CaseState = {
   codes: Record<number, string>; evidence: string[]; hiddenNotes: number[]; hints: Record<number, number>;
   deduction: { person: string; account: string }; closed: boolean;
   caseRevision: 3;
+  deductionRevision?: 2;
   cameraCodeAccepted: boolean; timeAccepted: boolean; archive1220Unlocked: boolean;
   selectedSuspect: string;
   results: Record<number, Value>;

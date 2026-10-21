@@ -22,12 +22,19 @@ export function validate(source: string, step: StepDefinition, language: CodeLan
     const fail = (title: string, message: string): Feedback => ({ ok: false, title, message, output: execution.output });
     const result = execution.variables.get('result');
     if (!result) return fail(execution.output.length ? 'Result found — but not stored' : 'Result not found', 'Create the variable result. Store your answer in it.');
-    for (const [name, value] of Object.entries(step.requiredVariables)) {
+    const expectedValues = new Map(Object.entries(step.requiredVariables));
+    for (const group of step.unorderedVariableGroups ?? []) {
+      const expected = group.map(name => JSON.stringify(step.requiredVariables[name])).sort();
+      const actual = group.map(name => JSON.stringify(execution.variables.get(name)?.value)).sort();
+      if (expected.some((value, index) => value !== actual[index])) return fail('Check the suspect IDs', 'Use the printed student register. Enter each of the three matching student IDs once, in any order.');
+      for (const name of group) expectedValues.set(name, execution.variables.get(name)!.value);
+    }
+    for (const name of Object.keys(step.requiredVariables)) {
       if (!execution.variables.has(name)) return fail('Variable not found', `Create the variable ${name}. Set its value using the Case Note or your evidence.`);
-      if (execution.variables.get(name)!.value !== value) return fail('The clue doesn’t match', `Check the value stored in ${name}. Look at your evidence.`);
+      if (execution.variables.get(name)!.value !== expectedValues.get(name)) return fail('The clue doesn’t match', `Check the value stored in ${name}. Look at your evidence.`);
     }
     const expectedExpression = step.formula ? expressionKey(parse(`result = ${step.formula}`)[0].expression) : null;
-    const matchesTrace = (trace: Trace) => step.requiredResultDependencies.every(name => trace.refs.get(name)?.includes(step.requiredVariables[name])) && step.requiredOperations.every(op => trace.operations.has(op)) && (!expectedExpression || expressionKey(trace.expression) === expectedExpression);
+    const matchesTrace = (trace: Trace) => step.requiredResultDependencies.every(name => trace.refs.get(name)?.includes(expectedValues.get(name)!)) && step.requiredOperations.every(op => trace.operations.has(op)) && (!expectedExpression || expressionKey(trace.expression) === expectedExpression);
     if (!matchesTrace(result)) return fail('Connect your variables', 'Use the named variables and the operation in the Case Note to calculate result.');
     if (result.value !== step.expectedResult) return fail('The clue doesn’t match', 'The code runs. Check your values or operation.');
     if (!execution.printedResults.some(trace => trace.value === result.value && matchesTrace(trace))) return fail('Result found — but not reported', languageText('Use print(result) after you calculate result.', language));

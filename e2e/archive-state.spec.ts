@@ -32,8 +32,9 @@ for (const language of ['python', 'csharp'] as const) test(`later ${language} st
     if (id === 8) {
       const clue = page.getByRole('dialog', { name: 'Recovered sign-in record', exact: true });
       await expect(clue).toBeVisible();
-      await expect(clue).toContainText('FIRST-NAME INITIAL: E.');
-      await expect(clue).toContainText('FIRST TWO PASSWORD DIGITS: 72');
+      await expect(clue.getByRole('img', { name: 'Recovered Room 204 door keypad', exact: true })).toBeVisible();
+      await expect(clue.locator('.key-fingerprint')).toHaveCount(3);
+      await expect(clue.locator('.document-copy')).toBeEmpty();
       await expect(clue).not.toContainText('Emily');
       const choose = clue.getByRole('button', { name: 'CHOOSE THE SUSPECT', exact: true });
       await expect(choose).toBeInViewport();

@@ -15,7 +15,9 @@ async function openDiscoveries(page: Page, ids: string[]) {
     await expect(page.getByRole('dialog', {name:title, exact:true})).toBeVisible();
     if (id === 'FINAL-01') {
       await expect(page.getByRole('button', {name:'Student number register',exact:true})).toHaveCount(0);
-      await expect(page.locator('.document-copy')).toContainText('FIRST TWO PASSWORD DIGITS: 72');
+      await expect(page.getByRole('img', { name: 'Recovered Room 204 door keypad', exact: true })).toBeVisible();
+      await expect(page.locator('.key-fingerprint')).toHaveCount(3);
+      await expect(page.locator('.document-copy')).toBeEmpty();
       await expect(page.locator('.document-copy')).not.toContainText(/Emily|Carter|demonstration/);
       await expect(page.locator('img[src*="equipment-log"]')).toHaveCount(0);
     }
@@ -57,7 +59,7 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
     if(index===5) {
       await page.getByRole('button',{name:'Open Detailed suspect files',exact:true}).click();
       await expect(page.locator('.suspect-card')).toHaveCount(9);
-      for(const name of ['Emily Carter','Elena Brooks','Oliver Grant']) {
+      for(const name of ['Emily Carter','Elena Brooks','Maya Chen']) {
         const person=page.getByRole('button',{name:`Inspect ${name}`,exact:true});
         await expect(person).toContainText('Blue backpack'); await expect(person).toContainText('Card B4'); await expect(person).toContainText('Room 204');
       }
@@ -72,7 +74,7 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
     await page.getByRole('button',{name:'CLOSE THE CASE'}).click();
     await expect(page.getByRole('alert')).toContainText('the mystery will never be solved');
     await page.getByRole('button',{name:/CHECK THE LEVELS AND TRY AGAIN/}).click();
-    await expect(page.getByRole('heading',{name:'The missing prefix'})).toBeVisible();
+    await expect(page.getByRole('heading',{name:'Restore the keypad scan'})).toBeVisible();
     await page.getByRole('button',{name:'RECONSTRUCT THE CASE'}).click();
   }
   await page.getByRole('button',{name:'Emily Carter',exact:true}).click();
@@ -83,7 +85,7 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
   await page.screenshot({path:`test-results/${testInfo.project.name}-${language}-ending.png`,animations:'disabled'});
   await page.reload();await expect(page.getByText('Brian was never in danger.',{exact:true})).toBeVisible();
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cold-case:001:v1')!));
-  expect(saved.solved).toHaveLength(8);expect(saved.results[7]).toBe(427);expect(saved.results[8]).toBe(72);expect(saved.closed).toBe(true);expect(errors).toEqual([]);
+  expect(saved.solved).toHaveLength(8);expect(saved.results[7]).toBe(72046);expect(saved.results[8]).toBe(72);expect(saved.closed).toBe(true);expect(errors).toEqual([]);
 });
 
 test('notes, evidence inspection, reset confirmation, and updated print pack', async({page})=>{

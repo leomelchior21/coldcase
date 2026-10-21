@@ -1,9 +1,11 @@
 import { evidenceArtwork, evidenceImagePath } from '../cases/case001-artwork';
 import { CompatibleImage } from './CompatibleImage';
 import { KeyRack } from './KeyRack';
+import { DoorKeypad } from './DoorKeypad';
 
 export function EvidenceImage({ id, thumbnail = false, reveal = false }: { id: string; thumbnail?: boolean; reveal?: boolean }) {
   if (id === 'K27') return <KeyRack thumbnail={thumbnail}/>;
+  if (id === 'FINAL-01') return <DoorKeypad thumbnail={thumbnail}/>;
   const artwork = evidenceArtwork[id];
   if (!artwork) return null;
   if (thumbnail) return <CompatibleImage className={`evidence-thumbnail ${artwork.monochrome ? 'cctv-monochrome' : ''}`} src={evidenceImagePath(id)} thumbnail alt="" decoding="async"/>;

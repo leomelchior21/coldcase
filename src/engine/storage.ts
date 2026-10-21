@@ -4,14 +4,14 @@ import type { CaseState, Value } from '../types';
 import { codeForStep, refreshCaseNotes } from './language';
 export const STORAGE_KEY = 'cold-case:001:v1';
 export function freshState(): CaseState {
-  return { language: 'python', languageChosen: false, version: 1, caseRevision: 3, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
+  return { language: 'python', languageChosen: false, version: 1, caseRevision: 3, deductionRevision: 2, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
 }
 const ids = (list: unknown) => Array.isArray(list) ? [...new Set(list.filter((id): id is number => Number.isInteger(id) && id >= 1 && id <= 8))] : [];
 const cleanCodes = (codes: unknown): Record<number,string> => Object.fromEntries(Object.entries(codes && typeof codes === 'object' ? codes : {}).filter(([id, code]) => +id >= 1 && +id <= 8 && typeof code === 'string' && code.length <= 20000));
 function previousWork(raw: Partial<CaseState>): CaseState['previousWork'] {
   if (!raw.codes || typeof raw.codes !== 'object') return undefined;
   const solved = ids(raw.solved);
-  const oldResults = raw.caseRevision ? [280,27,1540,2440,204,3,3,68] : [3,27,1540,3,204,3,3,68];
+  const oldResults = raw.caseRevision === 3 ? [280,27,1540,2440,204,3,427,72] : raw.caseRevision ? [280,27,1540,2440,204,3,3,68] : [3,27,1540,3,204,3,3,68];
   return { codes: cleanCodes(raw.codes), solved, results: Object.fromEntries(solved.map(id => [id, oldResults[id - 1]])), closed: raw.closed === true };
 }
 export function loadState(): CaseState {
@@ -31,7 +31,8 @@ export function loadState(): CaseState {
     clean.opened = raw.opened === true; clean.visited = ids(raw.visited); clean.hiddenNotes = ids(raw.hiddenNotes);
     clean.currentStep = typeof raw.currentStep === 'number' && raw.currentStep >= 1 && raw.currentStep <= 8 ? Math.floor(raw.currentStep) : 1;
     clean.selectedSuspect = suspects.some(s => s.id === raw.selectedSuspect) ? raw.selectedSuspect! : '';
-    const requested = ids(raw.solved);
+    const changedDeduction = raw.deductionRevision !== 2;
+    const requested = ids(raw.solved).filter(id => !changedDeduction || id <= 6);
     clean.solved = requested.filter(id => id <= 3);
     clean.cameraCodeAccepted = archiveReady(clean) && raw.cameraCodeAccepted === true;
     clean.timeAccepted = clean.cameraCodeAccepted && raw.timeAccepted === true;
@@ -46,14 +47,20 @@ export function loadState(): CaseState {
     if (!canSelectStep(clean, clean.currentStep)) clean.currentStep = case001.steps.find(step => canSelectStep(clean, step.id) && !clean.solved.includes(step.id))?.id ?? 3;
     clean.results = Object.fromEntries(case001.steps.filter(s => clean.solved.includes(s.id)).map(s => [s.id,s.expectedResult]));
     clean.codes = { ...clean.codes, ...cleanCodes(raw.codes) };
+    if (changedDeduction) {
+      // The first six steps still apply. Keep earlier work and reopen the new ending.
+      for (const id of [7,8]) clean.codes[id] = codeForStep(case001.steps[id - 1], clean.language);
+      clean.hiddenNotes = clean.hiddenNotes.filter(id => id <= 6);
+      if (ids(raw.solved).some(id => id >= 7) || /(?:suffix_checksum|prefix_checksum)\s*=\s*\d/.test((raw.codes?.[7] ?? '') + (raw.codes?.[8] ?? ''))) clean.previousWork = previousWork(raw);
+    }
     case001.steps.forEach(step => {
       clean.codes[step.id] = refreshCaseNotes(clean.codes[step.id], step, clean.language);
       const hint = raw.hints?.[step.id];
-      if (typeof hint === 'number') clean.hints[step.id] = Math.max(0, Math.min(3, Math.floor(hint)));
+      if (typeof hint === 'number' && (!changedDeduction || step.id <= 6)) clean.hints[step.id] = Math.max(0, Math.min(3, Math.floor(hint)));
     });
-    if (raw.deduction && typeof raw.deduction.person === 'string' && typeof raw.deduction.account === 'string') clean.deduction = raw.deduction;
+    if (!changedDeduction && raw.deduction && typeof raw.deduction.person === 'string' && typeof raw.deduction.account === 'string') clean.deduction = raw.deduction;
     clean.closed = raw.closed === true && clean.solved.length === 8 && clean.deduction.person === case001.finalDeduction.person && clean.deduction.account === case001.finalDeduction.account;
-    if (raw.previousWork && typeof raw.previousWork === 'object') {
+    if (!clean.previousWork && raw.previousWork && typeof raw.previousWork === 'object') {
       const old = raw.previousWork;
       clean.previousWork = { codes: cleanCodes(old.codes), solved: ids(old.solved), closed: old.closed === true, results: Object.fromEntries(Object.entries(old.results || {}).filter(([id, value]) => +id >= 1 && +id <= 8 && (typeof value === 'string' || typeof value === 'number'))) as Record<number,Value> };
     }

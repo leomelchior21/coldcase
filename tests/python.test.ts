@@ -51,7 +51,7 @@ describe('All eight case validators', () => {
     it(`step ${step.id} rejects printing only a literal`, () => expect(validate(solutions[i].replace('print(result)', `print(${step.expectedResult})`),step).ok).toBe(false));
     it(`step ${step.id} rejects wrong variable values`, () => {
       const [name,value] = Object.entries(step.requiredVariables)[0];
-      expect(validate(solutions[i].replace(`${name} = ${value}`,`${name} = 99`),step)).toMatchObject({ ok: false, title: 'The clue doesn’t match' });
+      expect(validate(solutions[i].replace(`${name} = ${value}`,`${name} = 99`),step)).toMatchObject({ ok: false, title: step.unorderedVariableGroups ? 'Check the suspect IDs' : 'The clue doesn’t match' });
     });
   });
   it('requires intended arithmetic', () => expect(validate('camera_log=257880\nbackup_log=921\nresult=camera_log*backup_log\nprint(result)',case001.steps[0]).ok).toBe(false));

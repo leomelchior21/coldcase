@@ -1,0 +1,5 @@
+.door-keypad svg,.door-keypad-thumbnail svg{display:block;width:100%;height:auto}
+.door-keypad{background:#20352a}
+.door-keypad-thumbnail{margin:0;width:100%;overflow:hidden;border-radius:3px}
+.door-keypad-thumbnail svg{max-height:150px}
+@media print{.door-keypad svg{print-color-adjust:exact}}

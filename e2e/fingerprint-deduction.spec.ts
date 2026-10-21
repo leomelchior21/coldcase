@@ -1,0 +1,64 @@
+import { test, expect, fillTemplate } from './fixtures';
+import { solutions } from '../tests/fixtures/casePrograms';
+import { suspects } from '../src/cases/case001';
+
+for (const language of ['python', 'csharp'] as const) test(`${language} verifies unordered suspect IDs and solves the visual fingerprint deduction`, async ({ page }, testInfo) => {
+  await page.addInitScript(() => { Math.random = () => 0; });
+  await page.goto('/case/001');
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened === true);
+  await page.evaluate(language => {
+    const key = 'cold-case:001:v1', state = JSON.parse(localStorage.getItem(key)!);
+    Object.assign(state, { language, solved: [1,2,3,4,5,6], currentStep: 7, cameraCodeAccepted: true, timeAccepted: true, archive1220Unlocked: true });
+    localStorage.setItem(key, JSON.stringify(state));
+  }, language);
+  await page.reload();
+  const editor = page.getByRole('group', { name: language === 'python' ? 'Python code template' : 'C# code template', exact: true });
+  await expect(editor).toContainText('printed student register');
+  await expect(editor).not.toContainText(/24013|24005|24028|72046|Emily|Elena|Maya/);
+  const reversed = 'suspect_01_ID = 24028\nsuspect_02_ID = 24013\nsuspect_03_ID = 24005\nresult = suspect_03_ID + suspect_01_ID + suspect_02_ID\nprint(result)';
+  await fillTemplate(page, reversed.replace('suspect_03_ID = 24005', 'suspect_03_ID = 24013'));
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  await expect(page.locator('.console-output.error')).toContainText('Check the suspect IDs');
+  await fillTemplate(page, reversed);
+  await page.reload();
+  await expect(page.getByLabel('Value for suspect_01_ID', { exact: true })).toHaveValue('24028');
+  await expect(page.getByLabel('Calculation for result', { exact: true })).toHaveValue('suspect_03_ID + suspect_01_ID + suspect_02_ID');
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  await expect(page.locator('.console-output.success')).toContainText('72046');
+  await page.getByRole('dialog', { name: 'New evidence recovered' }).getByRole('button', { name: 'Close dialog' }).click();
+  await page.getByRole('button', { name: 'NEXT STEP', exact: true }).click();
+  await fillTemplate(page, solutions[7]);
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  const clue = page.getByRole('dialog', { name: 'Recovered sign-in record', exact: true });
+  const scan = clue.getByRole('img', { name: 'Recovered Room 204 door keypad', exact: true });
+  await expect(scan).toBeVisible();
+  await expect(scan.locator('.lock-key')).toHaveCount(12);
+  await expect(scan.locator('.key-fingerprint')).toHaveCount(3);
+  expect(await scan.locator('.lock-key').evaluateAll(keys => keys.filter(key => key.querySelector('.key-fingerprint')).map(key => key.getAttribute('data-digit')))).toEqual(['2','4','7']);
+  await expect(clue.locator('.document-copy')).toBeEmpty();
+  await expect(clue).not.toContainText(/FIRST-NAME INITIAL|PASSWORD DIGITS|72427|Emily/);
+  await clue.screenshot({ path: `test-results/${testInfo.project.name}-${language}-fingerprint-clue.png` });
+  const choose = clue.getByRole('button', { name: 'CHOOSE THE SUSPECT', exact: true });
+  await expect(choose).toBeInViewport();
+  await choose.click();
+  await expect(page.locator('.deduction-accounts, .final-clue-summary')).toHaveCount(0);
+  const cards = page.locator('.deduction-suspects button');
+  await expect(cards).toHaveCount(9);
+  const order = await cards.allTextContents();
+  expect(order.map(name => name.trim())).not.toEqual(suspects.map(person => person.name));
+  expect(new Set(order).size).toBe(9);
+  await expect.poll(() => page.locator('.deduction-suspects .portrait img').evaluateAll(nodes => nodes.length === 9 && nodes.every(node => (node as HTMLImageElement).complete && (node as HTMLImageElement).naturalWidth > 0))).toBe(true);
+  for (const portrait of await page.locator('.deduction-suspects .portrait').all()) {
+    const size = await portrait.evaluate(node => ({ width: node.clientWidth, height: node.clientHeight }));
+    expect(Math.abs(size.width - size.height * .75)).toBeLessThanOrEqual(1);
+  }
+  await page.getByRole('button', { name: 'Emily Carter', exact: true }).click();
+  expect(await cards.allTextContents()).toEqual(order);
+  await page.locator('.deduction-people').evaluate(node => { node.scrollTop = 0; });
+  await page.screenshot({ path: `test-results/${testInfo.project.name}-${language}-shuffled-suspects.png` });
+  await expect(page.getByRole('button', { name: 'CLOSE THE CASE', exact: true })).toBeInViewport();
+  await page.getByRole('button', { name: 'CLOSE THE CASE', exact: true }).click();
+  await expect(page.getByText('Brian was never in danger.', { exact: true })).toBeVisible();
+  await expect(page.locator('.reconstruction-chain')).toContainText('72046');
+  await expect(page.locator('.reconstruction-chain')).toContainText('72427');
+});
