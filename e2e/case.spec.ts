@@ -48,7 +48,7 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
       await terminal.getByRole('button',{name:/CONTINUE TO THE FOOTAGE/}).click();
     }
     const editor=page.getByRole('group',{name:/^(Python|C#) code template$/});
-    for (const name of Object.keys(step.requiredVariables)) await expect(editor.getByLabel(`Value for ${name}`, {exact:true})).toBeVisible();
+    if (!step.providedVariables) for (const name of Object.keys(step.requiredVariables)) await expect(editor.getByLabel(`Value for ${name}`, {exact:true})).toBeVisible();
     await expect(editor).not.toContainText('VARIABLE_');
     const source=language==='python'?solutions[index]:solutions[index].split('\n').map(line=>line.startsWith('print(')?'Console.WriteLine(result);':`int ${line};`).join('\n');
     await code(page, source);
@@ -72,7 +72,7 @@ for (const language of ['python','csharp'] as const) test(`complete ${language} 
   for (const suspect of suspects.filter(person => person.id !== 'emily')) {
     await page.getByRole('button',{name:suspect.name,exact:true}).click();
     await page.getByRole('button',{name:'CLOSE THE CASE'}).click();
-    await expect(page.getByRole('alert')).toContainText('the mystery will never be solved');
+    await expect(page.getByRole('alert')).toContainText('NEVER FOUND.');
     await page.getByRole('button',{name:/CHECK THE LEVELS AND TRY AGAIN/}).click();
     await expect(page.getByRole('heading',{name:'Restore the keypad scan'})).toBeVisible();
     await page.getByRole('button',{name:'RECONSTRUCT THE CASE'}).click();

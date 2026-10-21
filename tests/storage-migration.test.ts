@@ -79,7 +79,9 @@ describe('Saved investigation migration', () => {
       const notes = codeForStep(step, language, false).trimEnd().replace(/(?:FINAL )?CASE NOTE/, 'My edited case note').split('\n');
       const draft = [`${marker} My calculation`, language === 'csharp' ? 'int result = 42;' : 'result = 42'];
       state.codes[step.id] = [...notes, ...obsolete.map(line => `  ${marker} ${line}  `), '', ...draft].join(newline);
-      expected[step.id] = [...notes, '', ...draft].join(newline);
+      expected[step.id] = step.providedVariables
+        ? (language === 'csharp' ? 'int inventory_checksum = 864;\nint returned_checksum = 837;\nint result = 42;\nConsole.WriteLine(result);\n' : 'inventory_checksum = 864\nreturned_checksum = 837\nresult = 42\nprint(result)\n')
+        : [...notes, '', ...draft].join(newline);
     }
     memory(state);
     expect(loadState().codes).toEqual(expected);

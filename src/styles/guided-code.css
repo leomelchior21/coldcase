@@ -6,6 +6,7 @@
 .guided-notes>div{min-height:1.5em}
 .guided-code .note-variable{color:#ff535f}.guided-code .note-value{color:#ffc342}.guided-code .note-operation{color:#36ddff}
 .guided-code .syntax-variable{color:#ff535f}.guided-code .syntax-keyword{color:#ffc342}.guided-code .syntax-function{color:#36ddff}
+.guided-code .syntax-value{color:#ffc342}
 .guided-program{clear:both;display:flex;flex-direction:column;gap:6px}
 .guided-line{display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:6px;align-items:start}
 .guided-line-number{color:#6e827f;font-size:10px;padding-top:12px;text-align:right;user-select:none}

@@ -4,6 +4,8 @@ export type StepDefinition = {
   id: number; shortLabel: string; title: string; narrative: string; question: string; objective: string;
   caseNote: string[]; starterCode?: string[]; requiredEvidence: string[]; requiredVariables: Record<string, Value>;
   unorderedVariableGroups?: string[][];
+  /** Supply the clue values internally and display them as fixed question marks. */
+  providedVariables?: boolean;
   expectedResult: Value; requiredResultDependencies: string[]; requiredOperations: string[];
   unlockEvidence: string[]; hints: string[]; stamp: string;
   resultLabel: string; resultDisplay: string; formula?: string;

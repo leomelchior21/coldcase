@@ -29,7 +29,9 @@ school network settings; changing image formats does not repair certificates.
   red variables, cyan calls/operators, and muted blue Case Notes. All eight steps
   provide the variable names, assignment syntax and output call.
   Students fill the numeric values and write the complete result expression using
-  the variables and required operators. The surrounding code
+  the variables and required operators. Step 2 hides both checksum values behind
+  fixed `?` marks, has no Case Note, and only asks students to write the result
+  calculation. Its checksum values are supplied internally for validation. The surrounding code
   cannot be edited. Blank answers receive a clear prompt before validation runs.
   Values and written expressions persist across reloads, and compatible saved programs
   populate the new controls. Reset clears only the step's answers, keeping its template.
@@ -44,7 +46,7 @@ school network settings; changing image formats does not repair certificates.
 - Password-gated Teacher Tools at `/teacher/case/001/print` offer an **A4 student register** with 30 fictional names, student numbers, and puzzle passwords, plus a **landscape A4 clue worksheet** with eight blank squares titled by step. Each has its own print button. Print a worksheet per team for notes and a register for Steps 7-8; the register is never added to the Evidence Desk. The classroom password is unchanged. This local client-side gate is not server authentication.
 - Nine named suspects plus Brian. Maya, Elena, and Emily share blue backpacks, B4 access, and Room 204. Students use the printed names, IDs, and passwords to verify this shortlist.
 - A dimmed-screen discovery spotlight invites students to open each newly recovered clue. Completing Step 8 opens the final sign-in record directly, with a prominent **CHOOSE THE SUSPECT** button that stays visible below the clue.
-- All nine suspects return in shuffled order for the final choice, with full portraits and names in a single wide grid. A wrong choice fades to an unresolved ending with a return to the levels; Emily unlocks the animated true story.
+- All nine suspects return in shuffled order for the final choice, with full portraits and names in a single wide grid. A wrong choice reveals a dark cinematic ending saying **BRIAN WAS NEVER FOUND**, with a fading hallway, missing poster, and an option to return to the evidence. Emily unlocks a joyful confetti celebration, animated case-solved checkmark, and three story beats revealing what actually happened. Both endings respect reduced motion, and the correct ending stays saved after reload.
 
 Future case folders are unavailable placeholders clearly marked **Coming soon**.
 

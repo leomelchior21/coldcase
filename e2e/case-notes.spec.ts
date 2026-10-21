@@ -24,6 +24,11 @@ test('all eight C# editors remove the four extra saved comments', async ({ page 
   const editor = page.getByRole('group', { name: 'C# code template', exact: true });
   for (const step of case001.steps) {
     await page.getByRole('navigation', { name: 'Investigation steps' }).getByRole('button').nth(step.id - 1).click();
+    if (step.providedVariables) {
+      await expect(editor.locator('.guided-notes')).toHaveCount(0);
+      await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
+      continue;
+    }
     await expect(editor).toContainText('// Use Console.WriteLine(result);');
     await expect(editor).not.toContainText(/Declare whole numbers|End each statement|Replace each glowing|Complete result/);
     await expect(editor).toContainText('// My edited case note');

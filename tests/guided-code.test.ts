@@ -6,11 +6,23 @@ import { validate } from '../src/engine/python/validator';
 import { solutions } from './fixtures/casePrograms';
 
 for (const language of ['python', 'csharp'] as const) describe(`${language} guided declarations and written calculations`, () => {
+  it('supplies the hidden Step 2 checksums and requires only the written calculation', () => {
+    const step = case001.steps[1], starter = codeForStep(step, language);
+    expect(codeForStep(step, language, false)).toBe('');
+    const answers = readGuidedAnswers(starter, step);
+    expect(guidedAnswersComplete(answers, step)).toBe(false);
+    answers.expression = 'inventory_checksum - returned_checksum';
+    answers.values = { inventory_checksum: '999', returned_checksum: '1' };
+    const code = writeGuidedCode(answers, step, language, '// CASE NOTE\n// Old checksum values');
+    expect(code).not.toContain('CASE NOTE');
+    expect(code).not.toContain('999');
+    expect(validate(code, step, language)).toMatchObject({ ok: true, output: [27] });
+  });
   it.each(case001.steps)('starts every value and result expression blank for step $id', step => {
     const code = codeForStep(step, language), answers = readGuidedAnswers(code, step);
     for (const name of Object.keys(step.requiredVariables)) {
       expect(code).toContain(`${name} =`);
-      expect(answers.values[name]).toBe('');
+      expect(answers.values[name]).toBe(step.providedVariables ? String(step.requiredVariables[name]) : '');
     }
     expect(answers.expression).toBe('');
     expect(guidedAnswersComplete(answers, step)).toBe(false);

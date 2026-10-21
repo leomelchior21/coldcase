@@ -44,7 +44,7 @@ const steps: StepDefinition[] = [
   {
     id: 2, shortLabel: 'Missing key', title: 'The missing key',
     narrative: 'One Maker Lab key was never returned.', question: 'Which key is missing?', objective: 'Recover the key record.',
-    caseNote: ['The full key inventory checksum is 864.', 'The returned keys checksum is 837.', '', 'Enter the value for inventory_checksum.', 'Enter the value for returned_checksum.', '', 'Subtract returned_checksum from inventory_checksum.', 'Store the difference in the variable result.', 'Use print(result).'],
+    caseNote: [], providedVariables: true,
     requiredEvidence: [], requiredVariables: { inventory_checksum: 864, returned_checksum: 837 },
     expectedResult: 27, requiredResultDependencies: ['inventory_checksum','returned_checksum'], requiredOperations: ['-'], formula: 'inventory_checksum - returned_checksum',
     unlockEvidence: ['K27'], hints: ['The checksum is a total used to check the key records.', 'Subtract the returned checksum from the full checksum.', 'result = inventory_checksum - returned_checksum'],

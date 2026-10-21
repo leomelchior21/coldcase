@@ -1,0 +1,37 @@
+import { test, expect } from './fixtures';
+
+for (const language of ['python', 'csharp'] as const) test(`${language} Step 2 hides the checksums and only accepts a result calculation`, async ({ page }, testInfo) => {
+  await page.goto('/case/001');
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('cold-case:001:v1') || 'null')?.opened);
+  await page.evaluate(language => {
+    const key = 'cold-case:001:v1', state = JSON.parse(localStorage.getItem(key)!);
+    Object.assign(state, { language, currentStep: 2 });
+    state.codes[2] = language === 'python' ? '# CASE NOTE\n# The full key inventory checksum is 864.\n# The returned keys checksum is 837.\ninventory_checksum = 864\nreturned_checksum = 837\nresult =\nprint(result)' : '// CASE NOTE\n// The full key inventory checksum is 864.\nint inventory_checksum = 864;\nint returned_checksum = 837;\nint result =;\nConsole.WriteLine(result);';
+    localStorage.setItem(key, JSON.stringify(state));
+  }, language);
+  await page.reload();
+  const editor = page.getByRole('group', { name: language === 'python' ? 'Python code template' : 'C# code template', exact: true });
+  await expect(editor.locator('.guided-notes')).toHaveCount(0);
+  await expect(editor).not.toContainText(/864|837|CASE NOTE|Enter the value/);
+  await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
+  await expect(editor.getByRole('textbox')).toHaveCount(1);
+  const result = editor.getByRole('textbox', { name: 'Calculation for result', exact: true });
+  await expect(result).toHaveValue('');
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  await expect(page.locator('.console-output.error')).toContainText('Fill the blanks');
+  await result.fill('27');
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  await expect(page.locator('.console-output.error')).toContainText('Connect your variables');
+  await result.fill('inventory_checksum - returned_checksum');
+  await page.reload();
+  await expect(result).toHaveValue('inventory_checksum - returned_checksum');
+  await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
+  await page.locator('.terminal-panel').screenshot({ path: `test-results/${testInfo.project.name}-${language}-hidden-checksums.png` });
+  await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
+  await expect(page.locator('.console-output.success')).toContainText('27');
+  await page.getByRole('dialog', { name: 'New evidence recovered' }).getByRole('button', { name: 'Close dialog' }).click();
+  await page.getByRole('button', { name: 'RESET', exact: true }).click();
+  await page.getByRole('button', { name: 'RESET PROGRAM', exact: true }).click();
+  await expect(result).toHaveValue('');
+  await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
+});

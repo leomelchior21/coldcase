@@ -2,6 +2,7 @@
 import { archiveReady, canSelectStep, stepBlockReason } from './caseEngine';
 import type { CaseState, Value } from '../types';
 import { codeForStep, refreshCaseNotes } from './language';
+import { readGuidedAnswers, writeGuidedCode } from './guidedCode';
 export const STORAGE_KEY = 'cold-case:001:v1';
 export function freshState(): CaseState {
   return { language: 'python', languageChosen: false, version: 1, caseRevision: 3, deductionRevision: 2, notesRevision: 4, caseId: '001', opened: false, currentStep: 1, visited: [1], solved: [], codes: Object.fromEntries(case001.steps.map(step => [step.id, initialCode(step)])), evidence: ['BRIEF','BOARD'], hiddenNotes: [], hints: {}, deduction: { person: '', account: '' }, closed: false, cameraCodeAccepted: false, timeAccepted: false, archive1220Unlocked: false, selectedSuspect: '', results: {} };
@@ -55,6 +56,10 @@ export function loadState(): CaseState {
     }
     case001.steps.forEach(step => {
       clean.codes[step.id] = refreshCaseNotes(clean.codes[step.id], step, clean.language);
+      if (step.providedVariables) {
+        clean.codes[step.id] = writeGuidedCode(readGuidedAnswers(clean.codes[step.id], step), step, clean.language, '');
+        clean.hiddenNotes = clean.hiddenNotes.filter(id => id !== step.id);
+      }
       const hint = raw.hints?.[step.id];
       if (typeof hint === 'number' && (!changedDeduction || step.id <= 6)) clean.hints[step.id] = Math.max(0, Math.min(3, Math.floor(hint)));
     });

@@ -34,17 +34,20 @@ for (const language of ['python', 'csharp'] as const) test(`${language} template
   await expect(page.locator('.console-output.success')).toContainText('280');
   await page.getByRole('dialog', { name: 'New evidence recovered' }).getByRole('button', { name: 'Close dialog' }).click();
   await page.locator('.step-tab').nth(1).click();
-  await expect(page.getByLabel('Value for inventory_checksum', {exact:true})).toHaveValue('');
+  await expect(template.locator('.syntax-value')).toHaveText(['?', '?']);
+  await expect(template.locator('input')).toHaveCount(1);
   await fillTemplate(page, 'inventory_checksum = 864\nreturned_checksum = 837\nresult = inventory_checksum - returned_checksum\nprint(result)');
   await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
   await expect(page.locator('.console-output.success')).toContainText('27');
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await page.getByRole('button', { name: 'RESET', exact: true }).click();
   await page.getByRole('button', { name: 'RESET PROGRAM', exact: true }).click();
-  await expect(page.getByLabel('Value for inventory_checksum', {exact:true})).toHaveValue('');
+  await expect(template.locator('.syntax-value')).toHaveText(['?', '?']);
+  await expect(template.locator('input')).toHaveCount(1);
   await expect(page.getByLabel('Calculation for result', {exact:true})).toHaveValue('');
   await page.reload();
-  await expect(page.getByLabel('Value for inventory_checksum', {exact:true})).toHaveValue('');
+  await expect(template.locator('.syntax-value')).toHaveText(['?', '?']);
+  await expect(template.locator('input')).toHaveCount(1);
   await expect(template).toContainText('inventory_checksum');
 });
 
