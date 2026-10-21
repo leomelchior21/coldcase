@@ -26,7 +26,7 @@ export function guidedAnswersComplete(answers: GuidedAnswers, step: StepDefiniti
 /** Rebuild every fixed declaration and the output call from the allowed fields. */
 export function writeGuidedCode(answers: GuidedAnswers, step: StepDefinition, language: CodeLanguage, previousCode: string): string {
   const marker = language === 'csharp' ? '//' : '#';
-  const comments = (step.providedVariables ? [] : previousCode.split('\n').filter(line => /^\s*(?:#|\/\/)/.test(line)))
+  const comments = previousCode.split('\n').filter(line => /^\s*(?:#|\/\/)/.test(line))
     .map(line => line.replace(/^(\s*)(?:#|\/\/)/, `$1${marker}`)).join('\n');
   const declaration = language === 'csharp' ? 'int ' : '';
   const end = language === 'csharp' ? ';' : '';

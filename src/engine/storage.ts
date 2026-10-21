@@ -55,10 +55,9 @@ export function loadState(): CaseState {
       if (ids(raw.solved).some(id => id >= 7) || /(?:suffix_checksum|prefix_checksum)\s*=\s*\d/.test((raw.codes?.[7] ?? '') + (raw.codes?.[8] ?? ''))) clean.previousWork = previousWork(raw);
     }
     case001.steps.forEach(step => {
-      clean.codes[step.id] = refreshCaseNotes(clean.codes[step.id], step, clean.language);
+      clean.codes[step.id] = refreshCaseNotes(clean.codes[step.id], step, clean.language, clean.hiddenNotes.includes(step.id));
       if (step.providedVariables) {
-        clean.codes[step.id] = writeGuidedCode(readGuidedAnswers(clean.codes[step.id], step), step, clean.language, '');
-        clean.hiddenNotes = clean.hiddenNotes.filter(id => id !== step.id);
+        clean.codes[step.id] = writeGuidedCode(readGuidedAnswers(clean.codes[step.id], step), step, clean.language, clean.hiddenNotes.includes(step.id) ? '' : clean.codes[step.id]);
       }
       const hint = raw.hints?.[step.id];
       if (typeof hint === 'number' && (!changedDeduction || step.id <= 6)) clean.hints[step.id] = Math.max(0, Math.min(3, Math.floor(hint)));

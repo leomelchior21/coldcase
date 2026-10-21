@@ -60,8 +60,7 @@ describe('C# numeric classroom interpreter', () => {
   it.each(['python', 'csharp'] as const)('ends every %s Case Note at the output instruction', language => {
     for (const step of case001.steps) {
       const notes = codeForStep(step, language, false).trimEnd();
-      if (step.providedVariables) expect(notes).toBe('');
-      else expect(notes.endsWith(language === 'csharp' ? '// Use Console.WriteLine(result);' : '# Use print(result).')).toBe(true);
+      expect(notes.endsWith(language === 'csharp' ? '// Use Console.WriteLine(result);' : '# Use print(result).')).toBe(true);
       expect(notes).not.toMatch(/Declare whole numbers|End each statement|Replace each glowing|Complete result|Ask your teacher|Combine the prefix/);
     }
   });

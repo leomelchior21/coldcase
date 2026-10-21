@@ -80,7 +80,7 @@ describe('Saved investigation migration', () => {
       const draft = [`${marker} My calculation`, language === 'csharp' ? 'int result = 42;' : 'result = 42'];
       state.codes[step.id] = [...notes, ...obsolete.map(line => `  ${marker} ${line}  `), '', ...draft].join(newline);
       expected[step.id] = step.providedVariables
-        ? (language === 'csharp' ? 'int inventory_checksum = 864;\nint returned_checksum = 837;\nint result = 42;\nConsole.WriteLine(result);\n' : 'inventory_checksum = 864\nreturned_checksum = 837\nresult = 42\nprint(result)\n')
+        ? codeForStep(step, language, false) + (language === 'csharp' ? 'int inventory_checksum = 864;\nint returned_checksum = 837;\nint result = 42;\nConsole.WriteLine(result);\n' : 'inventory_checksum = 864\nreturned_checksum = 837\nresult = 42\nprint(result)\n')
         : [...notes, '', ...draft].join(newline);
     }
     memory(state);

@@ -30,8 +30,9 @@ school network settings; changing image formats does not repair certificates.
   provide the variable names, assignment syntax and output call.
   Students fill the numeric values and write the complete result expression using
   the variables and required operators. Step 2 hides both checksum values behind
-  fixed `?` marks, has no Case Note, and only asks students to write the result
-  calculation. Its checksum values are supplied internally for validation. The surrounding code
+  fixed `?` marks and only asks students to write the result calculation. Its Case
+  Note explains the subtraction, storing the result, and printing it, without
+  revealing the values. Its checksum values are supplied internally for validation. The surrounding code
   cannot be edited. Blank answers receive a clear prompt before validation runs.
   Values and written expressions persist across reloads, and compatible saved programs
   populate the new controls. Reset clears only the step's answers, keeping its template.

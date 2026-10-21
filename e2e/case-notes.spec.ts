@@ -25,7 +25,7 @@ test('all eight C# editors remove the four extra saved comments', async ({ page 
   for (const step of case001.steps) {
     await page.getByRole('navigation', { name: 'Investigation steps' }).getByRole('button').nth(step.id - 1).click();
     if (step.providedVariables) {
-      await expect(editor.locator('.guided-notes')).toHaveCount(0);
+      await expect(editor.locator('.guided-notes')).toContainText('Subtract returned_checksum from inventory_checksum.');
       await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
       continue;
     }

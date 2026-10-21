@@ -16,8 +16,8 @@ export function codeForStep(step: StepDefinition, language: CodeLanguage, includ
   return notes + starter;
 }
 
-export function refreshCaseNotes(code: string, step: StepDefinition, language: CodeLanguage): string {
-  if (step.providedVariables) return code.split('\n').filter(line => !/^\s*(?:#|\/\/)/.test(line)).join('\n').trimStart();
+export function refreshCaseNotes(code: string, step: StepDefinition, language: CodeLanguage, hidden = false): string {
+  if (step.providedVariables) return (hidden ? '' : codeForStep(step, language, false)) + code.split('\n').filter(line => !/^\s*(?:#|\/\/)/.test(line)).join('\n').trimStart();
   const revisedNotes: Record<string, string> = {
     'Brian was last seen during hour 15.': 'The inspector said that Brian left the room 20 minutes before 16:00.',
     'The color filter value is 2.': 'The color filter value is in your evidence.',

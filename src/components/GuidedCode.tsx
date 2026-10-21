@@ -8,7 +8,7 @@ export function GuidedCode({ language, step, code, onChange, onRun, disabled }: 
 }) {
   const answers = readGuidedAnswers(code, step);
   const names = Object.keys(step.requiredVariables);
-  const commentLines = step.providedVariables ? [] : code.split('\n').filter(line => /^\s*(?:#|\/\/)/.test(line));
+  const commentLines = code.split('\n').filter(line => /^\s*(?:#|\/\/)/.test(line));
   const end = language === 'csharp' ? ';' : '';
   const numberField = (label: string, value: string, update: (value: string) => void) => <input type="text" inputMode="numeric" pattern="-?[0-9]*" autoComplete="off" spellCheck={false} aria-label={label} placeholder="value" value={value} maxLength={13} onChange={event => {
     if (/^-?\d{0,12}$/.test(event.target.value)) update(event.target.value);

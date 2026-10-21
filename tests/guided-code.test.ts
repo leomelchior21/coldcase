@@ -8,13 +8,14 @@ import { solutions } from './fixtures/casePrograms';
 for (const language of ['python', 'csharp'] as const) describe(`${language} guided declarations and written calculations`, () => {
   it('supplies the hidden Step 2 checksums and requires only the written calculation', () => {
     const step = case001.steps[1], starter = codeForStep(step, language);
-    expect(codeForStep(step, language, false)).toBe('');
+    expect(codeForStep(step, language, false)).toContain('Subtract returned_checksum from inventory_checksum.');
     const answers = readGuidedAnswers(starter, step);
     expect(guidedAnswersComplete(answers, step)).toBe(false);
     answers.expression = 'inventory_checksum - returned_checksum';
     answers.values = { inventory_checksum: '999', returned_checksum: '1' };
-    const code = writeGuidedCode(answers, step, language, '// CASE NOTE\n// Old checksum values');
-    expect(code).not.toContain('CASE NOTE');
+    const code = writeGuidedCode(answers, step, language, starter);
+    expect(code).toContain('CASE NOTE');
+    expect(code).toContain('Store the difference in the variable result.');
     expect(code).not.toContain('999');
     expect(validate(code, step, language)).toMatchObject({ ok: true, output: [27] });
   });

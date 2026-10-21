@@ -18,7 +18,7 @@ export default function App() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     setState(previous => {
-      const codes = Object.fromEntries(case001.steps.map(step => [step.id, refreshCaseNotes(previous.codes[step.id], step, previous.language)]));
+      const codes = Object.fromEntries(case001.steps.map(step => [step.id, refreshCaseNotes(previous.codes[step.id], step, previous.language, previous.hiddenNotes.includes(step.id))]));
       return case001.steps.every(step => codes[step.id] === previous.codes[step.id]) ? previous : { ...previous, codes };
     });
   }, []);

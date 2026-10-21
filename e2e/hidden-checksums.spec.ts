@@ -11,12 +11,19 @@ for (const language of ['python', 'csharp'] as const) test(`${language} Step 2 h
   }, language);
   await page.reload();
   const editor = page.getByRole('group', { name: language === 'python' ? 'Python code template' : 'C# code template', exact: true });
-  await expect(editor.locator('.guided-notes')).toHaveCount(0);
-  await expect(editor).not.toContainText(/864|837|CASE NOTE|Enter the value/);
+  await expect(editor.locator('.guided-notes')).toContainText('Subtract returned_checksum from inventory_checksum.');
+  await expect(editor.locator('.guided-notes')).toContainText('Store the difference in the variable result.');
+  await expect(editor.locator('.guided-notes')).toContainText(language === 'python' ? 'Use print(result).' : 'Use Console.WriteLine(result);');
+  await expect(editor).not.toContainText(/864|837|Enter the value/);
   await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
   await expect(editor.getByRole('textbox')).toHaveCount(1);
   const result = editor.getByRole('textbox', { name: 'Calculation for result', exact: true });
   await expect(result).toHaveValue('');
+  await page.getByRole('button', { name: 'HIDE CASE NOTE', exact: true }).click();
+  await page.reload();
+  await expect(editor.locator('.guided-notes')).toHaveCount(0);
+  await page.getByRole('button', { name: 'SHOW CASE NOTE', exact: true }).click();
+  await expect(editor.locator('.guided-notes')).toContainText('Subtract returned_checksum from inventory_checksum.');
   await page.getByRole('button', { name: 'RUN CASE', exact: true }).click();
   await expect(page.locator('.console-output.error')).toContainText('Fill the blanks');
   await result.fill('27');
@@ -34,4 +41,5 @@ for (const language of ['python', 'csharp'] as const) test(`${language} Step 2 h
   await page.getByRole('button', { name: 'RESET PROGRAM', exact: true }).click();
   await expect(result).toHaveValue('');
   await expect(editor.locator('.syntax-value')).toHaveText(['?', '?']);
+  await expect(editor.locator('.guided-notes')).toContainText('Subtract returned_checksum from inventory_checksum.');
 });
